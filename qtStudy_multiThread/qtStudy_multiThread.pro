@@ -34,3 +34,6 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui
+
+include(share/share.pri)
+include(iDevCtrl_qt/iDevCtrl_qt.pri)

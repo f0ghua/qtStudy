@@ -1,0 +1,17 @@
+#ifndef IDEVCTRLIB_GLOBAL_H
+#define IDEVCTRLIB_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(IDEVCTRLIB_LIBRARY)
+#  define IDEVCTRLIBSHARED_EXPORT Q_DECL_EXPORT
+#else
+//#  define IDEVCTRLIBSHARED_EXPORT Q_DECL_IMPORT
+#  define IDEVCTRLIBSHARED_EXPORT
+#endif
+
+# define ICB_BEGIN_NAMESPACE namespace ICB_NAMESPACE {
+# define ICB_END_NAMESPACE }
+
+
+#endif // IDEVCTRLIB_GLOBAL_H
