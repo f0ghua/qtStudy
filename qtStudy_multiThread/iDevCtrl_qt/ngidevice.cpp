@@ -474,6 +474,16 @@ int NgiDevice::devWriteFloatAsync(int devid, int reg, double value)
     return 0;
 }
 
+QModbusReply *NgiDevice::devWriteFloatAsyncEx(int devid, int reg, double value)
+{
+    Q_D(NgiDevice);
+
+    QByteArray ba = float2ByteArray((float)value);
+    QModbusReply *reply = d->devWriteResultAsync(devid, reg, ba);
+
+    return reply;
+}
+
 int NgiDevice::devWriteRawDataAsync(const QByteArray &ba)
 {
     Q_D(NgiDevice);

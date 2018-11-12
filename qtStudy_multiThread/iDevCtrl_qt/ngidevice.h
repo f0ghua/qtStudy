@@ -4,6 +4,7 @@
 #include "idevctrl_global.h"
 #include <QObject>
 
+class QModbusReply;
 class NgiDevicePrivate;
 
 class IDEVCTRLIBSHARED_EXPORT NgiDevice : public QObject
@@ -28,6 +29,7 @@ public:
     bool connectToDevice(const QString &address, int port);
     bool isConnected();
     int devWriteRawDataAsync(const QByteArray &ba);
+    QModbusReply *devWriteFloatAsyncEx(int devid, int reg, double value);
 
 signals:
     void responseValueGet(const QString &address, int devid, int reg, double value);

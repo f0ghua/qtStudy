@@ -279,7 +279,7 @@ public:
 
             qCDebug(QT_MODBUS) << "(UDP client) Sent Serial PDU:" << m_current.requestPdu;
             qCDebug(QT_MODBUS_LOW).noquote() << "(UDP client) Sent Serial ADU: 0x" + m_current.adu
-                .toHex() + ", " + m_current.adu.trimmed().toStdString().data();
+                .toHex() + ", " + m_current.adu.mid(6).trimmed().toStdString().data();
         };
 
         switch (m_state) {

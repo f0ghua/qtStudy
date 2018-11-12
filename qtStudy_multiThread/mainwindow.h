@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+class DevManager;
 class Worker;
 class QThread;
 
@@ -19,10 +20,14 @@ public:
     ~MainWindow();
 
 private:
+    void startDevMgr();
+    void stopDevMgr();
     void startWorker();
     void stopWorker();
 
     Ui::MainWindow *ui;
+    DevManager *m_devMgr = NULL;
+    QThread *m_devMgrThread = NULL;
     Worker *m_worker = NULL;
     QThread *m_workThread = NULL;
 };

@@ -26,11 +26,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    worker.cpp
+    worker.cpp \
+    eloadn6101.cpp \
+    devmanager.cpp
 
 HEADERS += \
         mainwindow.h \
-    worker.h
+    worker.h \
+    eloadn6101.h \
+    devmanager.h
 
 FORMS += \
         mainwindow.ui
