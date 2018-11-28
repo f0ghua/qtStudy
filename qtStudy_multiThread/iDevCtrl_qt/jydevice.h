@@ -4,6 +4,7 @@
 #include "idevctrl_global.h"
 #include <QObject>
 
+class QModbusReply;
 class JYDevicePrivate;
 
 /*!
@@ -32,9 +33,14 @@ public:
     int devWriteRegisterAsync(int devid, int reg, quint16 value);
     int devWriteRegistersAsync(int devid, int reg, const QVector<quint16> &values);
     int devWriteMCHexString(int devid, const QString &hexString);
+    int devReadRegistersAsync(int devid, int reg, int number);
+    QModbusReply *devReadRegistersAsyncEx(int devid, int reg, int number);
     bool connectDevice();
     bool connectToDevice(const QString &address, int port);
     bool isConnected();
+
+signals:
+    void responseValueGet(const QString &address, int devid, int reg, QVector<quint16> values);
 
 protected:
     JYDevice(JYDevicePrivate &dd, QObject *parent = Q_NULLPTR);

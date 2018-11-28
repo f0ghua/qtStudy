@@ -168,9 +168,11 @@ int NgiDevicePrivate::devReadResult(int devid, int reg, QByteArray &value)
 
     if (reply->error() != QModbusDevice::NoError) {
         qCWarning(APP_NGI) << "Reply error: " << reply->errorString();
+        delete reply;
         return -1;
     }
     if (replyData.size() != 5) {
+        delete reply;
         return -1;
     }
 
@@ -244,6 +246,7 @@ int NgiDevicePrivate::devWriteResult(int devid, int reg, const QByteArray &value
                         arg(replyData.toHex(' ').constData());
     if (reply->error() != QModbusDevice::NoError) {
         qCWarning(APP_NGI) << "Reply error: " << reply->errorString();
+        delete reply;
         return -1;
     }
 
@@ -389,9 +392,11 @@ int NgiDevice::devReadFloatAsync(int devid, int reg)
 
         if (reply->error() != QModbusDevice::NoError) {
             qCWarning(APP_NGI) << "Reply error: " << reply->errorString();
+            delete reply;
             return;
         }
         if (replyData.size() != 5) {
+            delete reply;
             return;
         }
         value = (double)byteArray2Float(replyData.mid(1));
@@ -443,7 +448,8 @@ int NgiDevice::devWriteUintAsync(int devid, int reg, uint value)
     QObject::connect(reply, &QModbusReply::finished, this, [=](){
         if (reply->error() != QModbusDevice::NoError) {
             qCWarning(APP_NGI) << "Reply error: " << reply->errorString();
-            return;
+            delete reply;
+            return -1;
         }
         
         reply->deleteLater();
@@ -465,7 +471,8 @@ int NgiDevice::devWriteFloatAsync(int devid, int reg, double value)
     QObject::connect(reply, &QModbusReply::finished, this, [=](){
         if (reply->error() != QModbusDevice::NoError) {
             qCWarning(APP_NGI) << "Reply error: " << reply->errorString();
-            return;
+            delete reply;
+            return -1;
         }
         
         reply->deleteLater();
@@ -496,7 +503,8 @@ int NgiDevice::devWriteRawDataAsync(const QByteArray &ba)
     QObject::connect(reply, &QModbusReply::finished, this, [=](){
         if (reply->error() != QModbusDevice::NoError) {
             qCWarning(APP_NGI) << "Reply error: " << reply->errorString();
-            return;
+            delete reply;
+            return -1;
         }
         
         reply->deleteLater();

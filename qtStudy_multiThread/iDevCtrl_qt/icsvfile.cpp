@@ -78,6 +78,9 @@ ICsvFilePrivate::ICsvFilePrivate(const QString& filePath, qint64 size, int count
 
 ICsvFilePrivate::~ICsvFilePrivate()
 {
+    if (m_rotationStrategy != NULL) {
+        delete m_rotationStrategy;
+    }
     close();
 }
 
@@ -105,6 +108,8 @@ void ICsvFilePrivate::setPath(const QString &filePath)
     }
     m_outputStream.setDevice(&m_file);
     m_outputStream.setCodec(QTextCodec::codecForName("UTF-8"));
+
+    m_rotationStrategy->setInitialInfo(m_file);
 }
 
 static QString addCsvQuotes(ICsvFile::QuoteMode mode, QString field)

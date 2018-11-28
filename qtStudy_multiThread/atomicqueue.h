@@ -1,0 +1,4 @@
+#ifndef ATOMICQUEUE_H
+#define ATOMICQUEUE_H
+
+#endif // ATOMICQUEUE_H

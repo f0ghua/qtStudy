@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     worker.cpp \
     eloadn6101.cpp \
-    devmanager.cpp
+    devmanager.cpp \
+    relaydam3200.cpp
 
 HEADERS += \
         mainwindow.h \
     worker.h \
     eloadn6101.h \
-    devmanager.h
+    devmanager.h \
+    relaydam3200.h
 
 FORMS += \
         mainwindow.ui

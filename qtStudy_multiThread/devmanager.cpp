@@ -1,13 +1,12 @@
 #include "devmanager.h"
 #include "eloadn6101.h"
+#include "relaydam3200.h"
+#include "commdefine.h"
 
 #include <QModbusReply>
 #include <QTimer>
 #include <QVector>
 #include <QDebug>
-
-#define CM_ELOAD_CHANNEL_NUMBER 12
-#define CM_ELOAD_NUMBER         2
 
 class DevManagerPrivate : public QObject
 {
@@ -26,6 +25,7 @@ public:
     DevManager * const q_ptr;
     QVector<EloadN6101 *> m_eloads;
     QMap<QString, int> m_eloadAddrMapping;
+    QVector<RelayDam3200 *> m_relays;
     QTimer *m_timer;
 
 public slots:
@@ -43,6 +43,15 @@ DevManagerPrivate::DevManagerPrivate(DevManager *parent)
         m_eloads[i] = NULL;
     }
     m_eloadAddrMapping.clear();
+
+    m_relays.resize(CM_RELAY_NUMBER);
+    /*
+    int rvcMax = CM_RELAY_GETVCHANNEL(CM_RELAY_NUMBER-1, CM_RELAY_CIRCUIT_NUMBER-1)+1;
+    m_relayStates.resize(rvcMax);
+    for (int i = 0; i < rvcMax; i++) {
+        m_relayStates[i] = RELAY_ST_CLOSE;
+    }
+    */
 }
 
 DevManagerPrivate::~DevManagerPrivate()
@@ -54,8 +63,14 @@ void DevManagerPrivate::init()
 {
     Q_Q(DevManager);
 
-    addEload(0, "127.0.0.1", 7000);
-    addEload(1, "127.0.0.1", 7001);
+    //addEload(0, "127.0.0.1", 7000);
+    //addEload(1, "127.0.0.1", 7001);
+
+    addRelay(0, "127.0.0.1", 10000);
+    addRelay(1, "127.0.0.1", 10001);
+
+    //addRelay(0, "192.168.10.201", 10000);
+    //addRelay(1, "192.168.10.202", 10000);
 
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
@@ -70,6 +85,12 @@ void DevManagerPrivate::onTimerTimeout()
     foreach (EloadN6101 *eload, m_eloads) {
         if (eload && !eload->isConnected()) {
             eload->connectDevice();
+        }
+    }
+
+    foreach (auto *relay, m_relays) {
+        if (relay && !relay->isConnected()) {
+            relay->connectDevice();
         }
     }
 }
@@ -90,6 +111,16 @@ void DevManagerPrivate::addEload(int id, const QString &address, int port)
 
     QString addrPair = QString("%1:%2").arg(address).arg(port);
     m_eloadAddrMapping.insert(addrPair, id);
+}
+
+void DevManagerPrivate::addRelay(int id, const QString &address, int port)
+{
+    if (m_relays[id]) {
+        delete m_relays[id];
+        m_relays[id] = NULL;
+    }
+    m_relays[id] = new RelayDam3200(address, port, this);
+
 }
 
 void DevManagerPrivate::eloadModeInit(int id, int channel)
@@ -168,6 +199,36 @@ DevMgrReply *DevManager::eloadSetConfigedCurrentAsyncEx(int id, int channel, dou
         if (reply->error() != QModbusDevice::NoError) {
             qDebug() << "Reply error: " << reply->errorString();
         }
+        emit devMgrReply->finished();
+        reply->deleteLater();
+    });
+
+    return devMgrReply;
+}
+
+DevMgrReply *DevManager::relayGetStatesEx(int id)
+{
+    Q_D(DevManager);
+
+    if (d->m_relays[id] == NULL)
+        return NULL;
+
+    QModbusReply *reply = d->m_relays[id]->getStatesAsyncEx();
+    if (reply == NULL) {
+        return NULL;
+    }
+
+    DevMgrReply *devMgrReply = new DevMgrReply();
+    QObject::connect(reply, &QModbusReply::finished, this, [=](){
+        if (reply->error() != QModbusDevice::NoError) {
+            qDebug() << "Reply error: " << reply->errorString();
+        }
+        QVector<double> values;
+        foreach (quint16 v, reply->result().values()) {
+            values.append((double)v);
+        }
+        devMgrReply->setValues(values);
+
         emit devMgrReply->finished();
         reply->deleteLater();
     });

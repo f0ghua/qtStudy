@@ -25,6 +25,7 @@ public:
     QModbusReply *devWriteRegisterAsync(int devid, int reg, quint16 value);
     QModbusReply *devWriteRegistersAsync(int devid, int reg, const QVector<quint16> &values);
     QModbusReply *devWriteMCHexString(int devid, const QString &hexString);
+    QModbusReply *devReadRegistersAsync(int devid, int reg, int number);
 
     JYDevice * const q_ptr;
     QString m_address;
@@ -115,6 +116,27 @@ void JYDevicePrivate::onStateChanged(QModbusDevice::State state)
     }
 }
 
+QModbusReply *JYDevicePrivate::devReadRegistersAsync(int devid, int reg, int number)
+{
+    if (m_state != QModbusDevice::ConnectedState) {
+        qCWarning(APP_JY) << "JYDevice has not been connected, try to connect";
+        if (!m_modbusDevice->connectDevice()) {
+            qCWarning(APP_JY) << "Connect failed: " << m_modbusDevice->errorString();
+        }
+        return NULL;
+    }
+
+    QModbusDataUnit readUnit = QModbusDataUnit(QModbusDataUnit::Coils, reg, number);
+    QModbusReply *reply = m_modbusDevice->sendReadRequest(readUnit, devid);
+
+    qCDebug(APP_JY) << QObject::tr("dev[%1:%2] rxWB devid = %3, reg = %4, number = %5").\
+                        arg(m_address).arg(m_port).\
+                        arg(devid).\
+                        arg(reg).arg(number);
+
+    return reply;
+}
+
 int JYDevicePrivate::devWriteRegister(int devid, int reg, quint16 value)
 {
     if (m_state != QModbusDevice::ConnectedState) {
@@ -148,6 +170,7 @@ int JYDevicePrivate::devWriteRegister(int devid, int reg, quint16 value)
 
     if (reply->error() != QModbusDevice::NoError) {
         qCWarning(APP_JY) << "Reply error: " << reply->errorString();
+        delete reply;
         return -1;
     }
 
@@ -259,6 +282,59 @@ int JYDevice::port() const
     return d->m_port;
 }
 
+int JYDevice::devReadRegistersAsync(int devid, int reg, int number)
+{
+    Q_D(JYDevice);
+
+    QModbusReply *reply = d->devReadRegistersAsync(devid, reg, number);
+    if (!reply) {
+        return -1;
+    }
+
+    QObject::connect(reply, &QModbusReply::finished, this, [=](){
+        QVector<quint16> values;
+        QByteArray replyData = reply->rawResult().data();
+
+        qCDebug(APP_JY) << QObject::tr("dev[%1:%2] rxWA devid = %3, reg = %4, adu = %5").\
+                            arg(d->m_address).arg(d->m_port).\
+                            arg(devid).\
+                            arg(reg).\
+                            arg(replyData.toHex(' ').constData());
+
+        if (reply->error() != QModbusDevice::NoError) {
+            qCWarning(APP_JY) << "Reply error: " << reply->errorString();
+            delete reply;
+            return;
+        }
+
+        const QModbusDataUnit unit = reply->result();
+        for (uint i = 0; i < unit.valueCount(); i++) {
+            const QString entry = tr("Address: %1, Value: %2").arg(unit.startAddress() + i).
+                    arg(QString::number(unit.value(i), unit.registerType() <= QModbusDataUnit::Coils ? 10 : 16));
+            qCDebug(APP_JY) << entry;
+        }
+        values = unit.values();
+
+        QString addressPair = d->m_address + ":" + QString::number(d->m_port);
+        emit responseValueGet(addressPair, devid, reg, values);
+
+        reply->deleteLater();
+    });
+
+    return 0;
+}
+
+QModbusReply *JYDevice::devReadRegistersAsyncEx(int devid, int reg, int number)
+{
+    Q_D(JYDevice);
+
+    QModbusReply *reply = d->devReadRegistersAsync(devid, reg, number);
+    if (!reply) {
+        return NULL;
+    }
+
+    return reply;
+}
 
 int JYDevice::devWriteRegister(int devid, int reg, quint16 value)
 {
@@ -279,6 +355,7 @@ int JYDevice::devWriteRegisterAsync(int devid, int reg, quint16 value)
     QObject::connect(reply, &QModbusReply::finished, this, [=](){
         if (reply->error() != QModbusDevice::NoError) {
             qCWarning(APP_JY) << "Reply error: " << reply->errorString();
+            delete reply;
             return;
         }
         
@@ -300,6 +377,7 @@ int JYDevice::devWriteRegistersAsync(int devid, int reg, const QVector<quint16> 
     QObject::connect(reply, &QModbusReply::finished, this, [=](){
         if (reply->error() != QModbusDevice::NoError) {
             qCWarning(APP_JY) << "Reply error: " << reply->errorString();
+            delete reply;
             return;
         }
         
@@ -321,6 +399,7 @@ int JYDevice::devWriteMCHexString(int devid, const QString &hexString)
     QObject::connect(reply, &QModbusReply::finished, this, [=](){
         if (reply->error() != QModbusDevice::NoError) {
             qCWarning(APP_JY) << "Reply error: " << reply->errorString();
+            delete reply;
             return;
         }
         

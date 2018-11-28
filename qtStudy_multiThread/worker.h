@@ -20,6 +20,7 @@ private:
     int el_setConfigedCurrentBlock(int id, int channel, double value);
     void inline eloadSetConfigedCurrent(int id, int channel, double value);
     void inline eloadGetCurrent(int id, int channel);
+    int rl_getAllStatesBlock(int id);
 
     DevManager *m_devMgr = NULL;
 };

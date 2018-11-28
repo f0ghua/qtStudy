@@ -17,9 +17,12 @@ Worker::Worker(DevManager *devMgr, QObject *parent)
 void Worker::run()
 {
     for (int i = 0; i < 12; i++) {
-        el_setConfigedCurrentBlock(0, i, 2);
+        //el_setConfigedCurrentBlock(0, i, 2);
     }
 
+    for (int i = 0; i < 2; i++) {
+        rl_getAllStatesBlock(i);
+    }
 }
 
 int Worker::el_setConfigedCurrentBlock(int id, int channel, double value)
@@ -38,6 +41,25 @@ int Worker::el_setConfigedCurrentBlock(int id, int channel, double value)
     QObject::disconnect(connection);
 
     reply->deleteLater();
+    return 0;
+}
+
+int Worker::rl_getAllStatesBlock(int id)
+{
+    DevMgrReply *reply;
+    QMetaObject::invokeMethod(m_devMgr, "relayGetStatesEx",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(DevMgrReply *, reply),
+                              Q_ARG(int, id));
+
+    QEventLoop loop;
+    auto connection = QObject::connect(reply, &DevMgrReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+    QObject::disconnect(connection);
+
+    QVector<double> values = reply->values();
+    reply->deleteLater();
+
     return 0;
 }
 

@@ -4,8 +4,8 @@
 #include "idevctrl_global.h"
 #include <QObject>
 
-#define CSV_MAX_FILESIZE        (32*1024*1024)
-#define CSV_BACKUP_COUNT        16
+#define CSV_MAX_FILESIZE        (64*1024*1024)
+#define CSV_BACKUP_COUNT        32
 
 class ICsvFilePrivate;
 
