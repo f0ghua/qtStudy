@@ -16,13 +16,15 @@ Worker::Worker(DevManager *devMgr, QObject *parent)
 
 void Worker::run()
 {
+    /*
     for (int i = 0; i < 12; i++) {
-        //el_setConfigedCurrentBlock(0, i, 2);
+        el_setConfigedCurrentBlock(0, i, 2);
     }
 
     for (int i = 0; i < 2; i++) {
         rl_getAllStatesBlock(i);
     }
+    */
 }
 
 int Worker::el_setConfigedCurrentBlock(int id, int channel, double value)

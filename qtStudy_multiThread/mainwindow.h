@@ -19,11 +19,15 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_pbRlGetStates_clicked();
+
 private:
     void startDevMgr();
     void stopDevMgr();
     void startWorker();
     void stopWorker();
+    int rl_getAllStatesBlock(int id, QVector<double> &values);
 
     Ui::MainWindow *ui;
     DevManager *m_devMgr = NULL;

@@ -19,12 +19,14 @@ public:
     {
         m_values = newValues;
     }
+    inline void setError(bool isError) {m_isError = isError;}
+    inline bool isError() const {return m_isError;}
 
 signals:
     void finished();
 
 private:
-    bool isError = false;
+    bool m_isError = false;
     QVector<double> m_values;
 };
 

@@ -81,3 +81,39 @@ void MainWindow::stopDevMgr()
         qDebug() << "DevManager thread finished.";
     }
 }
+
+int MainWindow::rl_getAllStatesBlock(int id, QVector<double> &values)
+{
+    int ret = 0;
+    DevMgrReply *reply;
+    QMetaObject::invokeMethod(m_devMgr, "relayGetStatesEx",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(DevMgrReply *, reply),
+                              Q_ARG(int, id));
+
+    QEventLoop loop;
+    auto connection = QObject::connect(reply, &DevMgrReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+    QObject::disconnect(connection);
+
+    if (reply->isError())
+        ret = -1;
+
+    values = reply->values();
+    reply->deleteLater();
+
+    return ret;
+}
+
+void MainWindow::on_pbRlGetStates_clicked()
+{
+    QVector<double> values;
+    rl_getAllStatesBlock(0, values);
+    QString statesStr;
+    for (int i = 0; i < values.size(); i++) {
+        int v = values.at(i);
+        statesStr += QString("%1:%2, ").arg(i+1).arg(v);
+    }
+    ui->plainTextEdit->appendPlainText(statesStr);
+
+}

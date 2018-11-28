@@ -66,11 +66,11 @@ void DevManagerPrivate::init()
     //addEload(0, "127.0.0.1", 7000);
     //addEload(1, "127.0.0.1", 7001);
 
-    addRelay(0, "127.0.0.1", 10000);
-    addRelay(1, "127.0.0.1", 10001);
+    //addRelay(0, "127.0.0.1", 10000);
+    //addRelay(1, "127.0.0.1", 10001);
 
-    //addRelay(0, "192.168.10.201", 10000);
-    //addRelay(1, "192.168.10.202", 10000);
+    addRelay(0, "192.168.10.201", 10000);
+    addRelay(1, "192.168.10.202", 10000);
 
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
@@ -222,12 +222,14 @@ DevMgrReply *DevManager::relayGetStatesEx(int id)
     QObject::connect(reply, &QModbusReply::finished, this, [=](){
         if (reply->error() != QModbusDevice::NoError) {
             qDebug() << "Reply error: " << reply->errorString();
+            devMgrReply->setError(true);
+        } else {
+            QVector<double> values;
+            foreach (quint16 v, reply->result().values()) {
+                values.append((double)v);
+            }
+            devMgrReply->setValues(values);
         }
-        QVector<double> values;
-        foreach (quint16 v, reply->result().values()) {
-            values.append((double)v);
-        }
-        devMgrReply->setValues(values);
 
         emit devMgrReply->finished();
         reply->deleteLater();
