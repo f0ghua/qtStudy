@@ -7,5 +7,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
+    qSetMessagePattern("[%{time h:mm:ss.zzz}]: %{category} %{message}");
+
     return a.exec();
 }

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QElapsedTimer>
 
 class Worker;
 class QThread;
@@ -18,6 +19,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void onTimerTimeout();
+    void onTimerTimeout2();
+
 private:
     void startWorker();
     void stopWorker();
@@ -25,6 +30,8 @@ private:
     Ui::MainWindow *ui;
     Worker *m_worker = NULL;
     QThread *m_workThread = NULL;
+    quint64 m_timerTickCount = 0;
+    QElapsedTimer m_elapsedTimer;
 };
 
 #endif // MAINWINDOW_H

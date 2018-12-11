@@ -4,6 +4,7 @@
 
 #include <QThread>
 #include <QDebug>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +12,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     startWorker();
+
+    QTimer *timer = new QTimer(this);
+    timer->setInterval(100);
+    timer->setTimerType(Qt::PreciseTimer);
+    connect(timer, &QTimer::timeout, this, &MainWindow::onTimerTimeout);
+    timer->start();
+
+    QTimer *timer2 = new QTimer(this);
+    timer2->setInterval(100);
+    timer2->setTimerType(Qt::PreciseTimer);
+    connect(timer2, &QTimer::timeout, this, &MainWindow::onTimerTimeout2);
+    timer2->start();
 }
 
 MainWindow::~MainWindow()
@@ -44,4 +57,19 @@ void MainWindow::stopWorker()
         }
         qDebug() << "Worker thread finished.";
     }
+}
+
+void MainWindow::onTimerTimeout()
+{
+    qDebug() << "timer tick count = " << m_timerTickCount << ", elTime = " << m_elapsedTimer.elapsed();
+    if (m_timerTickCount == 0) {
+        m_elapsedTimer.start();
+    }
+
+    m_timerTickCount++;
+}
+
+void MainWindow::onTimerTimeout2()
+{
+    for (int i = 0; i < 10000000; i++);
 }
