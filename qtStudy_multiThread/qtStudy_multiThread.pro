@@ -26,11 +26,38 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    worker.cpp
+    worker.cpp \
+    applogmessage.cpp \
+    canconnection.cpp \
+    ftusbbackend.cpp \
+    utils.cpp \
+    settingsmanager.cpp \
+    xbusframe.cpp \
+    canconnfactory.cpp
 
 HEADERS += \
         mainwindow.h \
-    worker.h
+    worker.h \
+    applogmessage.h \
+    canconnection.h \
+    canconnection_p.h \
+    ftusbbackend.h \
+    ftusbbackend_p.h \
+    lfqueue.h \
+    utils.h \
+    settingsmanager.h \
+    xbusframe.h \
+    canconnfactory.h
 
 FORMS += \
         mainwindow.ui
+
+TOPSRCDIR   = $$PWD
+TOPBUILDDIR = $$shadowed($$PWD)
+
+DESTDIR = $$TOPBUILDDIR/output
+
+LIBFTDI = $${TOPSRCDIR}/3rdparty/ftdi
+INCLUDEPATH += $$LIBFTDI
+LIBS += -L$$DESTDIR $${LIBFTDI}/ftd2xx.lib -lwinmm
+

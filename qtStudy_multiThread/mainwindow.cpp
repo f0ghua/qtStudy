@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "worker.h"
+#include "ftusbbackend.h"
+#include "canconnfactory.h"
 
 #include <QThread>
 #include <QDebug>
@@ -11,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     startWorker();
+
+    initWidgets();
 }
 
 MainWindow::~MainWindow()
@@ -27,7 +31,7 @@ void MainWindow::startWorker()
     QObject::connect(m_workThread, &QThread::started, m_worker, &Worker::run);
     QObject::connect(m_workThread, &QThread::finished, m_worker, &Worker::deleteLater);
     QObject::connect(m_workThread, &QThread::finished, m_workThread, &QThread::deleteLater);
-    //QObject::connect(this, &MainWindow::workStop, m_worker, &Worker::onWorkStop);
+    QObject::connect(this, &MainWindow::workStop, m_worker, &Worker::onWorkStop);
 
     m_workThread->start(QThread::HighPriority);
     qDebug() << "Worker thread started.";
@@ -35,7 +39,7 @@ void MainWindow::startWorker()
 
 void MainWindow::stopWorker()
 {
-    //emit workStop();
+    emit workStop();
 
     if(m_workThread && (!m_workThread->isFinished())) {
         m_workThread->quit();
@@ -44,4 +48,39 @@ void MainWindow::stopWorker()
         }
         qDebug() << "Worker thread finished.";
     }
+}
+
+void MainWindow::initWidgets()
+{
+    QStringList devLists = FTUSBBackend::getDeviceList(true);
+    int devNumber = devLists.at(0).toInt();
+
+    for (int i = 0; i < devNumber; i++) {
+        ui->cbDevices->addItem(devLists.at(i+1));
+    }
+}
+
+void MainWindow::on_pbConnect_clicked()
+{
+    QMetaObject::invokeMethod(
+                m_worker, "createConnection",
+                Qt::BlockingQueuedConnection,
+                Q_ARG(const QString&, ui->cbDevices->currentText())
+                );
+}
+
+void MainWindow::on_pbStart_clicked()
+{
+    QMetaObject::invokeMethod(
+                m_worker, "startBenchmark",
+                Qt::QueuedConnection
+                );
+}
+
+void MainWindow::on_pbStop_clicked()
+{
+    QMetaObject::invokeMethod(
+                m_worker, "stopBenchmark",
+                Qt::QueuedConnection
+                );
 }
