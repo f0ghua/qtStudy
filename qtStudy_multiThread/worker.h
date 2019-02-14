@@ -13,6 +13,7 @@ signals:
 
 public slots:
     void run();
+    void handleTimeout();
 };
 
 #endif // WORKER_H

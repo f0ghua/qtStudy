@@ -89,6 +89,10 @@ void QAppLoggingCategoryRegister::setFilterRulesByLevel(QiLogging::Level severit
             filterRules += category;
             filterRules += ".critical=true\n";
         }
+        if (severityLevel <= QiLogging::FatalLevel) {
+            filterRules += category;
+            filterRules += ".fatal=true\n";
+        }
     }
 
     qDebug() << "Filter rules" << filterRules;
