@@ -174,7 +174,8 @@ void Worker::handleTimeout()
     msg = QString("tx = %1(%2/s), rx = %3(%4/s)").\
             arg(m_canConnection->txCount()).arg(m_canConnection->txCount()-prevTxCount).\
             arg(m_canConnection->rxCount()).arg(m_canConnection->rxCount()-prevRxCount);
-    qDebug() << msg;
+    //qDebug() << msg;
+    emit msgDump(msg);
     prevRxCount = m_canConnection->rxCount();
     prevTxCount = m_canConnection->txCount();
 }

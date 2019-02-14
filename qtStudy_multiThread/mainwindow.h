@@ -22,9 +22,9 @@ signals:
     void workStop();
 
 private slots:
+    void onMsgDump(const QString &msg);
     void on_pbConnect_clicked();
     void on_pbStart_clicked();
-
     void on_pbStop_clicked();
 
 private:

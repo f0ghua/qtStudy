@@ -19,6 +19,7 @@ public:
     ~Worker();
 
 signals:
+    void msgDump(const QString &msg);
 
 public slots:
     void run();

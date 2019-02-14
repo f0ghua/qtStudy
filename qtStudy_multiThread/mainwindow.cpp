@@ -32,6 +32,7 @@ void MainWindow::startWorker()
     QObject::connect(m_workThread, &QThread::finished, m_worker, &Worker::deleteLater);
     QObject::connect(m_workThread, &QThread::finished, m_workThread, &QThread::deleteLater);
     QObject::connect(this, &MainWindow::workStop, m_worker, &Worker::onWorkStop);
+    QObject::connect(m_worker, &Worker::msgDump, this, &MainWindow::onMsgDump);
 
     m_workThread->start(QThread::HighPriority);
     qDebug() << "Worker thread started.";
@@ -48,6 +49,11 @@ void MainWindow::stopWorker()
         }
         qDebug() << "Worker thread finished.";
     }
+}
+
+void MainWindow::onMsgDump(const QString &msg)
+{
+    ui->plainTextEdit->appendPlainText(msg);
 }
 
 void MainWindow::initWidgets()
