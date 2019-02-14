@@ -11,7 +11,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QAppLoggingCategoryRegister::instance()->setFilterRulesFromSettings("");
+
+    QAppLoggingCategoryRegister::instance()->setCategoryLoggingOn("appCoreLog", false);
+    QAppLoggingCategoryRegister::instance()->setFilterRulesByLevel(QiLogging::TraceLevel);
+
+    qDebug() << QAppLoggingCategoryRegister::instance()->registeredCategories();
+
+    QLOG_TRACE() << "trace";
+    QLOG_DEBUG() << "debug";
+    QLOG_INFO() << "info";
+    QLOG_WARNING() << "warning";
+    QLOG_ERROR() << "error";
 
     startWorker();
 }

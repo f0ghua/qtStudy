@@ -4,9 +4,29 @@
 #include <QLoggingCategory>
 #include <QStringList>
 
+namespace QiLogging
+{
+enum Level
+{
+    TraceLevel = 0,
+    DebugLevel,
+    InfoLevel,
+    WarnLevel,
+    ErrorLevel,
+    FatalLevel,
+    OffLevel
+};
+}
+
 // Add Global logging categories (not class specific) here using Q_DECLARE_LOGGING_CATEGORY
 Q_DECLARE_LOGGING_CATEGORY(AppCore)
-Q_DECLARE_LOGGING_CATEGORY(AppCore_lowlevel)
+Q_DECLARE_LOGGING_CATEGORY(AppCoreTrace)
+
+#define QLOG_ERROR()        qCCritical(AppCore)
+#define QLOG_WARNING()      qCWarning(AppCore)
+#define QLOG_INFO()         qCInfo(AppCore)
+#define QLOG_DEBUG()        qCDebug(AppCore)
+#define QLOG_TRACE()        qCDebug(AppCoreTrace)
 
 /// @def QAPP_LOGGING_CATEGORY
 /// This is a QAPP specific replacement for Q_LOGGING_CATEGORY. It will register the category name into a
@@ -16,7 +36,16 @@ Q_DECLARE_LOGGING_CATEGORY(AppCore_lowlevel)
     Q_LOGGING_CATEGORY(name, __VA_ARGS__)
 
 #define QLOG_DEBUG() qCDebug(AppCore)
-#define QLOG_TRACE() qCDebug(AppCore_lowlevel)
+#define QLOG_TRACE() qCDebug(AppCoreTrace)
+
+struct QAppCategoryOptions {
+    QAppCategoryOptions(QString category, bool enable) :
+        name(category), isEnable(enable)
+    { }
+
+    QString name;
+    bool isEnable;
+};
 
 class QAppLoggingCategoryRegister : public QObject
 {
@@ -26,34 +55,39 @@ public:
     static QAppLoggingCategoryRegister* instance(void);
 
     /// Registers the specified logging category to the system.
-    void registerCategory(const char* category) { _registeredCategories << category; }
+    void registerCategory(const char *category, QtMsgType severityLevel = QtDebugMsg)
+    {
+        Q_UNUSED(severityLevel);
+        QAppCategoryOptions options(category, true);
+        _registeredCategories << options;
+    }
 
     /// Returns the list of available logging category names.
     Q_INVOKABLE QStringList registeredCategories(void);
 
     /// Turns on/off logging for the specified category. State is saved in app settings.
-    Q_INVOKABLE void setCategoryLoggingOn(const QString& category, bool enable);
+    Q_INVOKABLE void setCategoryLoggingOn(const QString &category, bool enable);
 
     /// Returns true if logging is turned on for the specified category.
-    Q_INVOKABLE bool categoryLoggingOn(const QString& category);
+    Q_INVOKABLE bool categoryLoggingOn(const QString &category);
 
-    /// Sets the logging filters rules from saved settings.
-    ///     @param commandLineLogggingOptions Logging options which were specified on the command line
-    void setFilterRulesFromSettings(const QString& commandLineLoggingOptions);
+    void setFilterRulesByLevel(QiLogging::Level severityLevel);
 
 private:
     QAppLoggingCategoryRegister(void) { }
-    
-    QStringList _registeredCategories;
-    QString     _commandLineLoggingOptions;
 
-    static const char* _filterRulesSettingsGroup;
+    QList<QAppCategoryOptions> _registeredCategories;
+
+    static const char *_filterRulesSettingsGroup;
 };
         
 class QAppLoggingCategory
 {
 public:
-    QAppLoggingCategory(const char* category) { QAppLoggingCategoryRegister::instance()->registerCategory(category); }
+    QAppLoggingCategory(const char *category)
+    {
+        QAppLoggingCategoryRegister::instance()->registerCategory(category);
+    }
 };
 
 #endif
