@@ -14,11 +14,17 @@ Q_DECLARE_LOGGING_CATEGORY(AppCoreTrace)
 #define QLOG_DEBUG()        qCDebug(AppCore)
 #define QLOG_TRACE()        qCDebug(AppCoreTrace)
 
-/// This is a QAPP specific replacement for Q_LOGGING_CATEGORY. It will register the category name into a
-/// global list. It's usage is the same as Q_LOGGING_CATEOGRY.
-#define QAPP_LOGGING_CATEGORY(name, ...) \
-    static QAppLoggingCategory qAppCategory ## name (__VA_ARGS__); \
-    Q_LOGGING_CATEGORY(name, __VA_ARGS__)
+#define QAL_TAG_TAIL        "9527"
+#define QAL_TAG_TRACE       "Trace"
+
+//
+// This is a QAPP specific replacement for Q_LOGGING_CATEGORY. It will register
+// the category name into a global list. only 2 parameters support, because
+// level has no usage here.
+//
+#define QAPP_LOGGING_CATEGORY(name, string) \
+    static QAppLoggingCategory qAppCategory ## name (string QAL_TAG_TAIL); \
+    Q_LOGGING_CATEGORY(name, string QAL_TAG_TAIL)
 
 #define QLOG_DEBUG() qCDebug(AppCore)
 #define QLOG_TRACE() qCDebug(AppCoreTrace)

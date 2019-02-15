@@ -6,6 +6,8 @@
 #include <QThread>
 #include <QDebug>
 
+QAPP_LOGGING_CATEGORY(AppCoreX,         "AcX")
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -16,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QAppLogging::instance()->setFilterRulesByLevel(QAppLogging::DebugLevel);
 
     qDebug() << QAppLogging::instance()->registeredCategories();
+
+    qCDebug(AppCoreX) << "acx debug";
 
     int i = 0;
     QLOG_TRACE() << i++;
