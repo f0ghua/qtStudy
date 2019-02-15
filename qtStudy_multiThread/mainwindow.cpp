@@ -12,10 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //QAppLoggingCategoryRegister::instance()->setCategoryLoggingOn("appCoreLog", false);
-    QAppLoggingCategoryRegister::instance()->setFilterRulesByLevel(QiLogging::DebugLevel);
+    //AppLogMessage::instance()->setCategoryLoggingOn("appCoreLog", false);
+    QAppLogging::instance()->setFilterRulesByLevel(QAppLogging::DebugLevel);
 
-    qDebug() << QAppLoggingCategoryRegister::instance()->registeredCategories();
+    qDebug() << QAppLogging::instance()->registeredCategories();
 
     int i = 0;
     QLOG_TRACE() << i++;
@@ -61,5 +61,5 @@ void MainWindow::stopWorker()
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
-    QAppLoggingCategoryRegister::instance()->setFilterRulesByLevel(QiLogging::Level(index));
+    QAppLogging::instance()->setFilterRulesByLevel(QAppLogging::LogLevel(index));
 }

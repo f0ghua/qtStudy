@@ -2,12 +2,10 @@ INCLUDEPATH += $$PWD
 #DEFINES += 
 
 SOURCES += \
-    $$PWD/QAppLogging.cpp \
-    $$PWD/QAppLoggingCategory.cpp
+    $$PWD/QAppLogging.cpp
 
 HEADERS += \
-    $$PWD/QAppLogging.h \
-    $$PWD/QAppLoggingCategory.h
+    $$PWD/QAppLogging.h
 
 
 OTHER_FILES += \
