@@ -76,7 +76,7 @@ bool IEngineBackendPrivate::sendData(COMMAND command, const void *pData, int len
 
 #ifndef F_NO_DEBUG
     {
-        qCDebug(ican_driver) << tr("txData: s=%1, d=[%2]").\
+        QLOG_TRACE() << tr("txData: s=%1, d=[%2]").\
                                 arg(pDeviceData->size).\
                                 arg(QByteArray(pDeviceData->data, pDeviceData->size).toHex(' ').constData());
     }
@@ -211,7 +211,7 @@ void IEngineBackendPrivate::handleReceivedData()
     COMMAND_DATA_PACKET *pCmdData;
     quint32 len = m_receivedData.size();
 
-    //qCDebug(ican_driver) << QObject::tr("rxData[%1]: d = %2").arg(len).arg(m_receivedData.toHex().constData());
+    QLOG_TRACE() << QObject::tr("rxData[%1]: d = %2").arg(len).arg(m_receivedData.toHex().constData());
 
     while(len > 0) {
         pCmdData = (COMMAND_DATA_PACKET *)(m_receivedData.constData());
@@ -314,7 +314,7 @@ void IEngineBackendPrivate::processDeviceData(DEVICE_DATA_PACKET *pDeviceData)
 
     QByteArray res(pDeviceData->data, pDeviceData->size);
 #ifndef F_NO_DEBUG
-    qCDebug(ican_driver) << QObject::tr("rxData: s=%1, d=[%2]").\
+    QLOG_TRACE() << QObject::tr("rxData: s=%1, d=[%2]").\
                 arg(res.size()).\
                 arg(res.toHex(' ').constData());
 #endif
@@ -328,7 +328,7 @@ bool IEngineBackendPrivate::handleFullData(const QByteArray &block)
     if (block.isEmpty()) return false;
 
 #ifndef F_NO_DEBUG
-    qDebug() << QObject::tr("rx[%1]: %2").arg(q->devName()).arg(block.toHex(' ').constData());
+    //qDebug() << QObject::tr("rx[%1]: %2").arg(q->devName()).arg(block.toHex(' ').constData());
 #endif
 
     XBusFrame *pFrame = q->getRxQueue().get();
@@ -365,7 +365,7 @@ QStringList IEngineBackendPrivate::availablePorts()
 
     if (!timer.isActive()) {
 #ifndef F_NO_DEBUG
-        qCWarning(ican_driver) << "get ports timeout";
+        QLOG_WARNING() << "get ports timeout";
 #endif
     }
 
