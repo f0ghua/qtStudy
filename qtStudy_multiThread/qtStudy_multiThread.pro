@@ -8,7 +8,7 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = qtStudy_multiThread
+TARGET = iEngineBenchMark
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -27,7 +27,6 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     worker.cpp \
-    applogmessage.cpp \
     canconnection.cpp \
     ftusbbackend.cpp \
     utils.cpp \
@@ -40,7 +39,6 @@ SOURCES += \
 HEADERS += \
         mainwindow.h \
     worker.h \
-    applogmessage.h \
     canconnection.h \
     canconnection_p.h \
     ftusbbackend.h \
@@ -63,7 +61,9 @@ TOPBUILDDIR = $$shadowed($$PWD)
 
 DESTDIR = $$TOPBUILDDIR/output
 
-LIBFTDI = $${TOPSRCDIR}/3rdparty/ftdi
+include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
+
+LIBFTDI = $${TOPSRCDIR}/libs/3rdparty/ftdi
 INCLUDEPATH += $$LIBFTDI
 LIBS += -L$$DESTDIR $${LIBFTDI}/ftd2xx.lib -lwinmm
 

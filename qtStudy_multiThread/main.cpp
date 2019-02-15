@@ -1,11 +1,12 @@
 #include "mainwindow.h"
-#include "applogmessage.h"
+#include "qapplogging.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    AppLogMessage::installHandler();
+    QAppLogging::installHandler();
+    QAppLogging::instance()->setFilterRulesByLevel(QAppLogging::InfoLevel);
 
     QApplication a(argc, argv);
     MainWindow w;

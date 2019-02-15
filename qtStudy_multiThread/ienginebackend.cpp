@@ -1,6 +1,7 @@
 #include "ienginebackend.h"
 #include "ienginebackend_p.h"
 #include "xbusframe.h"
+#include "QAppLogging.h"
 
 #include <QTcpSocket>
 #include <QHostInfo>
@@ -8,8 +9,6 @@
 #include <QTimer>
 #include <QLoggingCategory>
 #include <QThread>
-
-Q_LOGGING_CATEGORY(ican_driver, "ican.driver", QtInfoMsg);
 
 IEngineBackendPrivate::IEngineBackendPrivate(IEngineBackend *parent)
     : QObject(parent)
@@ -43,7 +42,7 @@ void IEngineBackendPrivate::sendCommand(COMMAND command, const void *pData, int 
 
 #ifndef F_NO_DEBUG
     {
-        qCInfo(ican_driver) << QObject::tr("txCmd: c=%1, s=%2, d=[%3]").\
+        QLOG_INFO() << QObject::tr("txCmd: c=%1, s=%2, d=[%3]").\
                                arg(pPacket->command).\
                                arg(pPacket->size-5).\
                                arg(QByteArray(pPacket->data, pPacket->size-5).toHex(' ').constData());
@@ -93,14 +92,14 @@ bool IEngineBackendPrivate::connectToServer()
 
     if(m_socket == NULL) {
 #ifndef F_NO_DEBUG
-        qCInfo(ican_driver) << QObject::tr("create a new socket");
+        QLOG_INFO() << QObject::tr("create a new socket");
 #endif
         m_socket = new QTcpSocket(this);
         connect(m_socket, SIGNAL(readyRead()), this, SLOT(handleReceivedData()));
         connect(m_socket, SIGNAL(disconnected()), this, SLOT(handleSockDisconnected()));
     }
 #ifndef F_NO_DEBUG
-    qCInfo(ican_driver) << QObject::tr("try connecting to %1:%2").arg(m_remoteIp).arg(m_remotePort);
+    QLOG_INFO() << QObject::tr("try connecting to %1:%2").arg(m_remoteIp).arg(m_remotePort);
 #endif
     m_socket->connectToHost(/*QHostAddress::LocalHost*/m_remoteIp, m_remotePort);
     m_socket->waitForConnected(100);
@@ -122,7 +121,7 @@ void IEngineBackendPrivate::handleSockDisconnected()
     Q_Q(IEngineBackend);
 
 #ifndef F_NO_DEBUG
-    qCInfo(ican_driver) << QObject::tr("socket disconnected");
+    QLOG_INFO() << QObject::tr("socket disconnected");
 #endif
     setWStatus(eIdle);
     q->setActive(false);
@@ -235,7 +234,7 @@ void IEngineBackendPrivate::processResponse(COMMAND_DATA_PACKET *commandData)
 
 #ifndef F_NO_DEBUG
     if (commandData->command != DEVICE_DATA) {
-        qCInfo(ican_driver) << QObject::tr("rxCmd: c=%1, s=%2, d=[%3]").\
+        QLOG_INFO() << QObject::tr("rxCmd: c=%1, s=%2, d=[%3]").\
                     arg(commandData->command).\
                     arg(commandData->size-5).\
                     arg(QByteArray(commandData->data, commandData->size-5).toHex(' ').constData());
