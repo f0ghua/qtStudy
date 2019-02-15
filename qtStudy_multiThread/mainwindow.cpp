@@ -3,6 +3,7 @@
 #include "worker.h"
 #include "ftusbbackend.h"
 #include "canconnfactory.h"
+#include "ienginebackendhelper.h"
 
 #include <QThread>
 #include <QDebug>
@@ -58,12 +59,23 @@ void MainWindow::onMsgDump(const QString &msg)
 
 void MainWindow::initWidgets()
 {
+#ifdef USE_FTUSBBACKEND
     QStringList devLists = FTUSBBackend::getDeviceList(true);
     int devNumber = devLists.at(0).toInt();
+
+    if ((devNumber + 1) != devLists.size())
+        return;
 
     for (int i = 0; i < devNumber; i++) {
         ui->cbDevices->addItem(devLists.at(i+1));
     }
+#else
+    IEngineBackEndHelper ie;
+    QStringList devLists = ie.availablePorts();
+    for (int i = 0; i < devLists.size(); i++) {
+        ui->cbDevices->addItem(devLists.at(i));
+    }
+#endif
 }
 
 void MainWindow::on_pbConnect_clicked()

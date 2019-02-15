@@ -23,6 +23,7 @@ namespace CANCon {
     {
         FTDI_USB,
         FTDI_SERIAL,
+        FTDI_SOCKET,
         NONE
     };
 }
@@ -60,6 +61,7 @@ signals:
     void closed(int connId);
 	
 public slots:
+    virtual void run();
     void open();
     void close();
     bool sendFrame(const XBusFrame &frame);

@@ -535,7 +535,7 @@ FTUSBBackend::FTUSBBackend(QString devName)
 FTUSBBackend::~FTUSBBackend()
 {
     qDebug() << "FTUSBBackend destract in thread " << QThread::currentThreadId();
-    delete d_ptr;
+    //delete d_ptr;
 }
 
 FT_HANDLE FTUSBBackend::getFtHandle() const

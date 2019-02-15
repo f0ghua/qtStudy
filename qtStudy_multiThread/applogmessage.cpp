@@ -37,6 +37,13 @@ static void msgHandler(QtMsgType type,
         }
     } while(0);
 
+    switch (type) {
+    case QtWarningMsg:
+        break;
+    default:
+        break;
+    }
+
     if (type == QtFatalMsg) {
         abort();
     }

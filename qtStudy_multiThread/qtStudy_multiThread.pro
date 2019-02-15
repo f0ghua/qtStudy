@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -33,7 +33,9 @@ SOURCES += \
     utils.cpp \
     settingsmanager.cpp \
     xbusframe.cpp \
-    canconnfactory.cpp
+    canconnfactory.cpp \
+    ienginebackend.cpp \
+    ienginebackendhelper.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -47,7 +49,11 @@ HEADERS += \
     utils.h \
     settingsmanager.h \
     xbusframe.h \
-    canconnfactory.h
+    canconnfactory.h \
+    ienginebackend.h \
+    ienginebackend_p.h \
+    ienginebackendhelper.h \
+    ienginebackendhelper_p.h
 
 FORMS += \
         mainwindow.ui

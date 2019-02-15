@@ -22,6 +22,7 @@ CANConnectionPrivate::CANConnectionPrivate(CANConnection *parent,
     // run in main thread, move self to a thread
     q->moveToThread(m_pThread);
     // We can't delete the thread object in destructor since the destructor should be called in thread context
+    QObject::connect(m_pThread, &QThread::started, q, &CANConnection::run);
     QObject::connect(q, &CANConnection::finished, m_pThread, &QThread::quit);
     QObject::connect(m_pThread, &QThread::finished, m_pThread, &QThread::deleteLater);
     m_pThread->start(QThread::HighPriority);
@@ -247,4 +248,9 @@ bool CANConnection::sendFrame(const XBusFrame &frame)
 
     // run in child thread
     return piSendFrame(frame);
+}
+
+void CANConnection::run()
+{
+
 }
