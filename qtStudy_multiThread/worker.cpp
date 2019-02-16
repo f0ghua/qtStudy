@@ -113,7 +113,7 @@ void Worker::run()
 
             m_canConnection->sendFrame(frame);
 
-            for(int i = 0; i < m_waitLoop; i++);
+            for(quint32 i = 0; i < m_waitLoop; i++);
 
 //            if (m_canConnection->txCount() >= 40000) {
 //                m_workingState = eIDLE;
@@ -156,6 +156,10 @@ void Worker::createConnection(const QString &devName)
 
 void Worker::startBenchmark()
 {
+    if (!m_canConnection) {
+        return;
+    }
+
     m_workingState = eBENCHMARKING;
 }
 

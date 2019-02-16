@@ -78,7 +78,7 @@ void MainWindow::initWidgets()
     }
 #endif
 
-    ui->leWaitLoop->setText("300000");
+    ui->leWaitLoop->setText(QString::number(WKER_WAITLOOP));
 }
 
 void MainWindow::on_pbConnect_clicked()

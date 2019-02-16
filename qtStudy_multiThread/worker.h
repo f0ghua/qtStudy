@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#define WKER_WAITLOOP   100000
+
 class QTimer;
 class CANConnection;
 
@@ -35,7 +37,7 @@ private:
     CANConnection *m_canConnection = NULL;
     bool m_isRunning = true;
     WorkingState m_workingState = eIDLE;
-    quint32 m_waitLoop = 300000;
+    quint32 m_waitLoop = WKER_WAITLOOP;
 };
 
 #endif // WORKER_H
