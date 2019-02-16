@@ -26,6 +26,9 @@ private slots:
     void on_pbConnect_clicked();
     void on_pbStart_clicked();
     void on_pbStop_clicked();
+    void on_leWaitLoop_editingFinished();
+
+    void on_comboBox_currentIndexChanged(int index);
 
 private:
     void startWorker();

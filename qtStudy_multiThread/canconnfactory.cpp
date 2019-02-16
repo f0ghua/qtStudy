@@ -4,6 +4,9 @@
 
 CANConnection *CANConnFactory::create(QString portName)
 {
-    //return new FTUSBBackend(portName);
+#ifdef USE_FTUSBBACKEND
+    return new FTUSBBackend(portName);
+#else
     return new IEngineBackend(portName);
+#endif
 }

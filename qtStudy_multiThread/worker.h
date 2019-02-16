@@ -28,12 +28,14 @@ public slots:
     void startBenchmark();
     void stopBenchmark();
     void handleTimeout();
+    void setWaitLoop(quint32 loop);
 
 private:
     QTimer *m_timer;
     CANConnection *m_canConnection = NULL;
     bool m_isRunning = true;
     WorkingState m_workingState = eIDLE;
+    quint32 m_waitLoop = 300000;
 };
 
 #endif // WORKER_H

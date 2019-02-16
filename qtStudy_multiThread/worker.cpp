@@ -113,7 +113,7 @@ void Worker::run()
 
             m_canConnection->sendFrame(frame);
 
-//            for(int i = 0; i < 10000; i++);
+            for(int i = 0; i < m_waitLoop; i++);
 
 //            if (m_canConnection->txCount() >= 40000) {
 //                m_workingState = eIDLE;
@@ -162,6 +162,11 @@ void Worker::startBenchmark()
 void Worker::stopBenchmark()
 {
     m_workingState = eIDLE;
+}
+
+void Worker::setWaitLoop(quint32 loop)
+{
+   m_waitLoop = loop;
 }
 
 void Worker::handleTimeout()

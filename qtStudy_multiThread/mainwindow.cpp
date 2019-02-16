@@ -4,6 +4,7 @@
 #include "ftusbbackend.h"
 #include "canconnfactory.h"
 #include "ienginebackendhelper.h"
+#include "QAppLogging.h"
 
 #include <QThread>
 #include <QDebug>
@@ -76,6 +77,8 @@ void MainWindow::initWidgets()
         ui->cbDevices->addItem(devLists.at(i));
     }
 #endif
+
+    ui->leWaitLoop->setText("300000");
 }
 
 void MainWindow::on_pbConnect_clicked()
@@ -101,4 +104,18 @@ void MainWindow::on_pbStop_clicked()
                 m_worker, "stopBenchmark",
                 Qt::QueuedConnection
                 );
+}
+
+void MainWindow::on_leWaitLoop_editingFinished()
+{
+    QMetaObject::invokeMethod(
+                m_worker, "setWaitLoop",
+                Qt::BlockingQueuedConnection,
+                Q_ARG(quint32, ui->leWaitLoop->text().toUInt())
+                );
+}
+
+void MainWindow::on_comboBox_currentIndexChanged(int index)
+{
+    QAppLogging::instance()->setFilterRulesByLevel(QAppLogging::LogLevel(index));
 }
