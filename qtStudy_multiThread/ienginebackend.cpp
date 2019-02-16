@@ -2,31 +2,15 @@
 #include "ienginebackend_p.h"
 #include "xbusframe.h"
 #include "QAppLogging.h"
+#include "utils.h"
 
 #include <QTcpSocket>
 #include <QHostInfo>
 #include <QEventLoop>
 #include <QTimer>
-#include <QLoggingCategory>
 #include <QThread>
 
-IEngineBackendPrivate::IEngineBackendPrivate(IEngineBackend *parent)
-    : QObject(parent)
-    , q_ptr(parent)
-{
-    Q_Q(IEngineBackend);
-
-    qDebug() << "IEngineBackendPrivate contract in thread " << QThread::currentThreadId();
-    m_wStatus.store(eIdle);
-    connectToServer();
-}
-
-IEngineBackendPrivate::~IEngineBackendPrivate()
-{
-
-}
-
-void IEngineBackendPrivate::sendCommand(COMMAND command, const void *pData, int len)
+void IEngineBackend::sendCommand(COMMAND command, const void *pData, int len)
 {
     if(!isSockConnected() && (command != CLIENT_CONNECT))
         return;
@@ -52,11 +36,9 @@ void IEngineBackendPrivate::sendCommand(COMMAND command, const void *pData, int 
     m_socket->write(packet);
 }
 
-bool IEngineBackendPrivate::sendData(COMMAND command, const void *pData, int len)
+bool IEngineBackend::sendData(COMMAND command, const void *pData, int len)
 {
-    Q_Q(IEngineBackend);
-
-    if (!q->isConnected()) {
+    if (!isConnected()) {
         return false;
     }
 
@@ -86,10 +68,8 @@ bool IEngineBackendPrivate::sendData(COMMAND command, const void *pData, int len
     return true;
 }
 
-bool IEngineBackendPrivate::connectToServer()
+bool IEngineBackend::connectToServer()
 {
-    Q_Q(IEngineBackend);
-
     if(m_socket == NULL) {
 #ifndef F_NO_DEBUG
         QLOG_INFO() << QObject::tr("create a new socket");
@@ -108,7 +88,7 @@ bool IEngineBackendPrivate::connectToServer()
         return false;
 
     setWStatus(eSocketConnected);
-    q->setActive(true);
+    setActive(true);
 
     QString hn = QHostInfo::localHostName();
     sendCommand(CLIENT_CONNECT, hn.toLatin1().data(), hn.size());
@@ -116,21 +96,17 @@ bool IEngineBackendPrivate::connectToServer()
     return true;
 }
 
-void IEngineBackendPrivate::handleSockDisconnected()
+void IEngineBackend::handleSockDisconnected()
 {
-    Q_Q(IEngineBackend);
-
 #ifndef F_NO_DEBUG
     QLOG_INFO() << QObject::tr("socket disconnected");
 #endif
     setWStatus(eIdle);
-    q->setActive(false);
+    setActive(false);
 }
 
-bool IEngineBackendPrivate::connectDevice(const QString &devName)
+bool IEngineBackend::connectDevice(const QString &devName)
 {
-    Q_Q(IEngineBackend);
-
     if (!isSockConnected()) {
         connectToServer();
     }
@@ -140,7 +116,7 @@ bool IEngineBackendPrivate::connectDevice(const QString &devName)
     QTimer timer;
     timer.setSingleShot(true);
     connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-    QObject::connect(q, &IEngineBackend::devConnected, &loop, &QEventLoop::quit);
+    QObject::connect(this, &IEngineBackend::devConnected, &loop, &QEventLoop::quit);
     timer.start(200);
     loop.exec();
 
@@ -151,10 +127,8 @@ bool IEngineBackendPrivate::connectDevice(const QString &devName)
     return true;
 }
 
-bool IEngineBackendPrivate::disconnectDevice()
+bool IEngineBackend::disconnectDevice()
 {
-    Q_Q(IEngineBackend);
-
     if (m_connectedDeviceId >= 0 ) {
         sendCommand(DISCONNECT_FROM_DEVICE, &m_connectedDeviceId, sizeof(m_connectedDeviceId));
     }
@@ -175,19 +149,21 @@ bool IEngineBackendPrivate::disconnectDevice()
     return true;
 #else
     //close();
-    emit q->devDisconnected();
+    emit devDisconnected();
     return true;
 #endif
 }
 
-void IEngineBackendPrivate::open()
+void IEngineBackend::open()
 {
-    Q_Q(IEngineBackend);
     connectToServer();
-    connectDevice(q->devName());
+    QTimer::singleShot(1000, this, [=](){
+        connectDevice(devName());
+            });
+
 }
 
-void IEngineBackendPrivate::close()
+void IEngineBackend::close()
 {
     if (m_socket != NULL) {
         m_socket->flush();
@@ -200,7 +176,7 @@ void IEngineBackendPrivate::close()
     setWStatus(eIdle);
 }
 
-void IEngineBackendPrivate::handleReceivedData()
+void IEngineBackend::handleReceivedData()
 {
     if(!isSockConnected())
         return;
@@ -226,10 +202,8 @@ void IEngineBackendPrivate::handleReceivedData()
     }
 }
 
-void IEngineBackendPrivate::processResponse(COMMAND_DATA_PACKET *commandData)
+void IEngineBackend::processResponse(COMMAND_DATA_PACKET *commandData)
 {
-    Q_Q(IEngineBackend);
-
     DEVICE_DATA_PACKET *pDeviceData;
 
 #ifndef F_NO_DEBUG
@@ -280,7 +254,7 @@ void IEngineBackendPrivate::processResponse(COMMAND_DATA_PACKET *commandData)
     }
 }
 
-void IEngineBackendPrivate::processRequseDevices(QString s)
+void IEngineBackend::processRequseDevices(QString s)
 {
     QStringList ql;
 
@@ -293,9 +267,8 @@ void IEngineBackendPrivate::processRequseDevices(QString s)
     emit portsChanged();
 }
 
-void IEngineBackendPrivate::processConnectToDevice(const char *data)
+void IEngineBackend::processConnectToDevice(const char *data)
 {
-    Q_Q(IEngineBackend);
     qint32 devId = (qint32)(*data);
     if (devId == -1) {
         return;
@@ -305,13 +278,11 @@ void IEngineBackendPrivate::processConnectToDevice(const char *data)
     m_receivedData.clear();
     setWStatus(eDeviceConnected);
 
-    emit q->devConnected();
+    emit devConnected();
 }
 
-void IEngineBackendPrivate::processDeviceData(DEVICE_DATA_PACKET *pDeviceData)
+void IEngineBackend::processDeviceData(DEVICE_DATA_PACKET *pDeviceData)
 {
-    Q_Q(IEngineBackend);
-
     QByteArray res(pDeviceData->data, pDeviceData->size);
 #ifndef F_NO_DEBUG
     QLOG_TRACE() << QObject::tr("rxData: s=%1, d=[%2]").\
@@ -321,32 +292,30 @@ void IEngineBackendPrivate::processDeviceData(DEVICE_DATA_PACKET *pDeviceData)
     handleFullData(res);
 }
 
-bool IEngineBackendPrivate::handleFullData(const QByteArray &block)
+bool IEngineBackend::handleFullData(const QByteArray &block)
 {
-    Q_Q(IEngineBackend);
-
     if (block.isEmpty()) return false;
 
 #ifndef F_NO_DEBUG
-    //qDebug() << QObject::tr("rx[%1]: %2").arg(q->devName()).arg(block.toHex(' ').constData());
+    //QLOG_DEBUG() << QObject::tr("rx[%1]: %2").arg(q->devName()).arg(block.toHex(' ').constData());
 #endif
 
-    XBusFrame *pFrame = q->getRxQueue().get();
+    XBusFrame *pFrame = getRxQueue().get();
     if (pFrame) {
         *pFrame = XBusFrame(block);
-        q->setRxCount();
-        q->getRxQueue().queue();
+        setRxCount();
+        getRxQueue().queue();
     } else {
 #ifndef F_NO_DEBUG
-        qDebug() << "Can't get a rxQueue frame";
+        QLOG_DEBUG() << "Can't get a rxQueue frame";
 #endif
-        q->setRxErrCount();
+        setRxErrCount();
         return false;
     }
     return true;
 }
 
-QStringList IEngineBackendPrivate::availablePorts()
+QStringList IEngineBackend::availablePorts()
 {
     m_devList.clear();
 
@@ -359,7 +328,7 @@ QStringList IEngineBackendPrivate::availablePorts()
     QTimer timer;
     timer.setSingleShot(true);
     connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-    QObject::connect(this, &IEngineBackendPrivate::portsChanged, &loop, &QEventLoop::quit);
+    QObject::connect(this, &IEngineBackend::portsChanged, &loop, &QEventLoop::quit);
     timer.start(200);
     loop.exec();
 
@@ -374,68 +343,43 @@ QStringList IEngineBackendPrivate::availablePorts()
 
 IEngineBackend::IEngineBackend(QString devName)
     : CANConnection(devName, CANCon::FTDI_SOCKET)
-    //, d_ptr(new IEngineBackendPrivate(this))
 {
-    qDebug() << "IEngineBackend contract in thread " << QThread::currentThreadId();
+    QLOG_DEBUG() << "IEngineBackend contract in thread " << QThread::currentThreadId();
+
+    m_wStatus.store(eIdle);
+    m_receivedData.clear();
 }
 
 IEngineBackend::~IEngineBackend()
 {
-    qDebug() << "IEngineBackend destract in thread " << QThread::currentThreadId();
-    delete d_ptr;
+    QLOG_DEBUG() << "IEngineBackend destract in thread " << QThread::currentThreadId();
 }
 
 void IEngineBackend::run()
 {
-    d_ptr = new IEngineBackendPrivate(this);
+    //d_ptr = new IEngineBackendPrivate(this);
+    //d_ptr->moveToThread(this->thread());
 }
 
 bool IEngineBackend::isConnected()
 {
-    Q_D(IEngineBackend);
-
-    return (d->m_wStatus.load() == IEngineBackendPrivate::eDeviceConnected);
-}
-
-QStringList IEngineBackend::availablePorts()
-{
-    Q_D(IEngineBackend);
-
-    return d->availablePorts();
+    return (m_wStatus.load() == eDeviceConnected);
 }
 
 void IEngineBackend::setServerAddress(const QString &ip, int port)
 {
-    Q_D(IEngineBackend);
+    m_remoteIp = ip;
+    m_remotePort = port;
 
-    d->m_remoteIp = ip;
-    d->m_remotePort = port;
-
-    d->close();
-}
-
-bool IEngineBackend::connectDevice(const QString &devName)
-{
-    Q_D(IEngineBackend);
-
-    return d->connectDevice(devName);
-}
-
-bool IEngineBackend::disconnectDevice()
-{
-    Q_D(IEngineBackend);
-
-    return d->disconnectDevice();
+    close();
 }
 
 void IEngineBackend::halWrite(const QByteArray &data)
 {
-    Q_D(IEngineBackend);
-
-    if (d->m_connectedDeviceId < 0)
+    if (m_connectedDeviceId < 0)
         return;
 
-    d->sendData(DEVICE_DATA, data.constData(), data.size());
+    sendData(DEVICE_DATA, data.constData(), data.size());
 
     return;
 }
@@ -443,39 +387,36 @@ void IEngineBackend::halWrite(const QByteArray &data)
 void IEngineBackend::piStarted()
 {
 #ifndef F_NO_DEBUG
-    qDebug() << QObject::tr("piStarted run in thread ") << QThread::currentThreadId();
+    QLOG_DEBUG() << QObject::tr("piStarted run in thread ") << QThread::currentThreadId();
 #endif
 }
 
 void IEngineBackend::piStop()
 {
 #ifndef F_NO_DEBUG
-    qDebug() << QObject::tr("piStop run in thread ") << QThread::currentThreadId();
+    QLOG_DEBUG() << QObject::tr("piStop run in thread ") << QThread::currentThreadId();
 #endif
 }
 
 void IEngineBackend::piOpen()
 {
-    Q_D(IEngineBackend);
-
-    d->open();
+#ifndef F_NO_DEBUG
+    QLOG_DEBUG() << QObject::tr("piOpen run in thread ") << QThread::currentThreadId();
+#endif
+    open();
 }
 
 void IEngineBackend::piClose()
 {
-    Q_D(IEngineBackend);
-
-    d->close();
+    close();
 }
 
 bool IEngineBackend::piSendFrame(const XBusFrame &frame)
 {
-    Q_D(IEngineBackend);
-
-    if (d->m_connectedDeviceId < 0)
+    if (m_connectedDeviceId < 0)
         return false;
 
-    bool ret = d->sendData(DEVICE_DATA, frame.rawData().data(), frame.rawData().size());
+    bool ret = sendData(DEVICE_DATA, frame.rawData().data(), frame.rawData().size());
     if (ret) {
         setTxCount();
     } else {

@@ -4,12 +4,10 @@
 #include <QMutex>
 #include <fstream>
 
-#define LOG_INTKEY      "appCore"
-#define LOG_MARK        "Log"
-#define LOG_MARK_TRACE  "Trace" LOG_MARK
+#define LOG_INTKEY "appCore"
 
-QAPP_LOGGING_CATEGORY(AppCore,            LOG_INTKEY LOG_MARK)
-QAPP_LOGGING_CATEGORY(AppCoreTrace,       LOG_INTKEY LOG_MARK_TRACE)
+QAPP_LOGGING_CATEGORY(AppCore,            LOG_INTKEY)
+QAPP_LOGGING_CATEGORY(AppCoreTrace,       LOG_INTKEY QAL_TAG_TRACE)
 
 QAtomicPointer<QAppLogging> QAppLogging::s_instance = 0;
 
@@ -43,6 +41,13 @@ static void msgHandler(QtMsgType type,
             }
         }
     } while(0);
+
+    switch (type) {
+    case QtWarningMsg:
+        break;
+    default:
+        break;
+    }
 
     if (type == QtFatalMsg) {
         abort();
@@ -109,11 +114,11 @@ void QAppLogging::setFilterRulesByLevel(LogLevel severityLevel)
 {
     QString filterRules;
 
-    filterRules += QString("*") + LOG_MARK + ".debug=false\n";
-    filterRules += QString("*") + LOG_MARK + ".info=false\n";
-    filterRules += QString("*") + LOG_MARK + ".warning=false\n";
-    filterRules += QString("*") + LOG_MARK + ".critical=false\n";
-    filterRules += QString("*") + LOG_MARK + ".fatal=false\n";
+    filterRules += QString("*") + QAL_TAG_TAIL + ".debug=false\n";
+    filterRules += QString("*") + QAL_TAG_TAIL + ".info=false\n";
+    filterRules += QString("*") + QAL_TAG_TAIL + ".warning=false\n";
+    filterRules += QString("*") + QAL_TAG_TAIL + ".critical=false\n";
+    filterRules += QString("*") + QAL_TAG_TAIL + ".fatal=false\n";
 
     foreach (auto options, _registeredCategories) {
         QString &category = options.name;
@@ -127,7 +132,7 @@ void QAppLogging::setFilterRulesByLevel(LogLevel severityLevel)
             filterRules += ".debug=true\n";
         }
         if (severityLevel <= DebugLevel) {
-            if (!category.contains(LOG_MARK_TRACE)) {
+            if (!category.contains(QAL_TAG_TRACE QAL_TAG_TAIL)) {
                 filterRules += category;
                 filterRules += ".debug=true\n";
             }

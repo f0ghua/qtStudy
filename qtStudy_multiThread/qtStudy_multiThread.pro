@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = iEngineBenchMark
 TEMPLATE = app
 
+DEFINES += CRASHDUMP_DRMINGW
+
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -62,6 +64,9 @@ TOPBUILDDIR = $$shadowed($$PWD)
 DESTDIR = $$TOPBUILDDIR/output
 
 include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
+contains(DEFINES, CRASHDUMP_DRMINGW) {
+include($${TOPSRCDIR}/libs/3rdparty/drmingw/drmingw.pri)
+}
 
 LIBFTDI = $${TOPSRCDIR}/libs/3rdparty/ftdi
 INCLUDEPATH += $$LIBFTDI

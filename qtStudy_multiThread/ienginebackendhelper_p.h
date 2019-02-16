@@ -1,7 +1,7 @@
 #ifndef IENGINEBACKENDHELPER_P_H
 #define IENGINEBACKENDHELPER_P_H
 
-#include "ienginebackend_p.h"
+#include "ienginebackend.h"
 
 class IEngineBackEndHelper;
 class QTcpSocket;
