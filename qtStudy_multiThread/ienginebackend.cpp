@@ -75,6 +75,8 @@ bool IEngineBackend::connectToServer()
         QLOG_INFO() << QObject::tr("create a new socket");
 #endif
         m_socket = new QTcpSocket(this);
+        // disable Nagle's Algorithm
+        m_socket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
         connect(m_socket, SIGNAL(readyRead()), this, SLOT(handleReceivedData()));
         connect(m_socket, SIGNAL(disconnected()), this, SLOT(handleSockDisconnected()));
     }
