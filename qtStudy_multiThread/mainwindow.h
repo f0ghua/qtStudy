@@ -30,6 +30,8 @@ private slots:
 
     void on_comboBox_currentIndexChanged(int index);
 
+    void on_cbLogDest_currentIndexChanged(int index);
+
 private:
     void startWorker();
     void stopWorker();

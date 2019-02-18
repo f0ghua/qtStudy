@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 #endif
     QAppLogging::installHandler();
     QAppLogging::instance()->setFilterRulesByLevel(QAppLogging::TraceLevel);
+    QAppLogging::instance()->setOutputDest(QAppLogging::eDestFile);
 
     QApplication a(argc, argv);
     MainWindow w;

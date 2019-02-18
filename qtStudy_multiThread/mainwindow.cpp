@@ -79,6 +79,8 @@ void MainWindow::initWidgets()
 #endif
 
     ui->leWaitLoop->setText(QString::number(WKER_WAITLOOP));
+    ui->comboBox->setCurrentIndex(0);
+    ui->cbLogDest->setCurrentIndex(2);
 }
 
 void MainWindow::on_pbConnect_clicked()
@@ -118,4 +120,9 @@ void MainWindow::on_leWaitLoop_editingFinished()
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
     QAppLogging::instance()->setFilterRulesByLevel(QAppLogging::LogLevel(index));
+}
+
+void MainWindow::on_cbLogDest_currentIndexChanged(int index)
+{
+    QAppLogging::instance()->setOutputDest(QAppLogging::LogDest(index));
 }
