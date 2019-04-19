@@ -34,3 +34,5 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui
+
+include(QAppLogging/QAppLogging.pri)

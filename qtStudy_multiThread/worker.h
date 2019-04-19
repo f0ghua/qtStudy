@@ -13,6 +13,7 @@ signals:
 
 public slots:
     void run();
+    void onTimerTimeout();
 };
 
 #endif // WORKER_H
