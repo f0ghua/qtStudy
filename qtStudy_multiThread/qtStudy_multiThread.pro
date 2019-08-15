@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    worker.cpp
+    worker.cpp \
+    canbittiming.cpp
 
 HEADERS += \
         mainwindow.h \
-    worker.h
+    worker.h \
+    canbittiming.h
 
 FORMS += \
         mainwindow.ui

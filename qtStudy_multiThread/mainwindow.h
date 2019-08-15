@@ -18,6 +18,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_pbCalculate_clicked();
+
 private:
     void startWorker();
     void stopWorker();
