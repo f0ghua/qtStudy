@@ -60,5 +60,5 @@ void MainWindow::on_pbCalculate_clicked()
     quint32 spt = ui->leSamplePoint->text().toUInt();
 
     CANBitTimingCal ctc;
-    ctc.calcBitTimingStd(name, baudrate, spt);
+    ctc.calcBitTimingStd(name, baudrate, spt, 255);
 }

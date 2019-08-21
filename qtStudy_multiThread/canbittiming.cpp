@@ -4,45 +4,6 @@
 #include <QVector>
 #include <QDebug>
 
-struct CANBitTiming
-{
-    quint32 m_bitrate;              /* Bit-rate in bits/second */
-    quint32 m_samplePoint;          /* Sample point in one-tenth of a percent */
-    quint32 m_tq;                   /* Time quanta (TQ) in nanoseconds */
-    quint32 m_propSeg;              /* Propagation segment in TQs */
-    quint32 m_phaseSeg1;            /* Phase buffer segment 1 in TQs */
-    quint32 m_phaseSeg2;            /* Phase buffer segment 2 in TQs */
-    quint32 m_sjw;                  /* Synchronisation jump width in TQs */
-    quint32 m_brp;                  /* Bit-rate prescaler */
-
-    quint32 m_tseg1;                /* Time segment 1 in TQs */
-    quint32 m_tseg2;                /* Time segment 2 in TQs */
-    quint32 m_nbt;                  /* Nominal Bit Time in TQs */
-    quint32 m_propDelay;            /* Propagation delay in nanoseconds */
-    quint32 m_outputBitrate;        /* Actual Bit-rate in bits/second */
-    quint32 m_outputSpt;            /* Actual Sample point in one-tenth of a percent */
-};
-
-/*!
- * \brief The FlexCANBitTiming struct
- *
- * These parameters store reg values in can controller. According to MPC5748GRM
- * CAN_CTRL1 section:
- *
- * Propagation Segment Time = (PROPSEG + 1) = m_regPropSeg + 1
- * Phase Buffer Segment 1 = (PSEG1 + 1) = m_regPhaseSeg1 + 1
- * Phase Buffer Segment 2 = (PSEG2 + 1) = m_regPhaseSeg2 + 1
- *
- */
-struct FlexCANBitTiming : public CANBitTiming
-{
-    quint32 m_regPropSeg;           /*!< Propagation segment*/
-    quint32 m_regPhaseSeg1;         /*!< Phase segment 1*/
-    quint32 m_regPhaseSeg2;         /*!< Phase segment 2*/
-    quint32 m_regPreDivider;        /*!< Clock prescaler division factor*/
-    quint32 m_regRJumpwidth;        /*!< Resync jump width*/
-};
-
 /*
  * CAN harware-dependent bit-timing constant
  *
@@ -124,8 +85,8 @@ static CANBitTimingConst g_canCalcConsts[] = {
         .m_name = "flexcan_fdd",
         .m_tseg1Min = 2, .m_tseg1Max = 39, .m_tseg2Min = 2, .m_tseg2Max = 8,
         .m_sjwMax = 4, .m_brpMin = 1, .m_brpMax = 1024, .m_brpInc = 1,
-        .m_ipt = 2, .m_nbtMin = 8, .m_nbtMax = 129, .m_propsegMax = 64,
-        .m_pseg1Max = 32, .m_pseg2Max = 32,
+        .m_ipt = 2, .m_nbtMin = 5, .m_nbtMax = 48, .m_propsegMax = 32,
+        .m_pseg1Max = 8, .m_pseg2Max = 8,
         .m_refClk = 40000000,
         .m_fnPrintfBtr = nullptr,
         .m_fnSetFlexCANBitTiming = setFlexCANBitTimingFdData,
@@ -193,6 +154,25 @@ static int canUpdateSpt( const struct CANBitTimingConst *btc,
     return 1000 * ( tseg + 1 - *tseg2 ) / ( tseg + 1 );
 }
 
+static bool updateCANBitTiming(
+        CANBitTiming *bt,
+        quint32 tq, quint32 propseg, quint32 pseg1, quint32 pseg2, quint32 brp, quint32 clk)
+{
+    bt->m_tq = tq;
+    bt->m_propSeg = propseg;
+    bt->m_phaseSeg1 = pseg1;
+    bt->m_phaseSeg2 = pseg2;
+    bt->m_sjw = 2;
+    bt->m_brp = brp;
+    bt->m_tseg1 = propseg + pseg1;
+    bt->m_tseg2 = pseg2;
+    bt->m_nbt = 1 + propseg + pseg1 + pseg2;
+    bt->m_outputSpt = 1000 * ( bt->m_tseg1  + 1) / bt->m_nbt;
+    bt->m_outputBitrate = clk / ( brp * bt->m_nbt );
+
+    return ((bt->m_bitrate == bt->m_outputBitrate) && (bt->m_samplePoint == bt->m_outputSpt));
+}
+
 class CANBitTimingCalPrivate
 {
     Q_DECLARE_PUBLIC(CANBitTimingCal)
@@ -203,6 +183,7 @@ public:
     bool calcBitTimingStd(QString devName, quint32 bitrate, quint32 spt, quint32 refclk);
     bool calcBitTimingCommonStd(CANNetDevice *dev, CANBitTiming *bt);
     bool calcBitTimingStd(CANNetDevice *dev, CANBitTiming *bt);
+    bool calcBitTimingFD(CANNetDevice *dev, CANBitTiming *bt);
 
     CANBitTimingCal * const q_ptr;
     QVector<FlexCANBitTiming> m_matchedBitTimings;
@@ -320,13 +301,9 @@ bool CANBitTimingCalPrivate::calcBitTimingStd(CANNetDevice *dev, CANBitTiming *b
 {
     CANPriv *priv = &dev->m_priv;
     const struct CANBitTimingConst *btc = priv->m_bittimingConst;
-    long rate = 0;
-    long bestError = 1000000000, error = 0;
-    int bestTseg = 0, bestBrp = 0, brp = 0;
-    int nbt = 0, tseg = 0, tseg1 = 0, tseg2 = 0;
+    int brp = 0;
+    int nbt = 0, tseg1 = 0, tseg2 = 0;
     int tq = 0, propseg = 0, pseg1 = 0, pseg2 = 0, pseg = 0; // mapping to standard, not NXP's REG
-    int sptError = 1000, spt = 0, samplePoint;
-    quint64 v64;
 
     if ( !priv->m_bittimingConst )
         return false;
@@ -358,24 +335,14 @@ bool CANBitTimingCalPrivate::calcBitTimingStd(CANNetDevice *dev, CANBitTiming *b
         if ((pseg2 >= btc->m_ipt) && (pseg2 <= btc->m_pseg2Max) &&
                 (pseg1 >= 0) && (pseg1 <= btc->m_pseg1Max)) {
             // found a right one, record it and continue
-            bt->m_tq = tq;
-            bt->m_propSeg = propseg;
-            bt->m_phaseSeg1 = pseg1;
-            bt->m_phaseSeg2 = pseg2;
-            bt->m_sjw = 2;
-            bt->m_brp = brp;
-            bt->m_tseg1 = propseg + pseg1;
-            bt->m_tseg2 = pseg2;
-            bt->m_nbt = nbt;
-            bt->m_outputSpt = 1000 * (bt->m_tseg1 + 1)/ nbt;;
-            bt->m_outputBitrate = priv->m_clock.m_freq / ( brp * nbt );
-
-            FlexCANBitTiming fbt;
-            if (btc->m_fnSetFlexCANBitTiming) {
-                btc->m_fnSetFlexCANBitTiming(bt, &fbt);
+            bool ret = updateCANBitTiming(bt, tq, propseg, pseg1, pseg2, brp, priv->m_clock.m_freq);
+            if (ret) {
+                FlexCANBitTiming fbt;
+                if (btc->m_fnSetFlexCANBitTiming) {
+                    btc->m_fnSetFlexCANBitTiming(bt, &fbt);
+                }
+                m_matchedBitTimings.append(fbt);
             }
-            m_matchedBitTimings.append(fbt);
-
             continue;
         }
 
@@ -385,24 +352,14 @@ bool CANBitTimingCalPrivate::calcBitTimingStd(CANNetDevice *dev, CANBitTiming *b
             pseg1 = 1;
             pseg2 = 2;
 
-            bt->m_tq = tq;
-            bt->m_propSeg = propseg;
-            bt->m_phaseSeg1 = pseg1;
-            bt->m_phaseSeg2 = pseg2;
-            bt->m_sjw = 2;
-            bt->m_brp = brp;
-            bt->m_tseg1 = propseg + pseg1;
-            bt->m_tseg2 = pseg2;
-            bt->m_nbt = nbt;
-            bt->m_outputSpt = 1000 * ( bt->m_tseg1  + 1) / nbt;;
-            bt->m_outputBitrate = priv->m_clock.m_freq / ( brp * nbt );
-
-            FlexCANBitTiming fbt;
-            if (btc->m_fnSetFlexCANBitTiming) {
-                btc->m_fnSetFlexCANBitTiming(bt, &fbt);
+            bool ret = updateCANBitTiming(bt, tq, propseg, pseg1, pseg2, brp, priv->m_clock.m_freq);
+            if (ret) {
+                FlexCANBitTiming fbt;
+                if (btc->m_fnSetFlexCANBitTiming) {
+                    btc->m_fnSetFlexCANBitTiming(bt, &fbt);
+                }
+                m_matchedBitTimings.append(fbt);
             }
-            m_matchedBitTimings.append(fbt);
-
             continue;
         }
 
@@ -413,35 +370,123 @@ bool CANBitTimingCalPrivate::calcBitTimingStd(CANNetDevice *dev, CANBitTiming *b
             pseg1 = (nbt - 1 - propseg)/2;
             pseg2 = nbt - 1 - propseg - pseg1;
 
-            bt->m_tq = tq;
-            bt->m_propSeg = propseg;
-            bt->m_phaseSeg1 = pseg1;
-            bt->m_phaseSeg2 = pseg2;
-            bt->m_sjw = 2;
-            bt->m_brp = brp;
-            bt->m_tseg1 = propseg + pseg1;
-            bt->m_tseg2 = pseg2;
-            bt->m_nbt = nbt;
-            bt->m_outputSpt = 1000 * ( bt->m_tseg1  + 1) / nbt;;
-            bt->m_outputBitrate = priv->m_clock.m_freq / ( brp * nbt );
-
-            FlexCANBitTiming fbt;
-            if (btc->m_fnSetFlexCANBitTiming) {
-                btc->m_fnSetFlexCANBitTiming(bt, &fbt);
+            bool ret = updateCANBitTiming(bt, tq, propseg, pseg1, pseg2, brp, priv->m_clock.m_freq);
+            if (ret) {
+                FlexCANBitTiming fbt;
+                if (btc->m_fnSetFlexCANBitTiming) {
+                    btc->m_fnSetFlexCANBitTiming(bt, &fbt);
+                }
+                m_matchedBitTimings.append(fbt);
             }
-            m_matchedBitTimings.append(fbt);
-
             continue;
-
         }
-
-
     }
-
 
     return m_matchedBitTimings.isEmpty()?false:true;
 }
 
+bool CANBitTimingCalPrivate::calcBitTimingFD(CANNetDevice *dev, CANBitTiming *bt)
+{
+    CANPriv *priv = &dev->m_priv;
+    const struct CANBitTimingConst *btc = priv->m_bittimingConst;
+    int brp = 0;
+    int nbt = 0, tseg1 = 0, tseg2 = 0;
+    int tq = 0, propseg = 0, pseg1 = 0, pseg2 = 0, pseg = 0; // mapping to standard, not NXP's REG
+    int tdcen = 0;
+
+    if ( !priv->m_bittimingConst )
+        return false;
+
+    m_matchedBitTimings.clear();
+
+    for (brp = btc->m_brpMin; brp <= btc->m_brpMax; brp++) {
+        quint32 radio = priv->m_clock.m_freq / bt->m_bitrate;
+        nbt = radio / brp;
+        if ((priv->m_clock.m_freq % bt->m_bitrate)||(radio % brp)) {
+            continue;
+        }
+        if ((nbt < btc->m_nbtMin) || (nbt > btc->m_nbtMax)) {
+            continue;
+        }
+
+        tq = 1000000000UL * static_cast<quint64>(brp) / priv->m_clock.m_freq;
+        propseg = qCeil(static_cast<double>(bt->m_propDelay) / tq);
+        if (propseg > btc->m_propsegMax) {
+            continue;
+        }
+
+        if (propseg > (nbt - 2)) {
+            int propsegMax = nbt - 3;
+            int propsegMin = nbt - 1 - btc->m_pseg1Max - btc->m_pseg2Max;
+            if (propsegMin < 1) {
+                propsegMin = 1;
+            }
+            propseg = qFloor((static_cast<double>(propsegMax - propsegMin)/2) + 0.5);
+            tdcen = 1;
+        }
+
+        if (propseg > btc->m_propsegMax) {
+            continue;
+        }
+
+        //tseg1 = qRound(nbt * static_cast<double>(bt->m_samplePoint)/1000) - 1/* SYNC_SEG */;
+        tseg1 = qFloor((nbt * static_cast<double>(bt->m_samplePoint)/1000) + 0.5) - 1 /* SYNC_SEG */;
+        tseg2 = nbt - 1 - tseg1;
+        pseg1 = tseg1 - propseg;
+        pseg2 = tseg2;
+
+        if ((pseg2 >= btc->m_ipt) && (pseg2 <= btc->m_pseg2Max) &&
+                (pseg1 >= 0) && (pseg1 <= btc->m_pseg1Max)) {
+            // found a right one, record it and continue
+            bool ret = updateCANBitTiming(bt, tq, propseg, pseg1, pseg2, brp, priv->m_clock.m_freq);
+            if (ret) {
+                FlexCANBitTiming fbt;
+                if (btc->m_fnSetFlexCANBitTiming) {
+                    btc->m_fnSetFlexCANBitTiming(bt, &fbt);
+                }
+                m_matchedBitTimings.append(fbt);
+            }
+            continue;
+        }
+
+        pseg = nbt - 1 - propseg;
+        if ((pseg == 3) && (btc->m_ipt == 2)) {
+            // found a right one, record it and continue
+            pseg1 = 1;
+            pseg2 = 2;
+
+            bool ret = updateCANBitTiming(bt, tq, propseg, pseg1, pseg2, brp, priv->m_clock.m_freq);
+            if (ret) {
+                FlexCANBitTiming fbt;
+                if (btc->m_fnSetFlexCANBitTiming) {
+                    btc->m_fnSetFlexCANBitTiming(bt, &fbt);
+                }
+                m_matchedBitTimings.append(fbt);
+            }
+            continue;
+        }
+
+        if ((pseg > (btc->m_ipt + 1)) && (pseg  <= (pseg1*2))) {
+            if (pseg % 2) {
+                propseg = propseg + 1;
+            }
+            pseg1 = (nbt - 1 - propseg)/2;
+            pseg2 = nbt - 1 - propseg - pseg1;
+
+            bool ret = updateCANBitTiming(bt, tq, propseg, pseg1, pseg2, brp, priv->m_clock.m_freq);
+            if (ret) {
+                FlexCANBitTiming fbt;
+                if (btc->m_fnSetFlexCANBitTiming) {
+                    btc->m_fnSetFlexCANBitTiming(bt, &fbt);
+                }
+                m_matchedBitTimings.append(fbt);
+            }
+            continue;
+        }
+    }
+
+    return m_matchedBitTimings.isEmpty()?false:true;
+}
 
 CANBitTimingCal::CANBitTimingCal(QObject *parent)
     : QObject(parent)
@@ -455,7 +500,17 @@ CANBitTimingCal::~CANBitTimingCal()
     delete d_ptr;
 }
 
-bool CANBitTimingCal::calcBitTimingStd(QString devName, quint32 bitrate, quint32 spt, quint32 refclk)
+/*!
+ * \brief CANBitTimingCal::calcBitTimingStd
+ * \param devName
+ * \param bitrate
+ * \param spt
+ * \param refclk
+ * \param propDelay tPROP_SEG = 2(tBUS + tTX + tRX), default tTX=tRX=255, tBUS=20M*5ns
+ * \return
+ */
+bool CANBitTimingCal::calcBitTimingStd(QString devName, quint32 bitrate, quint32 spt,
+                                       quint32 propDelay, quint32 refclk)
 {
     struct CANNetDevice dev;
     CANBitTiming bt;
@@ -478,9 +533,9 @@ bool CANBitTimingCal::calcBitTimingStd(QString devName, quint32 bitrate, quint32
     dev.m_priv.m_clock.m_freq = refclk;
     bt.m_bitrate = bitrate;
     bt.m_samplePoint = spt;
-    bt.m_propDelay = 700;
+    bt.m_propDelay = propDelay;
 
-    bool ret = d->calcBitTimingStd(&dev, &bt);
+    bool ret = d->calcBitTimingFD(&dev, &bt);
     if (!ret) {
         return false;
     }
@@ -500,4 +555,10 @@ bool CANBitTimingCal::calcBitTimingStd(QString devName, quint32 bitrate, quint32
     }
 
     return true;
+}
+
+const QVector<FlexCANBitTiming> &CANBitTimingCal::getMatchedBitTimings()
+{
+    Q_D(CANBitTimingCal);
+    return d->m_matchedBitTimings;
 }
