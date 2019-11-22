@@ -35,6 +35,9 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
+
+LIBS += -luser32
+
 TOPSRCDIR   = $$PWD
 TOPBUILDDIR = $$shadowed($$PWD)
 
