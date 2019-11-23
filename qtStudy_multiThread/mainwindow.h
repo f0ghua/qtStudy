@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <windows.h>
 
 class Worker;
 class QThread;
@@ -27,7 +28,9 @@ private:
     void startWorker();
     void stopWorker();
 #endif
-    bool startWork();
+    bool prepareWork();
+    void startWork();
+    bool closeWindows();
 
     Ui::MainWindow *ui;    
     Worker *m_worker = NULL;
@@ -35,7 +38,7 @@ private:
 
     QSettings *m_settings;
     QTimer *m_timerClick;
-    HWND m_hMain;
+    POINT m_point;
 };
 
 #endif // MAINWINDOW_H

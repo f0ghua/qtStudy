@@ -42,3 +42,4 @@ TOPSRCDIR   = $$PWD
 TOPBUILDDIR = $$shadowed($$PWD)
 
 include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
+include($${TOPSRCDIR}/libs/3rdparty/libqxt/libqxt.pri)
