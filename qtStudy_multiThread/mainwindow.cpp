@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "worker.h"
 #include "windows.h"
+#include "commctrl.h"
 #include "QAppLogging.h"
 #include "qxtglobalshortcut.h"
 
@@ -31,6 +32,59 @@ LPTSTR g_windowNameHfCancel2 = (LPTSTR)WINDOWNAME_HF_CANCEL2.utf16();
 const QString g_targetAppName = APPNAME_HF;
 HWND g_hMain = NULL;
 HWND g_hListView = NULL;
+HWND g_hRichEdit = NULL;
+
+typedef struct {
+    QString className;
+    QString captionTag;
+    HWND *retHwnd;
+} WMInfo_t;
+
+BOOL CALLBACK cb_enumChildProc(HWND hwnd, LPARAM lParam)
+{
+    WMInfo_t *info = (WMInfo_t *)lParam;
+
+    if (hwnd) {
+        TCHAR buffer[MAX_PATH - 1];
+
+        GetClassName(hwnd, buffer, MAX_PATH - 1);
+        QString className = QString::fromWCharArray(buffer);
+
+        QLOG_DEBUG() << QObject::tr("hwnd = %1, className = %2").\
+                        arg((quint32)hwnd, 8, 16, QChar('0')).\
+                        arg(className);
+
+        if (className == info->className) {
+            LRESULT result = ::SendMessage(hwnd, WM_GETTEXT, 255, (LPARAM)buffer);
+            QString appCapText = QString::fromWCharArray(buffer);
+            QLOG_DEBUG() << QObject::tr("result = %1, appCapText =%2").arg(result).arg(appCapText);
+
+            if (appCapText.contains(info->captionTag)) {
+                QLOG_DEBUG() << "target app found, hwnd =" << QString("%1").arg((quint32)hwnd, 8, 16, QChar('0'));
+                *(info->retHwnd) = hwnd;
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+HWND getWindowByClassCaption(HWND parentHwnd, QString className, QString captionText)
+{
+    HWND retHwnd = NULL;
+    WMInfo_t info = {
+        .className = className,
+        .captionTag = captionText,
+        .retHwnd = &retHwnd
+    };
+
+    ::EnumChildWindows(parentHwnd, cb_enumChildProc, LPARAM(&info));
+
+    QLOG_DEBUG() << "retHwnd =" << QString("%1").arg((quint32)retHwnd, 8, 16, QChar('0'));
+
+    return retHwnd;
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -113,11 +167,89 @@ BOOL CALLBACK enumChildProc(HWND hwnd, LPARAM lParam)
     ::GetWindowText(hwnd, buffer, MAX_PATH - 1);
     QString appWName = QString::fromWCharArray(buffer);
     //qDebug() << appWName;
+    //QLOG_DEBUG() << "hwnd =" << QString("%1").arg((quint32)hwnd, 8, 16, QChar('0'));;
 
     if (appWName.contains(g_targetAppName)) {
         QLOG_DEBUG() << "target app found, name =" << appWName << "hwnd =" << QString("%1").arg((quint32)hwnd, 8, 16, QChar('0'));;
         g_hMain = hwnd;
         return false;
+    }
+
+    return true;
+}
+
+BOOL CALLBACK enumChildProc_All(HWND hwnd, LPARAM lParam)
+{
+/*
+    if (appWName.contains(g_targetAppName)) {
+        QLOG_DEBUG() << "target app found, name =" << appWName << "hwnd =" << QString("%1").arg((quint32)hwnd, 8, 16, QChar('0'));;
+        g_hMain = hwnd;
+        return false;
+    }
+*/
+
+    if (hwnd) {
+        LRESULT ret;
+        TCHAR buffer[MAX_PATH - 1];
+
+        GetClassName(hwnd, buffer, MAX_PATH - 1);
+        QString className = QString::fromWCharArray(buffer);
+
+        QLOG_DEBUG() << QObject::tr("hwnd = %1, className = %2").\
+                        arg((quint32)hwnd, 8, 16, QChar('0')).\
+                        arg(className);
+#if 0
+        if (className == "RichEdit20A") {
+            LRESULT result = ::SendMessage(hwnd, WM_GETTEXT, 255, (LPARAM)buffer);
+            QString appWName = QString::fromWCharArray(buffer);
+            QLOG_DEBUG() << QObject::tr("result = %1, appWName =%2").arg(result).arg(appWName);
+
+            //ret = ::PostMessage(hwnd, WM_GETTEXTLENGTH, 0, 0);
+            //QLOG_DEBUG() << "ret =" << ret;
+
+            if (!appWName.isEmpty()) {
+                QLOG_DEBUG() << "target app found, hwnd =" << QString("%1").arg((quint32)hwnd, 8, 16, QChar('0'));
+                g_hRichEdit = hwnd;
+                return false;
+            }
+        }
+#endif
+
+#if 0
+        if (className == "SysListView32") {
+            LVITEM lvi;
+            unsigned long pid;
+            HANDLE process;
+
+            GetWindowThreadProcessId(hwnd, &pid);
+            process=OpenProcess(PROCESS_VM_OPERATION|PROCESS_VM_READ|PROCESS_VM_WRITE|PROCESS_QUERY_INFORMATION, FALSE, pid);
+
+            LVITEM *_lvi=(LVITEM*)VirtualAllocEx(process, NULL, sizeof(LVITEM), MEM_COMMIT, PAGE_READWRITE);
+            TCHAR *_item=(TCHAR*)VirtualAllocEx(process, NULL, MAX_PATH, MEM_COMMIT, PAGE_READWRITE);
+            TCHAR *_subitem=(TCHAR*)VirtualAllocEx(process, NULL, MAX_PATH, MEM_COMMIT, PAGE_READWRITE);
+
+            lvi.iSubItem=1;
+            lvi.cchTextMax=MAX_PATH;
+            lvi.pszText=_item;
+            WriteProcessMemory(process, _lvi, &lvi, sizeof(LVITEM), NULL);
+
+            LRESULT result = ::SendMessage(hwnd, LVM_GETITEMTEXT, 0, (LPARAM)_lvi);
+            ReadProcessMemory(process, _item, buffer, MAX_PATH, NULL);
+            QString appWName = QString::fromWCharArray(buffer);
+            QLOG_DEBUG() << QObject::tr("result = %1, appWName =%2").arg(result).arg(appWName);
+
+            //ret = ::PostMessage(hwnd, WM_GETTEXTLENGTH, 0, 0);
+            //QLOG_DEBUG() << "ret =" << ret;
+#if 0
+            if (!appWName.isEmpty()) {
+                QLOG_DEBUG() << "target app found, hwnd =" << QString("%1").arg((quint32)hwnd, 8, 16, QChar('0'));
+                g_hRichEdit = hwnd;
+                return false;
+            }
+#endif
+        }
+#endif
+        //::EnumChildWindows(hwnd, enumChildProc_All, 0);
     }
 
     return true;
@@ -190,6 +322,12 @@ bool MainWindow::prepareWork()
         return false;
     }
 
+    QLOG_DEBUG() << "g_hMain =" << QString("%1").arg((quint32)g_hMain, 8, 16, QChar('0'));;
+
+    //::EnumChildWindows(g_hMain, enumChildProc_All, 0);
+    //getWindowByClassCaption(0, "Static", "您正在游戏房间中，是否现在退出？");
+    //return false;
+
     g_hListView = NULL;
     searchClass(g_hMain, g_classNameListView, g_hListView, 4);
     if (!g_hListView) {
@@ -244,6 +382,8 @@ static void searchClassWithCaption(HWND parentHwnd, LPTSTR className, HWND &retH
     return;
 }
 
+
+
 void MainWindow::handleClickTimeout()
 {
     HWND h;
@@ -266,9 +406,9 @@ void MainWindow::handleClickTimeout()
         return;
     }
 /*
-    HWND hRichEdit = NULL;
-    searchClassWithCaption(g_hMain, g_classNameRichEdit, hRichEdit, 4);
-    if ((hRichEdit)) {
+    g_hRichEdit = NULL;
+    ::EnumChildWindows(g_hMain, enumChildProc_All, 0);
+    if ((g_hRichEdit)) {
         m_timerClick->stop();
         return;
     }
