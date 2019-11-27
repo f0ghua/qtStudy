@@ -6,22 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>333</width>
-    <height>179</height>
+    <width>363</width>
+    <height>184</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>星际1.16鼠标补丁(Win10) by cpp</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>星际争霸路径：</string>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0" colspan="2">
      <widget class="QLineEdit" name="lineEdit"/>
     </item>
@@ -39,7 +32,7 @@
       </property>
       <property name="sizeHint" stdset="0">
        <size>
-        <width>150</width>
+        <width>180</width>
         <height>20</height>
        </size>
       </property>
@@ -72,6 +65,13 @@
       </property>
      </spacer>
     </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>星际争霸执行文件(starcraft.exe)路径：</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -79,7 +79,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>333</width>
+     <width>363</width>
      <height>23</height>
     </rect>
    </property>
