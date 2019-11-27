@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "worker.h"
+#include "QAppLogging.h"
 
 #include <QThread>
 #include <QDebug>
@@ -8,26 +9,64 @@
 #include <QDir>
 #include <QFileDialog>
 
+static inline QString wCharToQString(const WCHAR *w)
+{
+    return QString::fromUtf16(reinterpret_cast<const ushort *>(w));
+}
+
+static inline bool registryWriteBinaryKey(HKEY handle,
+                                          const WCHAR *valueName,
+                                          DWORD type,
+                                          const BYTE *data,
+                                          DWORD size,
+                                          QString *errorMessage)
+{
+    const LONG rc = RegSetValueEx(handle, valueName, 0, type, data, size);
+    if (rc != ERROR_SUCCESS) {
+        //*errorMessage = msgRegistryOperationFailed("write", valueName, msgFunctionFailed("RegSetValueEx", rc));
+        return false;
+    }
+    return true;
+}
+
+static inline bool registryWriteStringKey(HKEY handle, // HKEY_LOCAL_MACHINE, etc.
+                                          const WCHAR *key,
+                                          const QString &s,
+                                          QString *errorMessage)
+{
+    const BYTE *data = reinterpret_cast<const BYTE *>(s.utf16());
+    const DWORD size = 2 * s.size(); // excluding 0
+    return registryWriteBinaryKey(handle, key, REG_SZ, data, size, errorMessage);
+}
+
+static const WCHAR *g_bwRegistryKeyC = L"Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers";
+static const QString g_bwRegistryValueC = "~ DWM8And16BitMitigation Layer_ForceDirectDrawEmulation";
+bool MainWindow::writeBroodWarRegKey(QString path)
+{
+    return true;
+}
+
+// Be careful: HKEY_CURRENT_USER is just an alias for HKEY_USERS\<sid>
 LSTATUS MainWindow::writeBWRegKeys(QString path)
 {
     const QString subKey = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers\\";
     const QString keyValue = "~ DWM8And16BitMitigation Layer_ForceDirectDrawEmulation";
-    const LPBYTE lpData = (LPBYTE)keyValue.toStdString().data();
+    const BYTE *lpData = reinterpret_cast<const BYTE *>(keyValue.utf16());
 
     HKEY hKey;
     DWORD dwDisposition;
     LSTATUS rc = 0;
 
-    qDebug() << keyValue.size();
-
     rc = RegCreateKeyEx(HKEY_CURRENT_USER, (LPTSTR)subKey.utf16(), 0, NULL, 0, KEY_WRITE, NULL, &hKey, &dwDisposition);
     if (rc)
         return rc;
 
-    const QString bwPath = QDir::toNativeSeparators(path);
-    //LPTSTR lpValueName = (LPTSTR)bwPath.utf16();
-    LPCSTR lpValueName = (LPCSTR)bwPath.toStdString().data();
-    rc = RegSetValueExA(hKey, lpValueName, 0, REG_SZ, (LPBYTE)lpData, keyValue.size()+1);
+    QString bwPath = QDir::toNativeSeparators(path);
+
+    QLOG_DEBUG() << QObject::tr("Name = %1, Value = %2").arg(bwPath).arg(keyValue);
+    const WCHAR *lpValueName = reinterpret_cast<const WCHAR *>(bwPath.utf16());
+    //LPCSTR lpValueName = (LPCSTR)bwPath.toStdString().data();
+    rc = RegSetValueEx(hKey, lpValueName, 0, REG_SZ, (LPBYTE)lpData, keyValue.size()*2);
     RegCloseKey(hKey);
 
     return rc;
@@ -44,7 +83,7 @@ LSTATUS MainWindow::deleteBWRegKeys(QString path)
         return rc;
 
     const QString bwPath = QDir::toNativeSeparators(path);
-    LPTSTR lpValueName = (LPTSTR)bwPath.utf16();
+    const WCHAR *lpValueName = reinterpret_cast<const WCHAR *>(bwPath.utf16());
 
     rc = RegDeleteValue(hKey, lpValueName);
 

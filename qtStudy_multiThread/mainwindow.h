@@ -30,6 +30,7 @@ private:
     void startWorker();
     void stopWorker();
 
+    bool writeBroodWarRegKey(QString path);
     LSTATUS writeBWRegKeys(QString path);
     LSTATUS deleteBWRegKeys(QString path);
     void writeBroodWarRegs(QString path);
