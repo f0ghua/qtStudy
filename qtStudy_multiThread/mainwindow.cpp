@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "worker.h"
+#include "treemodel.h"
 
 #include <QThread>
 #include <QDebug>
@@ -11,6 +12,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     startWorker();
+
+    m_model = new TreeModel(static_cast<QTreeView *>(ui->treeView), this);
+    ui->treeView->setModel(m_model);
+    connect(m_worker, &Worker::sendMessage, m_model, &TreeModel::messageReceived);
+
+
 }
 
 MainWindow::~MainWindow()

@@ -5,6 +5,7 @@
 
 class Worker;
 class QThread;
+class TreeModel;
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +26,7 @@ private:
     Ui::MainWindow *ui;
     Worker *m_worker = NULL;
     QThread *m_workThread = NULL;
+    TreeModel *m_model;
 };
 
 #endif // MAINWINDOW_H

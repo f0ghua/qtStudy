@@ -26,11 +26,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        worker.cpp
+        worker.cpp \
+    mytreeview.cpp \
+    treeitem.cpp \
+    treemodel.cpp
 
 HEADERS += \
         mainwindow.h \
-        worker.h
+        worker.h \
+    mytreeview.h \
+    treeitem.h \
+    treemodel.h \
+    message.h
 
 FORMS += \
         mainwindow.ui
