@@ -103,6 +103,7 @@ int TreeModel::appendMessage(const Message &msg)
 {
     QList<QVariant> datas;
     TreeItem *primary;
+    int row;
 
     const int columnSize = 16;
     QByteArray ba;
@@ -111,8 +112,11 @@ int TreeModel::appendMessage(const Message &msg)
     datas << msg.id;
     datas << msg.data.toHex(' ').constData();
 
+    row = rootItem->childCount();
+    beginInsertRows(QModelIndex(), row, row);
     primary = new TreeItem(datas, rootItem);
     rootItem->appendChild(primary);
+    endInsertRows();
 
     QList<QVariant> ds;
     ds << QString("RAW DATA: length = %1").arg(msg.data.count());
@@ -191,9 +195,11 @@ int TreeModel::modifyMessage(const Message &msg, TreeItem *item, int row)
 
 void TreeModel::messageReceived(const Message &msg)
 {
-    //qDebug() << "messageReceived data =" << msg.data;
-
     int row;
+    //qDebug() << "messageReceived data =" << msg.data;
+#if 1
+    row = appendMessage(msg);
+#else
     int pos = rootItem->indexOfMessage(msg);
     if(pos == -1) {
         row = appendMessage(msg);
@@ -201,6 +207,7 @@ void TreeModel::messageReceived(const Message &msg)
         // put the previous timestamp in info, so that we can cal delta later
         row = modifyMessage(msg, rootItem->child(pos), pos);
     }
+#endif
 }
 
 //! [2]
