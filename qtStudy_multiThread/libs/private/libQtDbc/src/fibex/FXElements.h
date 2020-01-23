@@ -5,6 +5,7 @@
 
 #include "FXFrameType.h"
 #include "FXPduType.h"
+#include "FXSignalType.h"
 
 /*
 #include "../fx/Extent.h"
@@ -26,7 +27,6 @@ typedef int ChannelType;
 typedef int GatewayType;
 typedef int EcuType;
 typedef int FunctionType;
-typedef int SignalType;
 typedef int CompositeType;
 
 namespace ASAM {
@@ -131,11 +131,11 @@ public:
         Signals();
 
         /** Smallest logical piece of information exchanged by applications */
-        QList<SignalType> m_signal;
+        QList<FXSignalType> m_sigList;
     };
 
     /** Top level element of all signals */
-    QList<Signals> m_signals;
+    QList<Signals> m_signalsList;
 
     struct Composites {
         Composites();

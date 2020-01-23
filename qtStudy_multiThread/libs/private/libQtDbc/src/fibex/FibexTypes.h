@@ -69,6 +69,19 @@ public:
         XCP_PRE_CONFIGURED,
         XCP_RUNTIME_CONFIGURED
     };
+
+    /**
+     * @brief simpleType TYPE-TYPE
+     *
+     * General purpose of the signal
+     */
+    enum class FXTypeTypeSt {
+        RESPONSE_ERROR,
+        REQUEST,
+        ALIVE_COUNTER,
+        CHECKSUM,
+        OTHER
+    };
 };
 
 }

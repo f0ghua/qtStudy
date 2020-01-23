@@ -32,7 +32,9 @@ SOURCES += \
     $$PWD/src/fibex/FXSignalInstances.cpp \
     $$PWD/src/fibex/FXSignalInstanceType.cpp \
     $$PWD/src/fibex/FXSignalRef.cpp \
-    $$PWD/src/fibex/FXCommonLayoutDetails.cpp
+    $$PWD/src/fibex/FXCommonLayoutDetails.cpp \
+    $$PWD/src/fibex/FXSignalType.cpp \
+    $$PWD/src/fibex/FXSignalTypeType.cpp
 
 HEADERS += \
 	$$PWD/inc/DbcHandle.h\
@@ -75,7 +77,9 @@ HEADERS += \
     $$PWD/src/fibex/FXSignalInstances.h \
     $$PWD/src/fibex/FXSignalInstanceType.h \
     $$PWD/src/fibex/FXSignalRef.h \
-    $$PWD/src/fibex/FXCommonLayoutDetails.h
+    $$PWD/src/fibex/FXCommonLayoutDetails.h \
+    $$PWD/src/fibex/FXSignalType.h \
+    $$PWD/src/fibex/FXSignalTypeType.h
 
 
 OTHER_FILES += \

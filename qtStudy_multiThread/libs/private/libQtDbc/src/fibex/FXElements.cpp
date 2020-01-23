@@ -43,7 +43,7 @@ FXElements::Functions::Functions()
 }
 
 FXElements::Signals::Signals()
-    : m_signal()
+    : m_sigList()
 {
 }
 
@@ -60,7 +60,7 @@ FXElements::FXElements()
     , m_pdusList()
     , m_framesList()
     , m_functions()
-    , m_signals()
+    , m_signalsList()
     , m_composites()
 {
 }
@@ -118,7 +118,22 @@ bool FXElements::load(const QDomElement &element)
         } else if (child.toElement().tagName() == "fx:FUNCTIONS") {
 
         } else if (child.toElement().tagName() == "fx:SIGNALS") {
+            Signals signalsObj;
 
+            QDomNode framesChild = child.firstChild();
+            while (!framesChild.isNull()) {
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "FXElements::load SIGNALS" << child.toElement().tagName();
+#endif
+                if (framesChild.toElement().tagName() == "fx:SIGNAL") {
+                    FXSignalType sig;
+                    sig.load(framesChild.toElement());
+                    signalsObj.m_sigList.append(sig);
+                }
+                framesChild = framesChild.nextSibling();
+            }
+
+            m_signalsList.append(signalsObj);
         } else if (child.toElement().tagName() == "fx:COMPOSITES") {
 
         }

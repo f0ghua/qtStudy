@@ -56,5 +56,15 @@ FibexTypes::EnumParser<FibexTypes::FXPduTypeSt>::EnumParser()
     enumMap["XCP_RUNTIME_CONFIGURED"]   = FibexTypes::FXPduTypeSt::XCP_RUNTIME_CONFIGURED;
 }
 
+template<>
+FibexTypes::EnumParser<FibexTypes::FXTypeTypeSt>::EnumParser()
+{
+    enumMap["RESPONSE-ERROR"]           = FibexTypes::FXTypeTypeSt::RESPONSE_ERROR;
+    enumMap["REQUEST"]                  = FibexTypes::FXTypeTypeSt::REQUEST;
+    enumMap["ALIVE-COUNTER"]            = FibexTypes::FXTypeTypeSt::ALIVE_COUNTER;
+    enumMap["CHECKSUM"]                 = FibexTypes::FXTypeTypeSt::CHECKSUM;
+    enumMap["OTHER"]                    = FibexTypes::FXTypeTypeSt::OTHER;
+}
+
 }
 }

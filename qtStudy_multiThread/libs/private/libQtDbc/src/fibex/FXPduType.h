@@ -6,8 +6,6 @@
 #include "FXRevisedElementType.h"
 #include "FXSignalInstances.h"
 
-class QDomElement;
-
 namespace ASAM {
 namespace FIBEX {
 
