@@ -1,16 +1,30 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "worker.h"
+#include "DBC.h"
 
 #include <QThread>
 #include <QDebug>
+
+using namespace Vector::DBC;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    startWorker();
+    //startWorker();
+    {
+        File *dbFile = new File();
+
+        QString dbName = "1.xml";
+        if ((int)dbFile->load(dbName) != 0) {
+            return;
+        }
+
+        NetworkHandle *nh = dbFile->netHandle();
+        nh->dumpMessages();
+    }
 }
 
 MainWindow::~MainWindow()

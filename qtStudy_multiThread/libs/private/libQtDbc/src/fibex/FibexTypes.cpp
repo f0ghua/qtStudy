@@ -1,0 +1,60 @@
+#include "FibexTypes.h"
+
+namespace ASAM {
+namespace FIBEX {
+
+#if 0
+const char* const FibexTypes::FXFrameTypeEl_enumString[] = {
+    "APPLICATION",
+    "BAP",
+    "DIAG-REQUEST",
+    "DIAG-RESPONSE",
+    "DIAG-STATE",
+    "NM",
+    "OTHER",
+    "SERVICE",
+    "TPL",
+    "XCP_PRE_CONFIGURED",
+    "XCP_RUNTIME_CONFIGURED",
+};
+#endif
+
+FibexTypes::FibexTypes()
+{
+
+}
+
+template<>
+FibexTypes::EnumParser<FibexTypes::FXFrameTypeSt>::EnumParser()
+{
+    enumMap["APPLICATION"]              = FibexTypes::FXFrameTypeSt::APPLICATION;
+    enumMap["BAP"]                      = FibexTypes::FXFrameTypeSt::BAP;
+    enumMap["DIAG-REQUEST"]             = FibexTypes::FXFrameTypeSt::DIAG_REQUEST;
+    enumMap["DIAG-RESPONSE"]            = FibexTypes::FXFrameTypeSt::DIAG_RESPONSE;
+    enumMap["DIAG-STATE"]               = FibexTypes::FXFrameTypeSt::DIAG_STATE;
+    enumMap["NM"]                       = FibexTypes::FXFrameTypeSt::NM;
+    enumMap["OTHER"]                    = FibexTypes::FXFrameTypeSt::OTHER;
+    enumMap["SERVICE"]                  = FibexTypes::FXFrameTypeSt::SERVICE;
+    enumMap["TPL"]                      = FibexTypes::FXFrameTypeSt::TPL;
+    enumMap["XCP_PRE_CONFIGURED"]       = FibexTypes::FXFrameTypeSt::XCP_PRE_CONFIGURED;
+    enumMap["XCP_RUNTIME_CONFIGURED"]   = FibexTypes::FXFrameTypeSt::XCP_RUNTIME_CONFIGURED;
+}
+
+template<>
+FibexTypes::EnumParser<FibexTypes::FXPduTypeSt>::EnumParser()
+{
+    enumMap["APPLICATION"]              = FibexTypes::FXPduTypeSt::APPLICATION;
+    enumMap["BAP"]                      = FibexTypes::FXPduTypeSt::BAP;
+    enumMap["DIAG-REQUEST"]             = FibexTypes::FXPduTypeSt::DIAG_REQUEST;
+    enumMap["DIAG-RESPONSE"]            = FibexTypes::FXPduTypeSt::DIAG_RESPONSE;
+    enumMap["DIAG-STATE"]               = FibexTypes::FXPduTypeSt::DIAG_STATE;
+    enumMap["NM"]                       = FibexTypes::FXPduTypeSt::NM;
+    enumMap["OTHER"]                    = FibexTypes::FXPduTypeSt::OTHER;
+    enumMap["SERVICE"]                  = FibexTypes::FXPduTypeSt::SERVICE;
+    enumMap["TPL"]                      = FibexTypes::FXPduTypeSt::TPL;
+    enumMap["XCP_PRE_CONFIGURED"]       = FibexTypes::FXPduTypeSt::XCP_PRE_CONFIGURED;
+    enumMap["XCP_RUNTIME_CONFIGURED"]   = FibexTypes::FXPduTypeSt::XCP_RUNTIME_CONFIGURED;
+}
+
+}
+}
