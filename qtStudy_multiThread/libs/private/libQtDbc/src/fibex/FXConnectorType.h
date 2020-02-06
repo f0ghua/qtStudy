@@ -3,6 +3,8 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+#include "FXEcuPortType.h"
+
 namespace ASAM {
 namespace FIBEX {
 
@@ -19,14 +21,19 @@ public:
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
+    /** attribute ID */
+    QString m_id;
+
     /** element CHANNEL-REF */
     QString m_channelRef;
     /** element CONTROLLER-REF */
     QString m_controllerRef;
-    /** @todo element INPUTS */
-    /** @todo element OUTPUTS */
+    /** element INPUTS */
+    QList<FXEcuPortType> m_inputPortList;
+    /** element OUTPUTS */
+    QList<FXEcuPortType> m_outputPortList;
     /** @todo element MANUFACTURER-EXTENSION */
-    /** @todo attribute ID */
+
 };
 
 } // FIBEX
