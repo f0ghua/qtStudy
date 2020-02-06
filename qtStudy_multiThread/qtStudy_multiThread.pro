@@ -26,16 +26,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        worker.cpp
+        worker.cpp \
+    mmtimer.cpp
 
 HEADERS += \
         mainwindow.h \
-        worker.h
+        worker.h \
+    mmtimer.h
 
 FORMS += \
         mainwindow.ui
 
 TOPSRCDIR   = $$PWD
 TOPBUILDDIR = $$shadowed($$PWD)
+
+LIBS += -lwinmm
 
 include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
