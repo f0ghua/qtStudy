@@ -23,7 +23,7 @@ FXElements::Gateways::Gateways()
 }
 
 FXElements::Ecus::Ecus()
-    : m_ecu()
+    : m_ecuList()
 {
 }
 
@@ -56,7 +56,7 @@ FXElements::FXElements()
     : m_clusters()
     , m_channels()
     , m_gateways()
-    , m_ecus()
+    , m_ecusList()
     , m_pdusList()
     , m_framesList()
     , m_functions()
@@ -69,24 +69,41 @@ bool FXElements::load(const QDomElement &element)
 {
     QDomNode child = element.firstChild();
     while (!child.isNull()) {
+        const QDomElement &childElement = child.toElement();
 #ifndef F_NO_DEBUG
-        QLOG_TRACE() << "FXElements::load" << child.toElement().tagName();
+        QLOG_TRACE() << "FXElements::load" << childElement.tagName();
 #endif
-        if (child.toElement().tagName() == "fx:CLUSTERS") {
+        if (childElement.tagName() == "fx:CLUSTERS") {
 
-        } else if (child.toElement().tagName() == "fx:CHANNELS") {
+        } else if (childElement.tagName() == "fx:CHANNELS") {
 
-        } else if (child.toElement().tagName() == "fx:GATEWAYS") {
+        } else if (childElement.tagName() == "fx:GATEWAYS") {
 
-        } else if (child.toElement().tagName() == "fx:ECUS") {
+        } else if (childElement.tagName() == "fx:ECUS") {
+            Ecus ecusObject;
 
-        } else if (child.toElement().tagName() == "fx:PDUS") {
+            QDomNode framesChild = child.firstChild();
+            while (!framesChild.isNull()) {
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "FXElements::load ECUS" << childElement.tagName();
+#endif
+                if (framesChild.toElement().tagName() == "fx:ECU") {
+                    FXEcuType ecu;
+                    ecu.load(framesChild.toElement());
+                    ecusObject.m_ecuList.append(ecu);
+                }
+                framesChild = framesChild.nextSibling();
+            }
+
+            m_ecusList.append(ecusObject);
+
+        } else if (childElement.tagName() == "fx:PDUS") {
             Pdus pdusObj;
 
             QDomNode framesChild = child.firstChild();
             while (!framesChild.isNull()) {
 #ifndef F_NO_DEBUG
-                QLOG_TRACE() << "FXElements::load PDUS" << child.toElement().tagName();
+                QLOG_TRACE() << "FXElements::load PDUS" << childElement.tagName();
 #endif
                 if (framesChild.toElement().tagName() == "fx:PDU") {
                     FXPduTypeCt pdu;
@@ -97,13 +114,13 @@ bool FXElements::load(const QDomElement &element)
             }
 
             m_pdusList.append(pdusObj);
-        } else if (child.toElement().tagName() == "fx:FRAMES") {
+        } else if (childElement.tagName() == "fx:FRAMES") {
             Frames framesObj;
 
             QDomNode framesChild = child.firstChild();
             while (!framesChild.isNull()) {
 #ifndef F_NO_DEBUG
-                QLOG_TRACE() << "FXElements::load FRAMES" << child.toElement().tagName();
+                QLOG_TRACE() << "FXElements::load FRAMES" << childElement.tagName();
 #endif
                 if (framesChild.toElement().tagName() == "fx:FRAME") {
                     FXFrameTypeCt frame;
@@ -115,15 +132,15 @@ bool FXElements::load(const QDomElement &element)
 
             m_framesList.append(framesObj);
 
-        } else if (child.toElement().tagName() == "fx:FUNCTIONS") {
+        } else if (childElement.tagName() == "fx:FUNCTIONS") {
 
-        } else if (child.toElement().tagName() == "fx:SIGNALS") {
+        } else if (childElement.tagName() == "fx:SIGNALS") {
             Signals signalsObj;
 
             QDomNode framesChild = child.firstChild();
             while (!framesChild.isNull()) {
 #ifndef F_NO_DEBUG
-                QLOG_TRACE() << "FXElements::load SIGNALS" << child.toElement().tagName();
+                QLOG_TRACE() << "FXElements::load SIGNALS" << childElement.tagName();
 #endif
                 if (framesChild.toElement().tagName() == "fx:SIGNAL") {
                     FXSignalType sig;
@@ -134,7 +151,7 @@ bool FXElements::load(const QDomElement &element)
             }
 
             m_signalsList.append(signalsObj);
-        } else if (child.toElement().tagName() == "fx:COMPOSITES") {
+        } else if (childElement.tagName() == "fx:COMPOSITES") {
 
         }
 

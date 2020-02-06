@@ -6,18 +6,15 @@
 #include "FXFrameType.h"
 #include "FXPduType.h"
 #include "FXSignalType.h"
+#include "FXEcuType.h"
 
 /*
 #include "../fx/Extent.h"
 #include "ChannelType.h"
 #include "ClusterType.h"
 #include "CompositeType.h"
-#include "EcuType.h"
-#include "FrameType.h"
 #include "FunctionType.h"
 #include "GatewayType.h"
-#include "PduType.h"
-#include "SignalType.h"
 */
 
 class QDomElement;
@@ -88,11 +85,11 @@ public:
         Ecus();
 
         /** Electronic Control Unit (sometimes called 'node') */
-        QList<EcuType> m_ecu;
+        QList<FXEcuType> m_ecuList;
     };
 
     /** Top level element of all ECUs */
-    QList<Ecus> m_ecus;
+    QList<Ecus> m_ecusList;
 
     struct Pdus {
         Pdus();

@@ -25,18 +25,19 @@ bool FXFibex::load(const QDomElement &element)
 
     QDomNode child = element.firstChild();
     while (!child.isNull()) {
+        const QDomElement &childElement = child.toElement();
 #ifndef F_NO_DEBUG
-        QLOG_TRACE() << "FXFibex::load" << child.toElement().tagName();
+        QLOG_TRACE() << "FXFibex::load" << childElement.tagName();
 #endif
-        if (child.toElement().tagName() == "fx:PROJECT") {
+        if (childElement.tagName() == "fx:PROJECT") {
 
-        } else if (child.toElement().tagName() == "fx:PROTOCOLS") {
+        } else if (childElement.tagName() == "fx:PROTOCOLS") {
 
-        } else if (child.toElement().tagName() == "fx:ELEMENTS") {
+        } else if (childElement.tagName() == "fx:ELEMENTS") {
             m_elements.load(child.toElement());
-        } else if (child.toElement().tagName() == "fx:PROCESSING-INFORMATION") {
-
-        } else if (child.toElement().tagName() == "fx:REQUIREMENTS") {
+        } else if (childElement.tagName() == "fx:PROCESSING-INFORMATION") {
+            m_processingInformation.load(childElement);
+        } else if (childElement.tagName() == "fx:REQUIREMENTS") {
 
         }
 

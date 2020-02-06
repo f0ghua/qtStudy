@@ -34,7 +34,16 @@ SOURCES += \
     $$PWD/src/fibex/FXSignalRef.cpp \
     $$PWD/src/fibex/FXCommonLayoutDetails.cpp \
     $$PWD/src/fibex/FXSignalType.cpp \
-    $$PWD/src/fibex/FXSignalTypeType.cpp
+    $$PWD/src/fibex/FXSignalTypeType.cpp \
+    $$PWD/src/fibex/FXProcessingInformation.cpp \
+    $$PWD/src/fibex/FXCodings.cpp \
+    $$PWD/src/fibex/FXCodingType.cpp \
+    $$PWD/src/fibex/HOCodedType.cpp \
+    $$PWD/src/fibex/FXEcuType.cpp \
+    $$PWD/src/fibex/FXControllerType.cpp \
+    $$PWD/src/fibex/FRControllerType.cpp \
+    $$PWD/src/fibex/FRKeySlotUsage.cpp \
+    $$PWD/src/fibex/FXConnectorType.cpp
 
 HEADERS += \
 	$$PWD/inc/DbcHandle.h\
@@ -79,7 +88,16 @@ HEADERS += \
     $$PWD/src/fibex/FXSignalRef.h \
     $$PWD/src/fibex/FXCommonLayoutDetails.h \
     $$PWD/src/fibex/FXSignalType.h \
-    $$PWD/src/fibex/FXSignalTypeType.h
+    $$PWD/src/fibex/FXSignalTypeType.h \
+    $$PWD/src/fibex/FXProcessingInformation.h \
+    $$PWD/src/fibex/FXCodings.h \
+    $$PWD/src/fibex/FXCodingType.h \
+    $$PWD/src/fibex/HOCodedType.h \
+    $$PWD/src/fibex/FXEcuType.h \
+    $$PWD/src/fibex/FXControllerType.h \
+    $$PWD/src/fibex/FRControllerType.h \
+    $$PWD/src/fibex/FRKeySlotUsage.h \
+    $$PWD/src/fibex/FXConnectorType.h
 
 
 OTHER_FILES += \

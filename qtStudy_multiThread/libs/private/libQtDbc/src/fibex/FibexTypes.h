@@ -82,9 +82,19 @@ public:
         CHECKSUM,
         OTHER
     };
+
+    /**
+     * @brief KEY-SLOT-USAGE
+     */
+    enum class FRKeySlotUsageSt {
+        STARTUP_SYNC,
+        SYNC,
+        NONE
+    };
+
 };
 
-}
-}
+} // FIBEX
+} // ASAM
 
 #endif // FIBEXTYPES_H

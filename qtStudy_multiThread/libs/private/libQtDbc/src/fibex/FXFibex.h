@@ -13,7 +13,7 @@
 #include "VersionType.h"
 #endif
 
-class QDomElement;
+#include "FXProcessingInformation.h"
 
 namespace ASAM {
 namespace FIBEX {
@@ -34,6 +34,9 @@ public:
     /** element ELEMENTS */
     FXElements m_elements;
 
+    /** element PROCESSING-INFORMATION */
+    FXProcessingInformation m_processingInformation;
+
 #if 0
     /**
      * element PROJECT
@@ -47,8 +50,7 @@ public:
 
 
 
-    /** element PROCESSING-INFORMATION */
-    std::list<ProcessingInformation> processingInformation;
+
 
     /** element REQUIREMENTS */
     std::list<Requirements> requirements;
