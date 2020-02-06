@@ -26,8 +26,8 @@ public:
 
     /** group COMMON-LAYOUT-DETAILS */
     FXCommonLayoutDetails m_commLayoutDetails;
-
-    /** @todo element PDU-UPDATE-BIT-POSITION */
+    /** element PDU-UPDATE-BIT-POSITION */
+    quint32 m_pduUpdateBitPosition;
 };
 
 } // FIBEX

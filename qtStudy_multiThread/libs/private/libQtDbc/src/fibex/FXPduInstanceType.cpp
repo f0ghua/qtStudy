@@ -23,7 +23,7 @@ void FXPduInstanceType::load(const QDomElement &element)
         QLOG_TRACE() << "FXPduInstanceType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:PDU-UPDATE-BIT-POSITION") {
-
+            m_pduUpdateBitPosition = childElement.text().toUInt();
         }
 
         child = child.nextSibling();

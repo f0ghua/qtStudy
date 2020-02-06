@@ -14,6 +14,8 @@
 
 	- fx:ECUS
 		- fx:ECU
+			- fx:CONTROLLERS
+				- fx:CONTROLLER[N]
 			- fx:CONNECTORS
 				- fx:CONNECTOR[N]  flexray:CONNECTOR-TYPE
 					- fx:INPUTS

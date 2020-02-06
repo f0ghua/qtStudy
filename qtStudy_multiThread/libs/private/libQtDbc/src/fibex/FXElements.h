@@ -42,107 +42,44 @@ public:
     /** load from XML DOM element */
     bool load(const QDomElement &element);
 
-    struct Clusters {
-        Clusters();
+    /**
+     * In multi-channel systems such as TTP or FlexRay known as 'bus'.
+     * To avoid confusion, we decides not to use this term any more.
+     */
+    QList<ClusterType> m_clusterList;
 
-        /**
-         * In multi-channel systems such as TTP or FlexRay known as 'bus'.
-         * To avoid confusion, we decides not to use this term any more.
-         */
-        QList<ClusterType> m_cluster;
-    };
+    /**
+     * In single-channel systems such as CAN or LIN known as 'bus'.
+     * To avoid confusion, we decides not to use this term any more.
+     */
+    QList<ChannelType> m_channelList;
 
-    /** Top level element of all clusters */
-    QList<Clusters> m_clusters;
+    /**
+     * A gateway is a specific ECU translating frames and signals from one channel into another.
+     * Further description of gateway behaviour is intended for a later version of FIBEX
+     */
+    QList<GatewayType> m_gatewayList;
 
-    struct Channels {
-        Channels();
+    /** Electronic Control Unit (sometimes called 'node') */
+    QList<FXEcuType> m_ecuList;
 
-        /**
-         * In single-channel systems such as CAN or LIN known as 'bus'.
-         * To avoid confusion, we decides not to use this term any more.
-         */
-        QList<ChannelType> m_channel;
-    };
+    QList<FXPduTypeCt> m_pduList;
 
-    /** Top level element of all channels */
-    QList<Channels> m_channels;
+    /**
+     * Smallest piece of information exchanged over the communication system.
+     * A frame normally consists of a header and a data (payload) section.
+     * The data section contains signals.
+     */
+    QList<FXFrameTypeCt> m_frameList;
 
-    struct Gateways {
-        Gateways();
+    /** Part of the application running in an ECU */
+    QList<FunctionType> m_functionList;
 
-        /**
-         * A gateway is a specific ECU translating frames and signals from one channel into another.
-         * Further description of gateway behaviour is intended for a later version of FIBEX
-         */
-        QList<GatewayType> m_gateway;
-    };
+    /** Smallest logical piece of information exchanged by applications */
+    QList<FXSignalType> m_signalList;
 
-    /** Top level element of all gateways */
-    QList<Gateways> m_gateways;
-
-    struct Ecus {
-        Ecus();
-
-        /** Electronic Control Unit (sometimes called 'node') */
-        QList<FXEcuType> m_ecuList;
-    };
-
-    /** Top level element of all ECUs */
-    QList<Ecus> m_ecusList;
-
-    struct Pdus {
-        Pdus();
-
-        QList<FXPduTypeCt> m_pduList;
-    };
-
-    /** Top level element of all PDUs */
-    QList<Pdus> m_pdusList;
-
-    struct Frames {
-        Frames();
-
-        /**
-         * Smallest piece of information exchanged over the communication system.
-         * A frame normally consists of a header and a data (payload) section.
-         * The data section contains signals.
-         */
-        QList<FXFrameTypeCt> m_frameList;
-    };
-
-    /** Top level element of all frames */
-    QList<Frames> m_framesList;
-
-    struct Functions {
-        Functions();
-
-        /** Part of the application running in an ECU */
-        QList<FunctionType> m_function;
-    };
-
-    /** Top level element of all functions */
-    QList<Functions> m_functions;
-
-    struct Signals {
-        Signals();
-
-        /** Smallest logical piece of information exchanged by applications */
-        QList<FXSignalType> m_sigList;
-    };
-
-    /** Top level element of all signals */
-    QList<Signals> m_signalsList;
-
-    struct Composites {
-        Composites();
-
-        /** A hierarchical structure on functions or ecus. */
-        QList<CompositeType> m_composite;
-    };
-
-    /** Top level element of all composites */
-    QList<Composites> m_composites;
+    /** A hierarchical structure on functions or ecus. */
+    QList<CompositeType> m_compositeList;
 };
 
 }

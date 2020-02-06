@@ -8,17 +8,17 @@ namespace ASAM {
 namespace FIBEX {
 
 FXElements::Clusters::Clusters()
-    : m_cluster()
+    : m_clusterList()
 {
 }
 
 FXElements::Channels::Channels()
-    : m_channel()
+    : m_channelList()
 {
 }
 
 FXElements::Gateways::Gateways()
-    : m_gateway()
+    : m_gatewayList()
 {
 }
 
@@ -38,30 +38,30 @@ FXElements::Frames::Frames()
 }
 
 FXElements::Functions::Functions()
-    : m_function()
+    : m_functionList()
 {
 }
 
 FXElements::Signals::Signals()
-    : m_sigList()
+    : m_signalList()
 {
 }
 
 FXElements::Composites::Composites()
-    : m_composite()
+    : m_compositeList()
 {
 }
 
 FXElements::FXElements()
-    : m_clusters()
-    , m_channels()
-    , m_gateways()
-    , m_ecusList()
-    , m_pdusList()
-    , m_framesList()
-    , m_functions()
-    , m_signalsList()
-    , m_composites()
+    : m_clusterList()
+    , m_channelList()
+    , m_gatewayList()
+    , m_ecuList()
+    , m_pduList()
+    , m_frameList()
+    , m_functionList()
+    , m_signalList()
+    , m_compositeList()
 {
 }
 
@@ -80,8 +80,6 @@ bool FXElements::load(const QDomElement &element)
         } else if (childElement.tagName() == "fx:GATEWAYS") {
 
         } else if (childElement.tagName() == "fx:ECUS") {
-            Ecus ecusObject;
-
             QDomNode framesChild = child.firstChild();
             while (!framesChild.isNull()) {
 #ifndef F_NO_DEBUG
@@ -90,16 +88,11 @@ bool FXElements::load(const QDomElement &element)
                 if (framesChild.toElement().tagName() == "fx:ECU") {
                     FXEcuType ecu;
                     ecu.load(framesChild.toElement());
-                    ecusObject.m_ecuList.append(ecu);
+                    m_ecuList.append(ecu);
                 }
                 framesChild = framesChild.nextSibling();
             }
-
-            m_ecusList.append(ecusObject);
-
         } else if (childElement.tagName() == "fx:PDUS") {
-            Pdus pdusObj;
-
             QDomNode framesChild = child.firstChild();
             while (!framesChild.isNull()) {
 #ifndef F_NO_DEBUG
@@ -108,15 +101,11 @@ bool FXElements::load(const QDomElement &element)
                 if (framesChild.toElement().tagName() == "fx:PDU") {
                     FXPduTypeCt pdu;
                     pdu.load(framesChild.toElement());
-                    pdusObj.m_pduList.append(pdu);
+                    m_pduList.append(pdu);
                 }
                 framesChild = framesChild.nextSibling();
             }
-
-            m_pdusList.append(pdusObj);
         } else if (childElement.tagName() == "fx:FRAMES") {
-            Frames framesObj;
-
             QDomNode framesChild = child.firstChild();
             while (!framesChild.isNull()) {
 #ifndef F_NO_DEBUG
@@ -125,18 +114,13 @@ bool FXElements::load(const QDomElement &element)
                 if (framesChild.toElement().tagName() == "fx:FRAME") {
                     FXFrameTypeCt frame;
                     frame.load(framesChild.toElement());
-                    framesObj.m_frameList.append(frame);
+                    m_frameList.append(frame);
                 }
                 framesChild = framesChild.nextSibling();
             }
-
-            m_framesList.append(framesObj);
-
         } else if (childElement.tagName() == "fx:FUNCTIONS") {
 
         } else if (childElement.tagName() == "fx:SIGNALS") {
-            Signals signalsObj;
-
             QDomNode framesChild = child.firstChild();
             while (!framesChild.isNull()) {
 #ifndef F_NO_DEBUG
@@ -145,12 +129,10 @@ bool FXElements::load(const QDomElement &element)
                 if (framesChild.toElement().tagName() == "fx:SIGNAL") {
                     FXSignalType sig;
                     sig.load(framesChild.toElement());
-                    signalsObj.m_sigList.append(sig);
+                    m_signalList.append(sig);
                 }
                 framesChild = framesChild.nextSibling();
             }
-
-            m_signalsList.append(signalsObj);
         } else if (childElement.tagName() == "fx:COMPOSITES") {
 
         }

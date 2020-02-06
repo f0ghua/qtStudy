@@ -43,7 +43,8 @@ SOURCES += \
     $$PWD/src/fibex/FXControllerType.cpp \
     $$PWD/src/fibex/FRControllerType.cpp \
     $$PWD/src/fibex/FRKeySlotUsage.cpp \
-    $$PWD/src/fibex/FXConnectorType.cpp
+    $$PWD/src/fibex/FXConnectorType.cpp \
+    $$PWD/src/fibex/ConnectorType.cpp
 
 HEADERS += \
 	$$PWD/inc/DbcHandle.h\
@@ -97,7 +98,8 @@ HEADERS += \
     $$PWD/src/fibex/FXControllerType.h \
     $$PWD/src/fibex/FRControllerType.h \
     $$PWD/src/fibex/FRKeySlotUsage.h \
-    $$PWD/src/fibex/FXConnectorType.h
+    $$PWD/src/fibex/FXConnectorType.h \
+    $$PWD/src/fibex/ConnectorType.h
 
 
 OTHER_FILES += \

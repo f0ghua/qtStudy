@@ -23,8 +23,9 @@ public:
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
+    /** element PDU-INSTANCE */
     QList<FXPduInstanceType> m_pduInstanceList;
-    /** @todo element PDU-INSTANCE */
+
 };
 
 }

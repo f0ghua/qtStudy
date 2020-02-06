@@ -30,14 +30,14 @@ public:
      *
      * Maximum payload length of a dynamic frame in 16bit WORDS (pPayloadLengthDynMax)
      */
-    quint16 m_maxDynamicPayloadLength;
+    quint8 m_maxDynamicPayloadLength;
 
     /**
      * @brief CLUSTER-DRIFT-DAMPING
      *
      * Local cluster drift damping factor used for rate correction. Unit:µT (pClusterDriftDamping)
      */
-    quint16 m_clusterDriftDamping;
+    quint8 m_clusterDriftDamping;
 
     /**
      * @brief DECODING-CORRECTION
@@ -45,7 +45,7 @@ public:
      * Value used by the receiver to calculate the difference between primary time reference point and secondary time reference point.
      * Unit: µT (pDecodingCorrection)
      */
-    quint16 m_decodingCorrection;
+    quint8 m_decodingCorrection;
 
     /**
      * @brief LISTEN-TIMEOUT
@@ -54,7 +54,7 @@ public:
      * pdListenTimeout[µT] = 2 * (pMicroPerCycle[µT] + pdMaxDrift[µT]).
      * Unit:µT (pdListenTimeout)
      */
-    unsigned int m_listenTimeout;
+    quint32 m_listenTimeout;
 
     /**
      * @brief MAX-DRIFT
@@ -70,7 +70,7 @@ public:
      * Number of microticks added or subtracted to the NIT to carry out a host-requested external offset correction.
      * (pExternOffsetCorrection)
      */
-    quint16 m_externOffsetCorrection;
+    quint8 m_externOffsetCorrection;
 
     /**
      * @brief EXTERN-RATE-CORRECTION
@@ -78,7 +78,7 @@ public:
      * Number of microticks added or subtracted to the cycle to carry out a host-requested external rate correction.
      * (pExternRateCorrection)
      */
-    quint16 m_externRateCorrection;
+    quint8 m_externRateCorrection;
 
     /**
      * @brief LATEST-TX
@@ -96,7 +96,7 @@ public:
      * If nodes have different microtick durations this number will differ from node to node.
      * (pMicroPerCycle)
      */
-    unsigned int m_microPerCycle;
+    quint32 m_microPerCycle;
 
     /**
      * @brief OFFSET-CORRECTION-OUT
@@ -123,7 +123,7 @@ public:
      * pSamplesPerMicrotick = pdMicrotick / gdSampleClockPeriod = pdMicrotick / (gdBit / cSamplesPerBit) = 8 * pdMicrotick / gdBit;
      * (pSamplesPerMicrotick)
      */
-    quint16 m_samplesPerMicrotick;
+    quint8 m_samplesPerMicrotick;
 
     /**
      * @brief DELAY-COMPENSATION-A
@@ -135,7 +135,7 @@ public:
      * Unit:µT
      * (pDelayCompensation[A])
      */
-    quint16 m_delayCompensationA;
+    quint8 m_delayCompensationA;
 
     /**
      * @brief DELAY-COMPENSATION-B
@@ -147,7 +147,7 @@ public:
      * Unit:µT
      * (pDelayCompensation[B])
      */
-    quint16 m_delayCompensationB;
+    quint8 m_delayCompensationB;
 
     /**
      * @brief WAKE-UP-PATTERN
@@ -155,7 +155,7 @@ public:
      * Number of repetitions of the wakeup symbol that are combined to form a wakeup pattern when the node enters the POC:wakeup send state.
      * (pWakeupPattern)
      */
-    quint16 m_wakeUpPattern;
+    quint8 m_wakeUpPattern;
 
     /**
      * @brief ALLOW-HALT-DUE-TO-CLOCK
@@ -173,7 +173,7 @@ public:
      * If set to 0, the CC is not allowed to transition from POC:normal passive to POC:normal active.
      * (pAllowPassiveToActive)
      */
-    quint16 m_allowPassiveToActive;
+    quint8 m_allowPassiveToActive;
 
     /**
      * @brief ACCEPTED-STARTUP-RANGE
@@ -190,7 +190,7 @@ public:
      * Integer number of macroticks between the static slot boundary and the closest macrotick boundary of the secondary time reference point based on the nominal macrotick duration.
      * (pMacroInitialOffset)
      */
-    quint16 m_macroInitialOffsetA;
+    quint8 m_macroInitialOffsetA;
 
     /**
      * @brief MACRO-INITIAL-OFFSET-B
@@ -198,7 +198,7 @@ public:
      * Integer number of macroticks between the static slot boundary and the closest macrotick boundary of the secondary time reference point based on the nominal macrotick duration.
      * (pMacroInitialOffset)
      */
-    quint16 m_macroInitialOffsetB;
+    quint8 m_macroInitialOffsetB;
 
     /**
      * @brief MICRO-INITIAL-OFFSET-A
@@ -207,7 +207,7 @@ public:
      * The parameter depends on pDelayCompensation[x] and therefor it has to be set independently for each channel.
      * (pMicroInitialOffset[A])
      */
-    quint16 m_microInitialOffsetA;
+    quint8 m_microInitialOffsetA;
 
     /**
      * @brief MICRO-INITIAL-OFFSET-B
@@ -216,7 +216,7 @@ public:
      * The parameter depends on pDelayCompensation[x] and therefor it has to be set independently for each channel.
      * (pMicroInitialOffset[B])
      */
-    quint16 m_microInitialOffsetB;
+    quint8 m_microInitialOffsetB;
 
     /**
      * @brief SINGLE-SLOT-ENABLED
@@ -227,7 +227,7 @@ public:
     bool m_singleSlotEnabled;
 
     /** MICROTICK */
-    float microtick;
+    float m_microtick;
 
     /** MICRO-PER-MACRO-NOM */
     float m_microPerMacroNom;
