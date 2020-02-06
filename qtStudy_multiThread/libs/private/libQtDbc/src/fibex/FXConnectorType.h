@@ -19,14 +19,14 @@ public:
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** attribute ID */
-    QString m_id;
-    /** @todo element CHANNEL-REF */
-    /** @todo element CONTROLLER-REF */
+    /** element CHANNEL-REF */
+    QString m_channelRef;
+    /** element CONTROLLER-REF */
+    QString m_controllerRef;
     /** @todo element INPUTS */
     /** @todo element OUTPUTS */
     /** @todo element MANUFACTURER-EXTENSION */
-
+    /** @todo attribute ID */
 };
 
 } // FIBEX
