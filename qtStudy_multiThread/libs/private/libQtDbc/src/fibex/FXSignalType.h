@@ -29,7 +29,7 @@ public:
      *
      * A signals encoded value (internal) indicating that the actual value is currently not published / not of interest
      */
-    QList<double> m_defaultValue;
+    double m_defaultValue;
 
     /**
      * @brief element CODING-REF
@@ -45,7 +45,7 @@ public:
      *
      * A positive integer indicating the signals priority. 1 means highest priority.
      */
-    QList<quint32> m_priority;
+    quint32 m_priority;
 };
 
 } // FIBEX

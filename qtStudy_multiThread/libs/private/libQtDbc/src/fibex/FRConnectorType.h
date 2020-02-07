@@ -3,26 +3,24 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
-class QDomElement;
+#include "FXConnectorType.h"
 
 namespace ASAM {
 namespace FIBEX {
 
 /**
- * @brief complexType INCLUDED-SIGNAL-TYPE
- *
- * Selected signal
+ * @brief complexType CONNECTOR-TYPE
  */
-class VECTOR_DBC_EXPORT FXIncludedSignalType
+class VECTOR_DBC_EXPORT FRConnectorType : public FXConnectorType
 {
 public:
-    FXIncludedSignalType();
+    FRConnectorType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** element SIGNAL-INSTANCE-REF */
-    QString m_signalInstanceRef;
+    /** element WAKE-UP-CHANNEL */
+    bool m_wakeUpChannel;
 };
 
 } // FIBEX

@@ -7,51 +7,6 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXElements::Clusters::Clusters()
-    : m_clusterList()
-{
-}
-
-FXElements::Channels::Channels()
-    : m_channelList()
-{
-}
-
-FXElements::Gateways::Gateways()
-    : m_gatewayList()
-{
-}
-
-FXElements::Ecus::Ecus()
-    : m_ecuList()
-{
-}
-
-FXElements::Pdus::Pdus()
-    : m_pduList()
-{
-}
-
-FXElements::Frames::Frames()
-    : m_frameList()
-{
-}
-
-FXElements::Functions::Functions()
-    : m_functionList()
-{
-}
-
-FXElements::Signals::Signals()
-    : m_signalList()
-{
-}
-
-FXElements::Composites::Composites()
-    : m_compositeList()
-{
-}
-
 FXElements::FXElements()
     : m_clusterList()
     , m_channelList()

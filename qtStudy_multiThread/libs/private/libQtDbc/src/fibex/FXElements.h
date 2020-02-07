@@ -22,7 +22,6 @@ class QDomElement;
 typedef int ClusterType;
 typedef int ChannelType;
 typedef int GatewayType;
-typedef int EcuType;
 typedef int FunctionType;
 typedef int CompositeType;
 

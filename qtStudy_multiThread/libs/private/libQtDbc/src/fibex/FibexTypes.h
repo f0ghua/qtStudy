@@ -92,6 +92,27 @@ public:
         NONE
     };
 
+    /**
+     * @brief COMPU-CATEGORY
+     */
+    enum class HOCompuCategorySt {
+        IDENTICAL,
+        LINEAR,
+        SCALE_LINEAR,
+        TEXTTABLE,
+        BITFIELD_TEXTTABLE,
+        TAB_NOINTP,
+        FORMULA
+    };
+
+    /**
+     * @brief INTERVAL-TYPE
+     */
+    enum class HOIntervalTypeAb {
+        OPEN,
+        CLOSED,
+        INFINITE
+    };
 };
 
 } // FIBEX

@@ -28,7 +28,7 @@ void FXSignalInstanceType::load(const QDomElement &element)
         if (childElement.tagName() == "fx:SIGNAL-REF") {
             m_sigRef.load(childElement);
         } else if (childElement.tagName() == "fx:SIGNAL-UPDATE-BIT-POSITION") {
-
+            m_signalUpdateBitPosition = childElement.text().toUInt();
         }
 
         child = child.nextSibling();

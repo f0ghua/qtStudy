@@ -5,6 +5,7 @@
 
 #include "FXRevisedElementType.h"
 #include "FRControllerType.h"
+#include "FRConnectorType.h"
 
 namespace ASAM {
 namespace FIBEX {
@@ -26,9 +27,10 @@ public:
     /** @todo element DIAGNOSTIC-ADDRESSES */
     /** @todo element FUNCTION-REFS */
     /** element CONTROLLERS */
-    QList<FRControllerType> m_controllers;
+    QList<FRControllerType> m_controllerList;
+    /** element CONNECTORS */
+    QList<FRConnectorType> m_connectorList;
 
-    /** @todo element CONNECTORS */
     /** @todo element MANUFACTURER-EXTENSION */
 };
 

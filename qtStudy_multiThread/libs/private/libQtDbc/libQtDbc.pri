@@ -5,7 +5,7 @@ DEFINES += SUPPORT_NETWORK_SIGNAL
 QT += xml
 
 SOURCES += \
-	$$PWD/src/DbcHandle.cpp\
+    $$PWD/src/DbcHandle.cpp\
     $$PWD/src/File.cpp\
     $$PWD/src/Network.cpp \
     $$PWD/src/Node.cpp \
@@ -15,7 +15,7 @@ SOURCES += \
     $$PWD/src/Attribute.cpp \
     $$PWD/src/SignalGroup.cpp \
     $$PWD/src/Utility.cpp \
-	$$PWD/src/DBCHelper.cpp \
+    $$PWD/src/DBCHelper.cpp \
     $$PWD/src/FibexFile.cpp \
     $$PWD/src/fibex/Fibex.cpp \
     $$PWD/src/fibex/FXFibex.cpp \
@@ -44,13 +44,19 @@ SOURCES += \
     $$PWD/src/fibex/FRControllerType.cpp \
     $$PWD/src/fibex/FRKeySlotUsage.cpp \
     $$PWD/src/fibex/FXConnectorType.cpp \
-    $$PWD/src/fibex/ConnectorType.cpp \
     $$PWD/src/fibex/FXEcuPortType.cpp \
     $$PWD/src/fibex/FXIncludedPduType.cpp \
-    $$PWD/src/fibex/FXIncludedSignalType.cpp
+    $$PWD/src/fibex/FXIncludedSignalType.cpp \
+    $$PWD/src/fibex/FRConnectorType.cpp \
+    $$PWD/src/fibex/HOCompuCategory.cpp \
+    $$PWD/src/fibex/HOCompuMethods.cpp \
+    $$PWD/src/fibex/HOScaleConstrType.cpp \
+    $$PWD/src/fibex/HOCompuRationalCoeffs.cpp \
+    $$PWD/src/fibex/HOCompuScale.cpp \
+    $$PWD/src/fibex/HOCompInternalToPhys.cpp
 
 HEADERS += \
-	$$PWD/inc/DbcHandle.h\
+    $$PWD/inc/DbcHandle.h\
     $$PWD/inc/libqtdbc_global.h\
     $$PWD/inc/Attribute.h \
     $$PWD/inc/AttributeDefinition.h \
@@ -73,7 +79,7 @@ HEADERS += \
     $$PWD/inc/ValueTable.h \
     $$PWD/inc/ValueType.h \
     $$PWD/inc/vector_dbc_export.h \
-	$$PWD/inc/DBCHelper.h \
+    $$PWD/inc/DBCHelper.h \
     $$PWD/src/fibex/Fibex.h \
     $$PWD/src/fibex/FXFibex.h \
     $$PWD/src/fibex/FXElements.h \
@@ -102,10 +108,16 @@ HEADERS += \
     $$PWD/src/fibex/FRControllerType.h \
     $$PWD/src/fibex/FRKeySlotUsage.h \
     $$PWD/src/fibex/FXConnectorType.h \
-    $$PWD/src/fibex/ConnectorType.h \
     $$PWD/src/fibex/FXEcuPortType.h \
     $$PWD/src/fibex/FXIncludedPduType.h \
-    $$PWD/src/fibex/FXIncludedSignalType.h
+    $$PWD/src/fibex/FXIncludedSignalType.h \
+    $$PWD/src/fibex/FRConnectorType.h \
+    $$PWD/src/fibex/HOCompuCategory.h \
+    $$PWD/src/fibex/HOCompuMethods.h \
+    $$PWD/src/fibex/HOScaleConstrType.h \
+    $$PWD/src/fibex/HOCompuRationalCoeffs.h \
+    $$PWD/src/fibex/HOCompuScale.h \
+    $$PWD/src/fibex/HOCompInternalToPhys.h
 
 
 OTHER_FILES += \

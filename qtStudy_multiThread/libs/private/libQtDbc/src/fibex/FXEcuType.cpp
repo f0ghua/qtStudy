@@ -34,14 +34,25 @@ void FXEcuType::load(const QDomElement &element)
                 QLOG_TRACE() << "FXEcuType::load CONTROLLERS" << childElement.tagName();
 #endif
                 if (subChild.toElement().tagName() == "fx:CONTROLLER") {
-                    FRControllerType cl;
-                    cl.load(subChild.toElement());
-                    m_controllers.append(cl);
+                    FRControllerType c;
+                    c.load(subChild.toElement());
+                    m_controllerList.append(c);
                 }
                 subChild = subChild.nextSibling();
             }
         } else if (childElement.tagName() == "fx:CONNECTORS") {
-
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "FXEcuType::load CONNECTORS" << childElement.tagName();
+#endif
+                if (subChild.toElement().tagName() == "fx:CONNECTOR") {
+                    FRConnectorType c;
+                    c.load(subChild.toElement());
+                    m_connectorList.append(c);
+                }
+                subChild = subChild.nextSibling();
+            }
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 
         }

@@ -28,8 +28,9 @@ public:
     FXCommonLayoutDetails m_commLayoutDetails;
     /** element SIGNAL-REF */
     FXSignalRef m_sigRef;
+    /** element SIGNAL-UPDATE-BIT-POSITION */
+    quint32 m_signalUpdateBitPosition;
 
-    /** @todo element SIGNAL-UPDATE-BIT-POSITION */
     /** @todo element MANUFACTURER-EXTENSION */
 };
 

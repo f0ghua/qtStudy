@@ -30,7 +30,7 @@ void FXSignalType::load(const QDomElement &element)
         QLOG_TRACE() << "FXSignalType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:DEFAULT-VALUE") {
-            m_defaultValue.append(childElement.text().toDouble());
+            m_defaultValue = childElement.text().toDouble();
 #ifndef F_NO_DEBUG
             QLOG_DEBUG() << "FXSignalType::load, m_defaultValue =" << m_defaultValue;
 #endif
@@ -41,6 +41,8 @@ void FXSignalType::load(const QDomElement &element)
 #endif
         } else if (childElement.tagName() == "fx:SIGNAL-TYPE") {
             m_sigType.load(childElement);
+        } else if (childElement.tagName() == "fx:PRIORITY") {
+            m_priority = childElement.text().toUInt();
         }
 
         child = child.nextSibling();

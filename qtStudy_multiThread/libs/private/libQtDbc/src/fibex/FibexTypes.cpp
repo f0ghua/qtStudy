@@ -66,5 +66,25 @@ FibexTypes::EnumParser<FibexTypes::FXTypeTypeSt>::EnumParser()
     enumMap["OTHER"]                    = FibexTypes::FXTypeTypeSt::OTHER;
 }
 
+template<>
+FibexTypes::EnumParser<FibexTypes::HOCompuCategorySt>::EnumParser()
+{
+    enumMap["IDENTICAL"]                = FibexTypes::HOCompuCategorySt::IDENTICAL;
+    enumMap["LINEAR"]                   = FibexTypes::HOCompuCategorySt::LINEAR;
+    enumMap["SCALE_LINEAR"]             = FibexTypes::HOCompuCategorySt::SCALE_LINEAR;
+    enumMap["TEXTTABLE"]                = FibexTypes::HOCompuCategorySt::TEXTTABLE;
+    enumMap["BITFIELD-TEXTTABLE"]       = FibexTypes::HOCompuCategorySt::BITFIELD_TEXTTABLE;
+    enumMap["TAB-NOINTP"]               = FibexTypes::HOCompuCategorySt::TAB_NOINTP;
+    enumMap["FORMULA"]                  = FibexTypes::HOCompuCategorySt::FORMULA;
+}
+
+template<>
+FibexTypes::EnumParser<FibexTypes::HOIntervalTypeAb>::EnumParser()
+{
+    enumMap["OPEN"]                     = FibexTypes::HOIntervalTypeAb::OPEN;
+    enumMap["CLOSED"]                   = FibexTypes::HOIntervalTypeAb::CLOSED;
+    enumMap["INFINITE"]                 = FibexTypes::HOIntervalTypeAb::INFINITE;
+}
+
 }
 }
