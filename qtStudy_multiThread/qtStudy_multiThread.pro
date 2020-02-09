@@ -30,7 +30,8 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-        worker.h
+        worker.h \
+    xtypes.h
 
 FORMS += \
         mainwindow.ui

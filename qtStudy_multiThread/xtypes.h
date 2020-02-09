@@ -1,0 +1,21 @@
+#ifndef XTYPES_H
+#define XTYPES_H
+
+#include <qglobal.h>
+
+struct GblVar {
+#define HMAX 300
+
+    enum {
+        CLOCKMODE_QTIMER = 0,
+    };
+
+    quint64 m_hSec[HMAX];
+    quint32 m_clockRate     = 10;
+    quint8 m_clockMode      = CLOCKMODE_QTIMER;
+    double m_totalTime      = 0.0;
+    quint32 m_totalCount    = 0;
+    double m_actualRate     = 0.0;
+};
+
+#endif // XTYPES_H

@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "xtypes.h"
+
 #include <QMainWindow>
 
 class Worker;
@@ -18,6 +20,11 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void handleDisplayTimeout();
+    void on_pbStart_clicked();
+    void on_pbStop_clicked();
+
 private:
     void startWorker();
     void stopWorker();
@@ -25,6 +32,8 @@ private:
     Ui::MainWindow *ui;
     Worker *m_worker = NULL;
     QThread *m_workThread = NULL;
+    GblVar *m_gv;
+    QTimer *m_displayTimer;
 };
 
 #endif // MAINWINDOW_H
