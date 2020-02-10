@@ -8,6 +8,7 @@ struct GblVar {
 
     enum {
         CLOCKMODE_QTIMER = 0,
+        CLOCKMODE_WAITABLETIMER,
     };
 
     quint64 m_hSec[HMAX];

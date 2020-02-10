@@ -39,4 +39,6 @@ FORMS += \
 TOPSRCDIR   = $$PWD
 TOPBUILDDIR = $$shadowed($$PWD)
 
+LIBS += -lwinmm
+
 include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)

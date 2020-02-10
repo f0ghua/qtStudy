@@ -41,8 +41,8 @@ void MainWindow::startWorker()
     QObject::connect(m_workThread, &QThread::finished, m_workThread, &QThread::deleteLater);
     //QObject::connect(this, &MainWindow::workStop, m_worker, &Worker::onWorkStop);
 
-    //m_workThread->start(QThread::HighPriority);
-    m_workThread->start(QThread::TimeCriticalPriority);
+    m_workThread->start(QThread::HighPriority);
+    //m_workThread->start(QThread::TimeCriticalPriority);
     qDebug() << "Worker thread started.";
 }
 
@@ -104,16 +104,27 @@ void MainWindow::on_pbStart_clicked()
     ::SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
 
     m_gv->m_clockRate = ui->sbClockRate->value();
+    m_gv->m_clockMode = ui->cbClockMode->currentIndex();
+
     QMetaObject::invokeMethod(m_worker, "startTimer", Qt::QueuedConnection);
-    if (m_gv->m_clockMode == GblVar::CLOCKMODE_QTIMER) {
-        m_displayTimer->start();
+    m_displayTimer->start();
+
+    if (m_gv->m_clockMode == GblVar::CLOCKMODE_WAITABLETIMER) {
+        //if (m_gv->m_clockRate < 10) {
+            timeBeginPeriod(m_gv->m_clockRate);
+        //}
     }
+
 }
 
 void MainWindow::on_pbStop_clicked()
 {
-    if (m_gv->m_clockMode == GblVar::CLOCKMODE_QTIMER) {
-        m_displayTimer->stop();
-    }
+    m_displayTimer->stop();
     QMetaObject::invokeMethod(m_worker, "stopTimer", Qt::QueuedConnection);
+
+    if (m_gv->m_clockMode == GblVar::CLOCKMODE_WAITABLETIMER) {
+        //if (m_gv->m_clockRate < 10) {
+            timeEndPeriod(m_gv->m_clockRate);
+        //}
+    }
 }

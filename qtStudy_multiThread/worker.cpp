@@ -1,4 +1,6 @@
 #include "worker.h"
+#include "QAppLogging.h"
+
 #include <qmath.h>
 #include <QTimer>
 #include <QEventLoop>
@@ -31,6 +33,53 @@ void Worker::endQTimerProcess()
     m_timer->stop();
 }
 
+void Worker::runWaitableTimerProcess()
+{
+    m_elapsedTimer.start();
+
+    // setup waitable Win32 periodic timer
+    m_hTimerEvent = (HANDLE)CreateWaitableTimer(NULL, false, NULL);
+    if (!m_hTimerEvent) {
+        qDebug() << "CreateWaitableTimer return false";
+        return;
+    }
+
+    LARGE_INTEGER tLT;
+    tLT.QuadPart = 0;
+    if (!SetWaitableTimer(m_hTimerEvent, &tLT, m_gv->m_clockRate, NULL, NULL, true)) {
+        CloseHandle(m_hTimerEvent);
+        m_hTimerEvent = NULL;
+    }
+
+    // wait for 10 ticks for stable timing
+    WaitForSingleObject(m_hTimerEvent, m_gv->m_clockRate*10);
+
+    // start our timing loop, wait for abort flag
+    while (m_isRunning) {
+
+        HANDLE ah[1] = { m_hTimerEvent };
+        DWORD dwRet = ::MsgWaitForMultipleObjects(1, ah, FALSE, INFINITE, QS_ALLINPUT);
+        switch (dwRet - WAIT_OBJECT_0) {
+            case 0: {
+                handleTimeout();
+                break;
+            }
+            default:
+                QCoreApplication::processEvents();
+                break;
+        }
+    }
+}
+
+void Worker::endWaitableTimerProcess()
+{
+    m_isRunning = false;
+    if (m_hTimerEvent != NULL) {
+        CloseHandle(m_hTimerEvent);
+        m_hTimerEvent = NULL;
+    }
+}
+
 void Worker::handleTimeout()
 {
     qint64 elapsedNs = m_elapsedTimer.nsecsElapsed();
@@ -61,6 +110,9 @@ void Worker::startTimer()
         case GblVar::CLOCKMODE_QTIMER:
             runQTimerProcess();
             break;
+        case GblVar::CLOCKMODE_WAITABLETIMER:
+            runWaitableTimerProcess();
+            break;
         default:
             break;
     }
@@ -71,6 +123,9 @@ void Worker::stopTimer()
     switch (m_gv->m_clockMode) {
         case GblVar::CLOCKMODE_QTIMER:
             endQTimerProcess();
+            break;
+        case GblVar::CLOCKMODE_WAITABLETIMER:
+            endWaitableTimerProcess();
             break;
         default:
             break;

@@ -2,6 +2,7 @@
 #define WORKER_H
 
 #include "xtypes.h"
+#include "windows.h"
 
 #include <QObject>
 #include <QElapsedTimer>
@@ -25,6 +26,8 @@ public slots:
 private:
     void runQTimerProcess();
     void endQTimerProcess();
+    void runWaitableTimerProcess();
+    void endWaitableTimerProcess();
 
     bool m_isRunning = true;
     GblVar *m_gv;
@@ -32,6 +35,7 @@ private:
     int m_runCount = 0;
     double m_totalTime = 0.0;
     QTimer *m_timer;
+    HANDLE m_hTimerEvent = NULL;
 };
 
 #endif // WORKER_H
