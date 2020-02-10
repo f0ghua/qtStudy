@@ -26,7 +26,7 @@ void CodingType::load(const QDomElement &element)
         } else if (childElement.tagName() == "ho:CODED-TYPE") {
             m_codedType.load(childElement);
         } else if (childElement.tagName() == "ho:COMPU-METHODS") {
-
+            m_compuMethods.load(childElement);
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 
         }

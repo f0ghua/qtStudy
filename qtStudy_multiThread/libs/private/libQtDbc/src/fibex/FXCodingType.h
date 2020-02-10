@@ -5,6 +5,7 @@
 
 #include "FXRevisedElementType.h"
 #include "HOCodedType.h"
+#include "HOCompuMethods.h"
 
 namespace ASAM {
 namespace FIBEX {
@@ -26,6 +27,7 @@ public:
     /** element CODED-TYPE */
     HOCodedType m_codedType;
     /** @todo element COMPU-METHODS */
+    HOCompuMethods m_compuMethods;
     /** @todo element MANUFACTURER-EXTENSION */
 };
 

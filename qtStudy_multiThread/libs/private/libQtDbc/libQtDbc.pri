@@ -53,7 +53,10 @@ SOURCES += \
     $$PWD/src/fibex/HOScaleConstrType.cpp \
     $$PWD/src/fibex/HOCompuRationalCoeffs.cpp \
     $$PWD/src/fibex/HOCompuScale.cpp \
-    $$PWD/src/fibex/HOCompInternalToPhys.cpp
+    $$PWD/src/fibex/HOCompInternalToPhys.cpp \
+    $$PWD/src/fibex/HOCompuMethod.cpp \
+    $$PWD/src/fibex/HOUnit.cpp \
+    $$PWD/src/fibex/HOUnitSpec.cpp
 
 HEADERS += \
     $$PWD/inc/DbcHandle.h\
@@ -117,7 +120,10 @@ HEADERS += \
     $$PWD/src/fibex/HOScaleConstrType.h \
     $$PWD/src/fibex/HOCompuRationalCoeffs.h \
     $$PWD/src/fibex/HOCompuScale.h \
-    $$PWD/src/fibex/HOCompInternalToPhys.h
+    $$PWD/src/fibex/HOCompInternalToPhys.h \
+    $$PWD/src/fibex/HOCompuMethod.h \
+    $$PWD/src/fibex/HOUnit.h \
+    $$PWD/src/fibex/HOUnitSpec.h
 
 
 OTHER_FILES += \
