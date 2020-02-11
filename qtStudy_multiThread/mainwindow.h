@@ -28,6 +28,7 @@ private slots:
 private:
     void startWorker();
     void stopWorker();
+    void resetRecorder();
 
     Ui::MainWindow *ui;
     Worker *m_worker = NULL;

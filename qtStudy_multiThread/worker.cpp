@@ -1,6 +1,12 @@
 #include "worker.h"
 #include "QAppLogging.h"
 
+//#define USE_NtSetTimerResolution
+#ifdef USE_NtSetTimerResolution
+#include "dynamic_library.h"
+DYNAMIC_IMPORT("ntdll.dll", NtSetTimerResolution, NTSTATUS(ULONG DesiredResolution, BOOLEAN SetResolution, PULONG CurrentResolution));
+#endif
+
 #include <qmath.h>
 #include <QTimer>
 #include <QEventLoop>
@@ -36,6 +42,7 @@ void Worker::endQTimerProcess()
 void Worker::runWaitableTimerProcess()
 {
     m_elapsedTimer.start();
+    m_isRunning = true;
 
     // setup waitable Win32 periodic timer
     m_hTimerEvent = (HANDLE)CreateWaitableTimer(NULL, false, NULL);
@@ -80,6 +87,80 @@ void Worker::endWaitableTimerProcess()
     }
 }
 
+static VOID CALLBACK mmTimerCallback(UINT uTimerID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2)
+{
+    Worker *worker = (Worker *)dwUser;
+    worker->handleTimeout();
+}
+
+void Worker::runMmTimerProcess()
+{
+    m_elapsedTimer.start();
+    m_isRunning = true;
+
+#ifdef USE_NtSetTimerResolution
+    {
+#define STATUS_SUCCESS 0
+#define STATUS_TIMER_RESOLUTION_NOT_SET 0xC0000245
+        // after loading NtSetTimerResolution from ntdll.dll:
+        m_requestedResolution = 5000;
+        m_currentResolution = 0;
+
+        // 1. Requesting a higher resolution
+        if (NtSetTimerResolution(m_requestedResolution, TRUE, &m_currentResolution) != STATUS_SUCCESS) {
+            // The call has failed
+            qDebug() << "NtSetTimerResolution call failed";
+        }
+
+        qDebug() << "CurrentResolution [100 ns units]:" << m_currentResolution;
+        // this will show 5000 on more modern platforms (0.5ms!)
+        // do your stuff here at 0.5 ms timer resolution
+    }
+#else
+    {
+        // Set resolution to the minimum supported by the system.
+        TIMECAPS tc;
+        timeGetDevCaps(&tc, sizeof(TIMECAPS));
+        m_mmTimerResolution = qMin(qMax(tc.wPeriodMin, (UINT) 0), tc.wPeriodMax);
+        timeBeginPeriod(m_mmTimerResolution);
+    }
+#endif
+
+    m_mmTimerId = timeSetEvent(m_gv->m_clockRate, 0,
+                               (LPTIMECALLBACK)mmTimerCallback,
+                               (DWORD_PTR)this,
+                               TIME_PERIODIC|TIME_CALLBACK_FUNCTION);
+}
+
+void Worker::endMmTimerProcess()
+{
+#ifdef USE_NtSetTimerResolution
+    {
+        // 2. Releasing the requested resolution
+        switch (NtSetTimerResolution(m_requestedResolution, FALSE, &m_currentResolution)) {
+            case STATUS_SUCCESS:
+                qDebug() << "The current resolution has returned to [100 ns units]" << m_currentResolution;
+                break;
+            case STATUS_TIMER_RESOLUTION_NOT_SET:
+                qDebug() << "The requested resolution was not set\n";
+                // the resolution can only return to a previous value by means of FALSE
+                // when the current resolution was set by this application
+                break;
+            default:
+                // The call has failed
+                break;
+        }
+    }
+#else
+    if (m_mmTimerId != -1) {
+        timeKillEvent(m_mmTimerId);
+        timeEndPeriod(m_mmTimerResolution);
+
+        m_mmTimerId = -1;
+    }
+#endif
+}
+
 void Worker::handleTimeout()
 {
     qint64 elapsedNs = m_elapsedTimer.nsecsElapsed();
@@ -106,12 +187,18 @@ void Worker::handleTimeout()
 
 void Worker::startTimer()
 {
+    SetThreadAffinityMask(GetCurrentThread(), 0x000E);
+    DWORD n = GetCurrentProcessorNumber();
+    qDebug() << "GetCurrentProcessorNumber return" << n;
     switch (m_gv->m_clockMode) {
         case GblVar::CLOCKMODE_QTIMER:
             runQTimerProcess();
             break;
         case GblVar::CLOCKMODE_WAITABLETIMER:
             runWaitableTimerProcess();
+            break;
+        case GblVar::CLOCKMODE_MMTIMER:
+            runMmTimerProcess();
             break;
         default:
             break;
@@ -126,6 +213,9 @@ void Worker::stopTimer()
             break;
         case GblVar::CLOCKMODE_WAITABLETIMER:
             endWaitableTimerProcess();
+            break;
+        case GblVar::CLOCKMODE_MMTIMER:
+            endMmTimerProcess();
             break;
         default:
             break;

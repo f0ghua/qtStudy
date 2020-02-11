@@ -28,6 +28,8 @@ private:
     void endQTimerProcess();
     void runWaitableTimerProcess();
     void endWaitableTimerProcess();
+    void runMmTimerProcess();
+    void endMmTimerProcess();
 
     bool m_isRunning = true;
     GblVar *m_gv;
@@ -36,6 +38,10 @@ private:
     double m_totalTime = 0.0;
     QTimer *m_timer;
     HANDLE m_hTimerEvent = NULL;
+    UINT m_mmTimerId = -1;
+    UINT m_mmTimerResolution = 0;
+    ULONG m_requestedResolution = 5000;
+    ULONG m_currentResolution = 0;
 };
 
 #endif // WORKER_H

@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->sbClockRate->setValue(10);
     m_gv = new GblVar();
     startWorker();
 
@@ -99,14 +100,26 @@ void MainWindow::handleDisplayTimeout()
     ui->pteOutput->moveCursor(QTextCursor::End);
 }
 
+void MainWindow::resetRecorder()
+{
+    for (int i = 0; i < HMAX; i++) {
+        m_gv->m_hSec[i] = 0;
+    }
+    m_gv->m_totalCount = 0;
+}
+
 void MainWindow::on_pbStart_clicked()
 {
     ::SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
+    SetProcessAffinityMask(GetCurrentProcess(), 0x000F);
+
 
     m_gv->m_clockRate = ui->sbClockRate->value();
     m_gv->m_clockMode = ui->cbClockMode->currentIndex();
 
     QMetaObject::invokeMethod(m_worker, "startTimer", Qt::QueuedConnection);
+
+    resetRecorder();
     m_displayTimer->start();
 
     if (m_gv->m_clockMode == GblVar::CLOCKMODE_WAITABLETIMER) {
