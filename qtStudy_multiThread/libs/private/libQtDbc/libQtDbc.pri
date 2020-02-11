@@ -56,7 +56,17 @@ SOURCES += \
     $$PWD/src/fibex/HOCompInternalToPhys.cpp \
     $$PWD/src/fibex/HOCompuMethod.cpp \
     $$PWD/src/fibex/HOUnit.cpp \
-    $$PWD/src/fibex/HOUnitSpec.cpp
+    $$PWD/src/fibex/HOUnitSpec.cpp \
+    $$PWD/src/fibex/FXChannelType.cpp \
+    $$PWD/src/fibex/FXFrameTriggeringType.cpp \
+    $$PWD/src/fibex/FXPduTriggeringType.cpp \
+    $$PWD/src/fibex/FXFrameTimings.cpp \
+    $$PWD/src/fibex/FXAbsolutelyScheduledTimingType.cpp \
+    $$PWD/src/fibex/FXPduTimings.cpp \
+    $$PWD/src/fibex/FXCyclicTimingType.cpp \
+    $$PWD/src/fibex/FXEventControlledTimingType.cpp \
+    $$PWD/src/fibex/FXRequestControlledTimingType.cpp \
+    $$PWD/src/fibex/FXTimeRangeType.cpp
 
 HEADERS += \
     $$PWD/inc/DbcHandle.h\
@@ -123,7 +133,17 @@ HEADERS += \
     $$PWD/src/fibex/HOCompInternalToPhys.h \
     $$PWD/src/fibex/HOCompuMethod.h \
     $$PWD/src/fibex/HOUnit.h \
-    $$PWD/src/fibex/HOUnitSpec.h
+    $$PWD/src/fibex/HOUnitSpec.h \
+    $$PWD/src/fibex/FXChannelType.h \
+    $$PWD/src/fibex/FXFrameTriggeringType.h \
+    $$PWD/src/fibex/FXPduTriggeringType.h \
+    $$PWD/src/fibex/FXFrameTimings.h \
+    $$PWD/src/fibex/FXAbsolutelyScheduledTimingType.h \
+    $$PWD/src/fibex/FXPduTimings.h \
+    $$PWD/src/fibex/FXCyclicTimingType.h \
+    $$PWD/src/fibex/FXEventControlledTimingType.h \
+    $$PWD/src/fibex/FXRequestControlledTimingType.h \
+    $$PWD/src/fibex/FXTimeRangeType.h
 
 
 OTHER_FILES += \

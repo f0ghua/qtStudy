@@ -13,19 +13,24 @@ namespace FIBEX {
  *
  * ASAM unit definition
  */
-class VECTOR_DBC_EXPORT Unit : public HONameDetails
+class VECTOR_DBC_EXPORT HOUnit : public HONameDetails
 {
 public:
-    Unit();
+    HOUnit();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** @todo attribute ID */
-    /** @todo element ho:DISPLAY-NAME */
-    /** @todo element ho:FACTOR-SI-TO-UNIT */
-    /** @todo element ho:OFFSET-SI-TO-UNIT */
-    /** @todo element ho:PHYSICAL-DIMENSION-REF */
+    /** attribute ID */
+    QString m_id;
+    /** element ho:DISPLAY-NAME */
+    QString m_displayName;
+    /** element ho:FACTOR-SI-TO-UNIT */
+    double m_factorSiToUnit;
+    /** element ho:OFFSET-SI-TO-UNIT */
+    double m_offsetSiToUnit;
+    /** element ho:PHYSICAL-DIMENSION-REF */
+    QString m_physicalDimensionRef;
 };
 
 } // FIBEX

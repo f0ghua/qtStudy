@@ -19,7 +19,7 @@ void FXProcessingInformation::load(const QDomElement &element)
         QLOG_TRACE() << "FXProcessingInformation::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:UNIT-SPEC") {
-
+            m_unitSpec.load(childElement);
         } else if (childElement.tagName() == "fx:CODINGS") {
             m_codings.load(childElement);
         }

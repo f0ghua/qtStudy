@@ -25,7 +25,18 @@ void HOUnitSpec::load(const QDomElement &element)
         } else if (childElement.tagName() == "ho:UNITGROUPS") {
 
         } else if (childElement.tagName() == "ho:UNITS") {
-
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "HOUnitSpec::load UNITS" << childElement.tagName();
+#endif
+                if (subChild.toElement().tagName() == "ho:UNIT") {
+                    HOUnit unit;
+                    unit.load(subChild.toElement());
+                    m_unitList.append(unit);
+                }
+                subChild = subChild.nextSibling();
+            }
         }
 
         child = child.nextSibling();

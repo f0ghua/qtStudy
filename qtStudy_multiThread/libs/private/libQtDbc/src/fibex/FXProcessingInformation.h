@@ -3,6 +3,7 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+#include "HOUnitSpec.h"
 #include "FXCodings.h"
 
 namespace ASAM {
@@ -21,7 +22,8 @@ public:
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** @todo element UNIT-SPEC */
+    /** element UNIT-SPEC */
+    HOUnitSpec m_unitSpec;
     /** element CODINGS */
     FXCodings m_codings;
 };

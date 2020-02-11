@@ -3,7 +3,7 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
-class QDomElement;
+#include "HOUnit.h"
 
 namespace ASAM {
 namespace FIBEX {
@@ -25,6 +25,7 @@ public:
     /** @todo element ho:PHYSICAL-DIMENSIONS */
     /** @todo element ho:UNITGROUPS */
     /** @todo element ho:UNITS */
+    QList<HOUnit> m_unitList;
 };
 
 } // FIBEX

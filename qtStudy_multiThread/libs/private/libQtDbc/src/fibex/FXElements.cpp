@@ -31,7 +31,18 @@ bool FXElements::load(const QDomElement &element)
         if (childElement.tagName() == "fx:CLUSTERS") {
 
         } else if (childElement.tagName() == "fx:CHANNELS") {
-
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "FXElements::load CHANNELS" << childElement.tagName();
+#endif
+                if (subChild.toElement().tagName() == "fx:CHANNEL") {
+                    FXChannelType c;
+                    c.load(subChild.toElement());
+                    m_channelList.append(c);
+                }
+                subChild = subChild.nextSibling();
+            }
         } else if (childElement.tagName() == "fx:GATEWAYS") {
 
         } else if (childElement.tagName() == "fx:ECUS") {
