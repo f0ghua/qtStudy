@@ -16,6 +16,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->sbClockRate->setValue(10);
+    ui->cbProcessPriority->setCurrentIndex(1);
+    ui->cbCpu0->setChecked(true);
+    ui->cbCpu1->setChecked(true);
+    ui->cbCpu2->setChecked(true);
+    ui->cbCpu3->setChecked(true);
+
     m_gv = new GblVar();
     startWorker();
 
@@ -110,12 +116,23 @@ void MainWindow::resetRecorder()
 
 void MainWindow::on_pbStart_clicked()
 {
-    ::SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
-    SetProcessAffinityMask(GetCurrentProcess(), 0x000F);
+    //::SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
+    //SetProcessAffinityMask(GetCurrentProcess(), 0x000F);
 
+    switch (ui->cbProcessPriority->currentIndex()) {
+        case 0: SetPriorityClass(GetCurrentProcess(),IDLE_PRIORITY_CLASS); break;
+        case 1: SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS); break;
+        case 2: SetPriorityClass(GetCurrentProcess(),HIGH_PRIORITY_CLASS); break;
+        case 3: SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS); break;
+    }
 
     m_gv->m_clockRate = ui->sbClockRate->value();
     m_gv->m_clockMode = ui->cbClockMode->currentIndex();
+    m_gv->m_cpuMask = 0;
+    if (ui->cbCpu0->isChecked()) m_gv->m_cpuMask |= 0x01;
+    if (ui->cbCpu1->isChecked()) m_gv->m_cpuMask |= 0x02;
+    if (ui->cbCpu2->isChecked()) m_gv->m_cpuMask |= 0x04;
+    if (ui->cbCpu3->isChecked()) m_gv->m_cpuMask |= 0x08;
 
     QMetaObject::invokeMethod(m_worker, "startTimer", Qt::QueuedConnection);
 

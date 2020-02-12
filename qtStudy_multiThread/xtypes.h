@@ -18,6 +18,7 @@ struct GblVar {
     double m_totalTime      = 0.0;
     quint32 m_totalCount    = 0;
     double m_actualRate     = 0.0;
+    quint32 m_cpuMask       = 0x000F;
 };
 
 #endif // XTYPES_H

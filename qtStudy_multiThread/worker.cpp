@@ -187,7 +187,7 @@ void Worker::handleTimeout()
 
 void Worker::startTimer()
 {
-    SetThreadAffinityMask(GetCurrentThread(), 0x000E);
+    SetThreadAffinityMask(GetCurrentThread(), m_gv->m_cpuMask);
     DWORD n = GetCurrentProcessorNumber();
     qDebug() << "GetCurrentProcessorNumber return" << n;
     switch (m_gv->m_clockMode) {
