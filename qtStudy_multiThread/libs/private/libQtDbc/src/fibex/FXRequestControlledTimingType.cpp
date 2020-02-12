@@ -20,13 +20,13 @@ void FXRequestControlledTimingType::load(const QDomElement &element)
         QLOG_TRACE() << "FXRequestControlledTimingType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:RESPONSE-TIME-RANGE") {
-
+            m_responseTimeRange.load(childElement);
         } else if (childElement.tagName() == "fx:ACTIVE-CONDITION") {
-
+            m_activeCondition.load(childElement);
         } else if (childElement.tagName() == "fx:FINAL-REPETITIONS") {
-
+            m_finalRepetitions = childElement.text().toUShort();
         } else if (childElement.tagName() == "ho:DESC") {
-
+            m_desc = childElement.text();
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 
         }

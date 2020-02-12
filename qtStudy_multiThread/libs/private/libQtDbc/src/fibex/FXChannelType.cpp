@@ -23,9 +23,13 @@ void FXChannelType::load(const QDomElement &element)
         QLOG_TRACE() << "FXChannelType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:PDU-TRIGGERINGS") {
-
+            FXPduTriggeringType tr;
+            tr.load(childElement);
+            m_pduTriggeringList.append(tr);
         } else if (childElement.tagName() == "fx:FRAME-TRIGGERINGS") {
-
+            FXFrameTriggeringType tr;
+            tr.load(childElement);
+            m_frameTriggeringList.append(tr);
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 
         }

@@ -20,11 +20,11 @@ void FXPduTimings::load(const QDomElement &element)
         QLOG_TRACE() << "FXPduTimings::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:CYCLIC-TIMING") {
-
+            m_cyclicTiming.load(childElement);
         } else if (childElement.tagName() == "fx:EVENT-CONTROLLED-TIMING") {
-
+            m_eventControlledTiming.load(childElement);
         } else if (childElement.tagName() == "fx:REQUEST-CONTROLLED-TIMING") {
-
+            m_requestControlledTiming.load(childElement);
         }
 
         child = child.nextSibling();

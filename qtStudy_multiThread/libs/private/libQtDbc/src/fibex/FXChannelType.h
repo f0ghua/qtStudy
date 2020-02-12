@@ -4,6 +4,8 @@
 #include "vector_dbc_export.h"
 
 #include "FXRevisedElementType.h"
+#include "FXPduTriggeringType.h"
+#include "FXFrameTriggeringType.h"
 
 namespace ASAM {
 namespace FIBEX {
@@ -22,7 +24,9 @@ public:
     void load(const QDomElement &element);
 
     /** @todo element PDU-TRIGGERINGS */
+    QList<FXPduTriggeringType> m_pduTriggeringList;
     /** @todo element FRAME-TRIGGERINGS */
+    QList<FXFrameTriggeringType> m_frameTriggeringList;
     /** @todo element MANUFACTURER-EXTENSION */
 };
 

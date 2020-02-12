@@ -3,6 +3,9 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+#include "FXFrameTimings.h"
+#include "FXIdentifier.h"
+
 namespace ASAM {
 namespace FIBEX {
 
@@ -20,10 +23,14 @@ public:
     void load(const QDomElement &element);
 
     /** @todo element TIMINGS */
+    FXFrameTimings m_timings;
     /** @todo element IDENTIFIER */
+    FXIdentifier m_identifier;
     /** @todo element FRAME-REF */
+    QString m_frameRef;
     /** @todo element MANUFACTURER-EXTENSION */
     /** @todo attribute ID */
+    QString m_id;
 };
 
 } // FIBEX

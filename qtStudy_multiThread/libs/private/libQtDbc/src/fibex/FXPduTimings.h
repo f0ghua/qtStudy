@@ -3,7 +3,9 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
-class QDomElement;
+#include "FXCyclicTimingType.h"
+#include "FXEventControlledTimingType.h"
+#include "FXRequestControlledTimingType.h"
 
 namespace ASAM {
 namespace FIBEX {
@@ -22,8 +24,11 @@ public:
     void load(const QDomElement &element);
 
     /** @todo element CYCLIC-TIMING */
+    FXCyclicTimingType m_cyclicTiming;
     /** @todo element EVENT-CONTROLLED-TIMING */
+    FXEventControlledTimingType m_eventControlledTiming;
     /** @todo element REQUEST-CONTROLLED-TIMING */
+    FXRequestControlledTimingType m_requestControlledTiming;
 };
 
 } // FIBEX

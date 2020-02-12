@@ -25,9 +25,9 @@ void FXPduTriggeringType::load(const QDomElement &element)
         QLOG_TRACE() << "FXPduTriggeringType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:TIMINGS") {
-
+            m_timings.load(childElement);
         } else if (childElement.tagName() == "fx:PDU-REF") {
-
+            m_pduRef = childElement.attribute("ID-REF");
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 
         }

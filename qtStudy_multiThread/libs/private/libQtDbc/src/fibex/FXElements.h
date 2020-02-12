@@ -7,6 +7,8 @@
 #include "FXPduType.h"
 #include "FXSignalType.h"
 #include "FXEcuType.h"
+#include "FRChannelType.h"
+#include "FRClusterType.h"
 
 /*
 #include "../fx/Extent.h"
@@ -19,8 +21,6 @@
 
 class QDomElement;
 
-typedef int ClusterType;
-typedef int ChannelType;
 typedef int GatewayType;
 typedef int FunctionType;
 typedef int CompositeType;
@@ -45,13 +45,13 @@ public:
      * In multi-channel systems such as TTP or FlexRay known as 'bus'.
      * To avoid confusion, we decides not to use this term any more.
      */
-    QList<ClusterType> m_clusterList;
+    QList<FRClusterType> m_clusterList;
 
     /**
      * In single-channel systems such as CAN or LIN known as 'bus'.
      * To avoid confusion, we decides not to use this term any more.
      */
-    QList<ChannelType> m_channelList;
+    QList<FRChannelType> m_channelList;
 
     /**
      * A gateway is a specific ECU translating frames and signals from one channel into another.

@@ -3,6 +3,8 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+class QDomElement;
+
 namespace ASAM {
 namespace FIBEX {
 

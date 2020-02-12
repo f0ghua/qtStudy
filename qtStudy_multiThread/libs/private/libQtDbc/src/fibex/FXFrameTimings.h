@@ -3,6 +3,9 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+#include "FXAbsolutelyScheduledTimingType.h"
+#include "FXRelativelyScheduledTimingType.h"
+
 namespace ASAM {
 namespace FIBEX {
 
@@ -20,7 +23,9 @@ public:
     void load(const QDomElement &element);
 
     /** @todo element RELATIVELY-SCHEDULED-TIMING */
+    FXRelativelyScheduledTimingType m_relativelyScheduledTiming;
     /** @todo element ABSOLUTELY-SCHEDULED-TIMING */
+    FXAbsolutelyScheduledTimingType m_absolutelyScheduledTiming;
 };
 
 } // FIBEX

@@ -29,7 +29,18 @@ bool FXElements::load(const QDomElement &element)
         QLOG_TRACE() << "FXElements::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:CLUSTERS") {
-
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "FXElements::load CLUSTERS" << childElement.tagName();
+#endif
+                if (subChild.toElement().tagName() == "fx:CLUSTER") {
+                    FRClusterType c;
+                    c.load(subChild.toElement());
+                    m_clusterList.append(c);
+                }
+                subChild = subChild.nextSibling();
+            }
         } else if (childElement.tagName() == "fx:CHANNELS") {
             QDomNode subChild = child.firstChild();
             while (!subChild.isNull()) {
@@ -37,7 +48,7 @@ bool FXElements::load(const QDomElement &element)
                 QLOG_TRACE() << "FXElements::load CHANNELS" << childElement.tagName();
 #endif
                 if (subChild.toElement().tagName() == "fx:CHANNEL") {
-                    FXChannelType c;
+                    FRChannelType c;
                     c.load(subChild.toElement());
                     m_channelList.append(c);
                 }
@@ -109,5 +120,5 @@ bool FXElements::load(const QDomElement &element)
     return true;
 }
 
-}
-}
+} // FIBEX
+} // ASAM

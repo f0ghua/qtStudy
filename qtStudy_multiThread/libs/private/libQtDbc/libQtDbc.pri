@@ -66,7 +66,16 @@ SOURCES += \
     $$PWD/src/fibex/FXCyclicTimingType.cpp \
     $$PWD/src/fibex/FXEventControlledTimingType.cpp \
     $$PWD/src/fibex/FXRequestControlledTimingType.cpp \
-    $$PWD/src/fibex/FXTimeRangeType.cpp
+    $$PWD/src/fibex/FXTimeRangeType.cpp \
+    $$PWD/src/fibex/FXActiveConditionType.cpp \
+    $$PWD/src/fibex/FXSystemTrigger.cpp \
+    $$PWD/src/fibex/FXExecuteConditionType.cpp \
+    $$PWD/src/fibex/FXSignalTrigger.cpp \
+    $$PWD/src/fibex/FXRelativelyScheduledTimingType.cpp \
+    $$PWD/src/fibex/FXIdentifier.cpp \
+    $$PWD/src/fibex/FXClusterType.cpp \
+    $$PWD/src/fibex/FRChannelType.cpp \
+    $$PWD/src/fibex/FRClusterType.cpp
 
 HEADERS += \
     $$PWD/inc/DbcHandle.h\
@@ -143,7 +152,16 @@ HEADERS += \
     $$PWD/src/fibex/FXCyclicTimingType.h \
     $$PWD/src/fibex/FXEventControlledTimingType.h \
     $$PWD/src/fibex/FXRequestControlledTimingType.h \
-    $$PWD/src/fibex/FXTimeRangeType.h
+    $$PWD/src/fibex/FXTimeRangeType.h \
+    $$PWD/src/fibex/FXActiveConditionType.h \
+    $$PWD/src/fibex/FXSystemTrigger.h \
+    $$PWD/src/fibex/FXExecuteConditionType.h \
+    $$PWD/src/fibex/FXSignalTrigger.h \
+    $$PWD/src/fibex/FXRelativelyScheduledTimingType.h \
+    $$PWD/src/fibex/FXIdentifier.h \
+    $$PWD/src/fibex/FXClusterType.h \
+    $$PWD/src/fibex/FRChannelType.h \
+    $$PWD/src/fibex/FRClusterType.h
 
 
 OTHER_FILES += \

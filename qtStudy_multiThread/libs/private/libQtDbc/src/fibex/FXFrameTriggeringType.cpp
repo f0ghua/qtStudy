@@ -25,11 +25,11 @@ void FXFrameTriggeringType::load(const QDomElement &element)
         QLOG_TRACE() << "FrameTriggeringType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:TIMINGS") {
-
+            m_timings.load(childElement);
         } else if (childElement.tagName() == "fx:IDENTIFIER") {
-
+            m_identifier.load(childElement);
         } else if (childElement.tagName() == "fx:FRAME-REF") {
-
+            m_frameRef = childElement.attribute("ID-REF");
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 
         }

@@ -6,11 +6,11 @@
 namespace ASAM {
 namespace FIBEX {
 
-AbsolutelyScheduledTimingType::AbsolutelyScheduledTimingType()
+FXAbsolutelyScheduledTimingType::FXAbsolutelyScheduledTimingType()
 {
 }
 
-void AbsolutelyScheduledTimingType::load(const QDomElement &element)
+void FXAbsolutelyScheduledTimingType::load(const QDomElement &element)
 {
     /* read childs */
     QDomNode child = element.firstChild();

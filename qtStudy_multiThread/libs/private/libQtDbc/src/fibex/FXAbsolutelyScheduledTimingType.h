@@ -3,6 +3,8 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+class QDomElement;
+
 namespace ASAM {
 namespace FIBEX {
 
@@ -11,10 +13,10 @@ namespace FIBEX {
  *
  * Content model for the entity TIMING in the absolutely scheduled peculiarity.
  */
-class VECTOR_DBC_EXPORT AbsolutelyScheduledTimingType
+class VECTOR_DBC_EXPORT FXAbsolutelyScheduledTimingType
 {
 public:
-    AbsolutelyScheduledTimingType();
+    FXAbsolutelyScheduledTimingType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

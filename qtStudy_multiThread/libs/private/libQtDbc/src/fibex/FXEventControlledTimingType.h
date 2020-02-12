@@ -3,7 +3,9 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
-class QDomElement;
+#include "FXTimeRangeType.h"
+#include "FXActiveConditionType.h"
+#include "FXExecuteConditionType.h"
 
 namespace ASAM {
 namespace FIBEX {
@@ -21,11 +23,16 @@ public:
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** @todo element DEBOUNCE-TIME-RANGE */
-    /** @todo element ACTIVE-CONDITION */
-    /** @todo element SEND-CONDITION */
-    /** @todo element FINAL-REPETITIONS */
-    /** @todo element DESC */
+    /** element DEBOUNCE-TIME-RANGE */
+    FXTimeRangeType m_debounceTimeRange;
+    /** element ACTIVE-CONDITION */
+    FXActiveConditionType m_activeCondition;
+    /** element SEND-CONDITION */
+    FXExecuteConditionType m_sendCondition;
+    /** element FINAL-REPETITIONS */
+    quint16 m_finalRepetitions;
+    /** element DESC */
+    QString m_desc;
     /** @todo element MANUFACTURER-EXTENSION */
 };
 

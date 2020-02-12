@@ -3,7 +3,9 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
-class QDomElement;
+#include "FXTimeRangeType.h"
+#include "FXActiveConditionType.h"
+#include "FXExecuteConditionType.h"
 
 namespace ASAM {
 namespace FIBEX {
@@ -13,18 +15,22 @@ namespace FIBEX {
  *
  * Content model for the entity TIMING in the request controlled peculiarity.
  */
-class VECTOR_DBC_EXPORT RequestControlledTimingType
+class VECTOR_DBC_EXPORT FXRequestControlledTimingType
 {
 public:
-    RequestControlledTimingType();
+    FXRequestControlledTimingType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
     /** @todo element RESPONSE-TIME-RANGE */
+    FXTimeRangeType m_responseTimeRange;
     /** @todo element ACTIVE-CONDITION */
+    FXActiveConditionType m_activeCondition;
     /** @todo element FINAL-REPETITIONS */
+    quint16 m_finalRepetitions;
     /** @todo element DESC */
+    QString m_desc;
     /** @todo element MANUFACTURER-EXTENSION */
 };
 

@@ -20,9 +20,9 @@ void FXFrameTimings::load(const QDomElement &element)
         QLOG_TRACE() << "FrameTriggeringType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:RELATIVELY-SCHEDULED-TIMING") {
-
+            m_relativelyScheduledTiming.load(childElement);
         } else if (childElement.tagName() == "fx:ABSOLUTELY-SCHEDULED-TIMING") {
-
+            m_absolutelyScheduledTiming.load(childElement);
         }
 
         child = child.nextSibling();

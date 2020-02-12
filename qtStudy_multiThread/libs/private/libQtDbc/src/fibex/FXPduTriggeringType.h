@@ -3,6 +3,8 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+#include "FXPduTimings.h"
+
 namespace ASAM {
 namespace FIBEX {
 
@@ -20,7 +22,9 @@ public:
     void load(const QDomElement &element);
 
     /** @todo element TIMINGS */
+    FXPduTimings m_timings;
     /** @todo element PDU-REF */
+    QString m_pduRef;
     /** @todo element MANUFACTURER-EXTENSION */
     /** @todo attribute ID */
     QString m_id;

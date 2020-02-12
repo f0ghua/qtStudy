@@ -86,5 +86,42 @@ FibexTypes::EnumParser<FibexTypes::HOIntervalTypeAb>::EnumParser()
     enumMap["INFINITE"]                 = FibexTypes::HOIntervalTypeAb::INFINITE;
 }
 
+template<>
+FibexTypes::EnumParser<FibexTypes::FXActiveConditionSystemStateType>::EnumParser()
+{
+    enumMap["CHANNEL_ACTIVE"]           = FibexTypes::FXActiveConditionSystemStateType::CHANNEL_ACTIVE;
+    enumMap["CLAMP_15"]                 = FibexTypes::FXActiveConditionSystemStateType::CLAMP_15;
+    enumMap["CLAMP_30"]                 = FibexTypes::FXActiveConditionSystemStateType::CLAMP_30;
+    enumMap["CLAMP_87"]                 = FibexTypes::FXActiveConditionSystemStateType::CLAMP_87;
+    enumMap["CLAMP_RADIO"]              = FibexTypes::FXActiveConditionSystemStateType::CLAMP_RADIO;
+    enumMap["NONE"]                     = FibexTypes::FXActiveConditionSystemStateType::NONE;
+    enumMap["OTHER"]                    = FibexTypes::FXActiveConditionSystemStateType::OTHER;
 }
+
+template<>
+FibexTypes::EnumParser<FibexTypes::FXExecuteConditionSignalStateType>::EnumParser()
+{
+    enumMap["VALUE_CHANGED"]            = FibexTypes::FXExecuteConditionSignalStateType::VALUE_CHANGED;
+    enumMap["VALUE_NOT_CHANGED"]        = FibexTypes::FXExecuteConditionSignalStateType::VALUE_NOT_CHANGED;
+    enumMap["VALUE_DEFAULT"]            = FibexTypes::FXExecuteConditionSignalStateType::VALUE_DEFAULT;
+    enumMap["VALUE_NOT_DEFAULT"]        = FibexTypes::FXExecuteConditionSignalStateType::VALUE_NOT_DEFAULT;
+    enumMap["OTHER"]                    = FibexTypes::FXExecuteConditionSignalStateType::OTHER;
 }
+
+template<>
+FibexTypes::EnumParser<FibexTypes::FXBitCountingPolicy>::EnumParser()
+{
+    enumMap["MONOTONE"]                 = FibexTypes::FXBitCountingPolicy::MONOTONE;
+    enumMap["SAWTOOTH"]                 = FibexTypes::FXBitCountingPolicy::SAWTOOTH;
+}
+
+template<>
+FibexTypes::EnumParser<FibexTypes::FXMedium>::EnumParser()
+{
+    enumMap["ELECTRICAL"]               = FibexTypes::FXMedium::ELECTRICAL;
+    enumMap["OPTICAL"]                  = FibexTypes::FXMedium::OPTICAL;
+    enumMap["OTHER"]                    = FibexTypes::FXMedium::OTHER;
+}
+
+} // FIBEX
+} // ASAM

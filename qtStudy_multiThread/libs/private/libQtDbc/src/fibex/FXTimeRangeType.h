@@ -13,18 +13,18 @@ namespace FIBEX {
  *
  * For reusability time ranges content model is specified using a type definition.
  */
-class VECTOR_DBC_EXPORT TimeRangeType
+class VECTOR_DBC_EXPORT FXTimeRangeType
 {
 public:
-    TimeRangeType();
+    FXTimeRangeType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
     /** @todo element VALUE */
+    QString m_value;
     /** @todo element TOLERANCE */
 };
 
-}
-}
-}
+} // FIBEX
+} // ASAM

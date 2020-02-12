@@ -6,11 +6,11 @@
 namespace ASAM {
 namespace FIBEX {
 
-TimeRangeType::TimeRangeType()
+FXTimeRangeType::FXTimeRangeType()
 {
 }
 
-void TimeRangeType::load(const QDomElement &element)
+void FXTimeRangeType::load(const QDomElement &element)
 {
     /* read childs */
     QDomNode child = element.firstChild();
@@ -20,7 +20,7 @@ void TimeRangeType::load(const QDomElement &element)
         QLOG_TRACE() << "FXRequestControlledTimingType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:VALUE") {
-
+            m_value = childElement.text();
         } else if (childElement.tagName() == "fx:TOLERANCE") {
 
         }
