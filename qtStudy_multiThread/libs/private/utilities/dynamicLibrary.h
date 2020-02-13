@@ -2,15 +2,15 @@
 
 namespace utils
 {
-	class dynamic_library
+    class DynamicLibrary
 	{
 		void* m_handle = nullptr;
 
 	public:
-		dynamic_library() = default;
-		dynamic_library(const std::string& path);
+        DynamicLibrary() = default;
+        DynamicLibrary(const std::string& path);
 
-		~dynamic_library();
+        ~DynamicLibrary();
 
 		bool load(const std::string& path);
 		void close();
@@ -43,20 +43,20 @@ namespace utils
 	void* get_proc_address(const char* lib, const char* name);
 
 	template <typename F>
-	struct dynamic_import
+    struct DynamicImport
 	{
 		static_assert(sizeof(F) == 0, "Invalid function type");
 	};
 
 	template <typename R, typename... Args>
-	struct dynamic_import<R(Args...)>
+    struct DynamicImport<R(Args...)>
 	{
 		R (*ptr)(Args...);
 		const char* const lib;
 		const char* const name;
 
 		// Constant initialization
-		constexpr dynamic_import(const char* lib, const char* name)
+        constexpr DynamicImport(const char* lib, const char* name)
 		    : ptr(nullptr)
 		    , lib(lib)
 		    , name(name)
@@ -89,4 +89,4 @@ namespace utils
 	};
 }
 
-#define DYNAMIC_IMPORT(lib, name, ...) inline utils::dynamic_import<__VA_ARGS__> name(lib, #name);
+#define DYNAMIC_IMPORT(lib, name, ...) inline utils::DynamicImport<__VA_ARGS__> name(lib, #name);

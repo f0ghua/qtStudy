@@ -3,7 +3,7 @@
 
 //#define USE_NtSetTimerResolution
 #ifdef USE_NtSetTimerResolution
-#include "dynamic_library.h"
+#include "dynamicLibrary.h"
 DYNAMIC_IMPORT("ntdll.dll", NtSetTimerResolution, NTSTATUS(ULONG DesiredResolution, BOOLEAN SetResolution, PULONG CurrentResolution));
 #endif
 
@@ -27,7 +27,6 @@ void Worker::runQTimerProcess()
     //timer->setTimerType(Qt::PreciseTimer);
     connect(m_timer, &QTimer::timeout, this, &Worker::handleTimeout);
 
-    m_elapsedTimer.start();
     m_timer->start();
 
     QEventLoop eventLoop;
@@ -41,7 +40,6 @@ void Worker::endQTimerProcess()
 
 void Worker::runWaitableTimerProcess()
 {
-    m_elapsedTimer.start();
     m_isRunning = true;
 
     // setup waitable Win32 periodic timer
@@ -57,6 +55,7 @@ void Worker::runWaitableTimerProcess()
         CloseHandle(m_hTimerEvent);
         m_hTimerEvent = NULL;
     }
+    qDebug() << "m_gv->m_clockRate" << m_gv->m_clockRate;
 
     // wait for 10 ticks for stable timing
     WaitForSingleObject(m_hTimerEvent, m_gv->m_clockRate*10);
@@ -89,15 +88,66 @@ void Worker::endWaitableTimerProcess()
 
 static VOID CALLBACK mmTimerCallback(UINT uTimerID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2)
 {
+    Q_UNUSED(uTimerID);
+    Q_UNUSED(uMsg);
+    Q_UNUSED(dw1);
+    Q_UNUSED(dw2);
+
     Worker *worker = (Worker *)dwUser;
     worker->handleTimeout();
 }
 
 void Worker::runMmTimerProcess()
 {
-    m_elapsedTimer.start();
     m_isRunning = true;
+    m_mmTimerId = timeSetEvent(m_gv->m_clockRate, 0,
+                               (LPTIMECALLBACK)mmTimerCallback,
+                               (DWORD_PTR)this,
+                               TIME_PERIODIC|TIME_CALLBACK_FUNCTION);
+    qDebug() << "m_mmTimerId =" << m_mmTimerId;
+}
 
+void Worker::endMmTimerProcess()
+{
+    if (m_mmTimerId != INVALID_MMTIMER_ID) {
+        timeKillEvent(m_mmTimerId);
+        m_mmTimerId = INVALID_MMTIMER_ID;
+    }
+}
+
+void Worker::handleTimeout()
+{
+    if (!m_isElapsedTimerExecuted) {
+        m_isElapsedTimerExecuted = true;
+        m_elapsedTimer.start();
+        return;
+    }
+
+    //double elpasedMs = m_elapsedTimer.elapsed();
+    qint64 elapsedNs = m_elapsedTimer.nsecsElapsed();
+    double elpasedMs = static_cast<double>(elapsedNs)/1000000 + 0.5;
+    //qDebug() << "elpasedMs =" << elpasedMs;
+
+    int h = static_cast<int>(elpasedMs);
+    if (h < 0) h = 0;
+    if (h >= HMAX) {
+        h = HMAX - 1;
+    }
+    if (++m_gv->m_totalCount > 10) m_gv->m_hSec[h]++;
+
+    m_totalTime += elpasedMs;
+    m_runCount++;
+    if (m_runCount >= 100) {
+        m_gv->m_actualRate = m_totalTime/m_runCount;
+        m_totalTime = 0;
+        m_runCount = 0;
+    }
+
+    m_elapsedTimer.start();
+}
+
+void Worker::setSystemResolution()
+{
 #ifdef USE_NtSetTimerResolution
     {
 #define STATUS_SUCCESS 0
@@ -125,14 +175,9 @@ void Worker::runMmTimerProcess()
         timeBeginPeriod(m_mmTimerResolution);
     }
 #endif
-
-    m_mmTimerId = timeSetEvent(m_gv->m_clockRate, 0,
-                               (LPTIMECALLBACK)mmTimerCallback,
-                               (DWORD_PTR)this,
-                               TIME_PERIODIC|TIME_CALLBACK_FUNCTION);
 }
 
-void Worker::endMmTimerProcess()
+void Worker::clearSystemResolution()
 {
 #ifdef USE_NtSetTimerResolution
     {
@@ -152,45 +197,21 @@ void Worker::endMmTimerProcess()
         }
     }
 #else
-    if (m_mmTimerId != -1) {
-        timeKillEvent(m_mmTimerId);
-        timeEndPeriod(m_mmTimerResolution);
-
-        m_mmTimerId = -1;
-    }
+    timeBeginPeriod(m_mmTimerResolution);
 #endif
-}
-
-void Worker::handleTimeout()
-{
-    qint64 elapsedNs = m_elapsedTimer.nsecsElapsed();
-    double elpasedMs = static_cast<double>(elapsedNs)/1000000 + 0.5;
-//    double elpasedMs = m_elapsedTimer.elapsed();
-//    m_elapsedTimer.start();
-
-    int h = static_cast<int>(elpasedMs);
-    if (h < 0) h = 0;
-    if (h >= HMAX) {
-        h = HMAX - 1;
-    }
-    if (++m_gv->m_totalCount > 10) m_gv->m_hSec[h]++;
-
-    m_totalTime += elpasedMs;
-    m_runCount++;
-    if (m_runCount >= 100) {
-        m_gv->m_actualRate = m_totalTime/m_runCount;
-        m_totalTime = 0;
-        m_runCount = 0;
-    }
-
-    m_elapsedTimer.start();
 }
 
 void Worker::startTimer()
 {
+
+    m_isElapsedTimerExecuted = false;
+
+    setSystemResolution();
+
     SetThreadAffinityMask(GetCurrentThread(), m_gv->m_cpuMask);
     DWORD n = GetCurrentProcessorNumber();
     qDebug() << "GetCurrentProcessorNumber return" << n;
+
     switch (m_gv->m_clockMode) {
         case GblVar::CLOCKMODE_QTIMER:
             runQTimerProcess();
@@ -221,22 +242,11 @@ void Worker::stopTimer()
         default:
             break;
     }
+
+    clearSystemResolution();
 }
 
 void Worker::run()
 {
-#if 0
-    switch (m_gv->m_clockMode) {
-        case GblVar::CLOCKMODE_QTIMER:
-            runQTimerProcess();
-            break;
-        default:
-            break;
-    }
 
-    while(m_isRunning) {
-        //QThread::sleep(1);
-        QCoreApplication::processEvents();
-    }
-#endif
 }

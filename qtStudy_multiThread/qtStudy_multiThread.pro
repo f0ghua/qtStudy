@@ -26,14 +26,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        worker.cpp \
-    dynamic_library.cpp
+        worker.cpp
 
 HEADERS += \
         mainwindow.h \
         worker.h \
-    xtypes.h \
-    dynamic_library.h
+        xtypes.h
 
 FORMS += \
         mainwindow.ui
@@ -44,3 +42,4 @@ TOPBUILDDIR = $$shadowed($$PWD)
 LIBS += -lwinmm -lntdll
 
 include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
+include($${TOPSRCDIR}/libs/private/utilities/utilities.pri)

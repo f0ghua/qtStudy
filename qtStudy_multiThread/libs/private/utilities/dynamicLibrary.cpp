@@ -1,5 +1,5 @@
 ﻿//#include "stdafx.h"
-#include "dynamic_library.h"
+#include "dynamicLibrary.h"
 
 #ifdef _WIN32
 	#include <Windows.h>
@@ -9,17 +9,17 @@
 
 namespace utils
 {
-	dynamic_library::dynamic_library(const std::string& path)
+    DynamicLibrary::DynamicLibrary(const std::string& path)
 	{
 		load(path);
 	}
 
-	dynamic_library::~dynamic_library()
+    DynamicLibrary::~DynamicLibrary()
 	{
 		close();
 	}
 
-	bool dynamic_library::load(const std::string& path)
+    bool DynamicLibrary::load(const std::string& path)
 	{
 #ifdef _WIN32
 		m_handle = LoadLibraryA(path.c_str());
@@ -29,7 +29,7 @@ namespace utils
 		return loaded();
 	}
 
-	void dynamic_library::close()
+    void DynamicLibrary::close()
 	{
 #ifdef _WIN32
 		FreeLibrary(reinterpret_cast<HMODULE>(m_handle));
@@ -39,7 +39,7 @@ namespace utils
 		m_handle = nullptr;
 	}
 
-	void* dynamic_library::get_impl(const std::string& name) const
+    void* DynamicLibrary::get_impl(const std::string& name) const
 	{
 #ifdef _WIN32
 		return reinterpret_cast<void*>(GetProcAddress(reinterpret_cast<HMODULE>(m_handle), name.c_str()));
@@ -48,12 +48,12 @@ namespace utils
 #endif
 	}
 
-	bool dynamic_library::loaded() const
+    bool DynamicLibrary::loaded() const
 	{
 		return m_handle != nullptr;
 	}
 
-	dynamic_library::operator bool() const
+    DynamicLibrary::operator bool() const
 	{
 		return loaded();
 	}
