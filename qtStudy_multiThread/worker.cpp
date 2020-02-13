@@ -109,9 +109,9 @@ void Worker::runMmTimerProcess()
 
 void Worker::endMmTimerProcess()
 {
-    if (m_mmTimerId != INVALID_MMTIMER_ID) {
+    if (m_mmTimerId != 0) {
         timeKillEvent(m_mmTimerId);
-        m_mmTimerId = INVALID_MMTIMER_ID;
+        m_mmTimerId = 0;
     }
 }
 
@@ -162,7 +162,7 @@ void Worker::setSystemResolution()
             qDebug() << "NtSetTimerResolution call failed";
         }
 
-        qDebug() << "CurrentResolution [100 ns units]:" << m_currentResolution;
+        qDebug() << "m_currentResolution [100 ns units]:" << m_currentResolution;
         // this will show 5000 on more modern platforms (0.5ms!)
         // do your stuff here at 0.5 ms timer resolution
     }

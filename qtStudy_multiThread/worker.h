@@ -8,8 +8,8 @@
 #include <QObject>
 #include <QElapsedTimer>
 
-//typedef QElapsedTimer Timer;
-typedef ChronoElapsedTimer Timer;
+typedef QElapsedTimer Timer;
+//typedef ChronoElapsedTimer Timer;
 
 class QTimer;
 
@@ -43,8 +43,7 @@ private:
     double m_totalTime = 0.0;
     QTimer *m_timer;
     HANDLE m_hTimerEvent = NULL;
-#define INVALID_MMTIMER_ID ((UINT)-1)
-    UINT m_mmTimerId = INVALID_MMTIMER_ID;
+    UINT m_mmTimerId = 0;
     UINT m_mmTimerResolution = 0;
     ULONG m_requestedResolution = 5000;
     ULONG m_currentResolution = 0;
