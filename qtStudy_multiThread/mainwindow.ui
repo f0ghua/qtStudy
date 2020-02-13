@@ -128,7 +128,11 @@
         </widget>
        </item>
        <item row="0" column="1" colspan="4">
-        <widget class="QSpinBox" name="sbClockRate"/>
+        <widget class="QSpinBox" name="sbClockRate">
+         <property name="maximum">
+          <number>100000</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

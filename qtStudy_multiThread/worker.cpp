@@ -164,7 +164,6 @@ void Worker::endMmTimerProcess()
 void Worker::handleTimeout()
 {
     qint64 elapsedNs = m_elapsedTimer.nsecsElapsed();
-    m_elapsedTimer.start();
     double elpasedMs = static_cast<double>(elapsedNs)/1000000 + 0.5;
 //    double elpasedMs = m_elapsedTimer.elapsed();
 //    m_elapsedTimer.start();
@@ -183,6 +182,8 @@ void Worker::handleTimeout()
         m_totalTime = 0;
         m_runCount = 0;
     }
+
+    m_elapsedTimer.start();
 }
 
 void Worker::startTimer()
