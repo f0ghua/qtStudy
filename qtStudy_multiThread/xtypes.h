@@ -10,6 +10,7 @@ struct GblVar {
         CLOCKMODE_QTIMER = 0,
         CLOCKMODE_WAITABLETIMER,
         CLOCKMODE_MMTIMER,
+        CLOCKMODE_BLOCKTIMER,
     };
 
     quint64 m_hSec[HMAX];

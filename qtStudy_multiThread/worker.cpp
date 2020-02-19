@@ -115,6 +115,57 @@ void Worker::endMmTimerProcess()
     }
 }
 
+typedef std::chrono::microseconds microseconds;
+
+void Worker::runBlockTimerProcess()
+{
+    m_countingTimer = new Timer();
+    m_countingTimer->start();
+
+    while(m_isRunning) {
+        static quint64 t2 = 0;
+
+#if 0
+        Sleep(1);
+        //QCoreApplication::processEvents();
+
+        quint64 t1 = timeGetTime();
+        quint64 v4 = t1 - t2;
+        //qDebug() << "v4 =" << v4 << ", t1 =" << t1 << ", t2 =" << t2;
+
+        if (v4) {
+            int v6 = 0;
+            t2 = t1;
+            do {
+                v6++;
+
+                if (m_countingTimer->nsecsElapsed() >= (1000000 * m_gv->m_clockRate)) {
+                    handleTimeout();
+                    m_countingTimer->start();
+                } else {
+                    std::this_thread::sleep_for(microseconds(25));
+                    //QCoreApplication::processEvents();
+                }
+            } while ((timeGetTime() < (t1+25)) && (v4 > v6));
+        }
+#else
+        if (m_countingTimer->nsecsElapsed() >= (1000000 * m_gv->m_clockRate)) {
+            handleTimeout();
+            m_countingTimer->start();
+        } else {
+            std::this_thread::sleep_for(microseconds(1));
+            //QCoreApplication::processEvents();
+        }
+#endif
+    }
+}
+
+void Worker::endBlockTimerProcess()
+{
+    m_isRunning = false;
+    delete m_countingTimer;
+}
+
 void Worker::handleTimeout()
 {
     if (!m_isElapsedTimerExecuted) {
@@ -125,8 +176,11 @@ void Worker::handleTimeout()
 
     //double elpasedMs = m_elapsedTimer.elapsed();
     qint64 elapsedNs = m_elapsedTimer.nsecsElapsed();
-    double elpasedMs = static_cast<double>(elapsedNs)/1000000 + 0.5;
-    //qDebug() << "elpasedMs =" << elpasedMs;
+    double elpasedMs = static_cast<double>(elapsedNs)/1000000;
+    if (m_gv->m_clockMode != GblVar::CLOCKMODE_BLOCKTIMER) {
+        elpasedMs += 0.5;
+    }
+    qDebug() << "elpasedMs =" << elpasedMs;
 
     int h = static_cast<int>(elpasedMs);
     if (h < 0) h = 0;
@@ -222,6 +276,9 @@ void Worker::startTimer()
         case GblVar::CLOCKMODE_MMTIMER:
             runMmTimerProcess();
             break;
+        case GblVar::CLOCKMODE_BLOCKTIMER:
+            runBlockTimerProcess();
+            break;
         default:
             break;
     }
@@ -238,6 +295,9 @@ void Worker::stopTimer()
             break;
         case GblVar::CLOCKMODE_MMTIMER:
             endMmTimerProcess();
+            break;
+        case GblVar::CLOCKMODE_BLOCKTIMER:
+            endBlockTimerProcess();
             break;
         default:
             break;

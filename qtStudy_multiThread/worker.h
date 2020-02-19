@@ -36,6 +36,8 @@ private:
     void endWaitableTimerProcess();
     void runMmTimerProcess();
     void endMmTimerProcess();
+    void runBlockTimerProcess();
+    void endBlockTimerProcess();
 
     bool m_isRunning = true;
     GblVar *m_gv;
@@ -49,6 +51,7 @@ private:
     ULONG m_currentResolution = 0;
     Timer m_elapsedTimer;
     bool m_isElapsedTimerExecuted = false;
+    Timer *m_countingTimer;
 };
 
 #endif // WORKER_H
