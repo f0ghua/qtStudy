@@ -10,16 +10,21 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType ECU-TYPE
  *
  * Content model for the entity ECU.
  * Platform-specific extensions are not possible, to maintain the capability to describe multi-platform networks.
  */
-class VECTOR_DBC_EXPORT FXEcuType : public FXRevisedElementType
+class VECTOR_DBC_EXPORT FXEcuType : public FXRevisedElementType, public QObject
 {
 public:
-    FXEcuType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXEcuType(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

@@ -9,15 +9,20 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType PROCESSING-INFORMATION
  *
  * Data needed to process data in elements.
  */
-class VECTOR_DBC_EXPORT FXProcessingInformation
+class VECTOR_DBC_EXPORT FXProcessingInformation : public QObject
 {
 public:
-    FXProcessingInformation();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXProcessingInformation(FXFibex *fibex, QObject *parent = Q_NULLPTR);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
@@ -25,7 +30,7 @@ public:
     /** element UNIT-SPEC */
     HOUnitSpec m_unitSpec;
     /** element CODINGS */
-    FXCodings m_codings;
+    FXCodings *m_codings;
 };
 
 } // FIBEX

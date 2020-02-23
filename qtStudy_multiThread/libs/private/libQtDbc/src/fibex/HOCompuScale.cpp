@@ -1,12 +1,15 @@
 #include "HOCompuScale.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-HOCompuScale::HOCompuScale()
+HOCompuScale::HOCompuScale(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -19,6 +22,20 @@ void HOCompuScale::load(const QDomElement &element)
         QLOG_TRACE() << "HOCompuScale::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ho:SHORT-LABEL") {
+
+        } else if (childElement.tagName() == "ho:DESC") {
+
+        } else if (childElement.tagName() == "ho:MASK") {
+
+        } else if (childElement.tagName() == "ho:LOWER-LIMIT") {
+
+        } else if (childElement.tagName() == "ho:UPPER-LIMIT") {
+
+        } else if (childElement.tagName() == "ho:COMPU-CONST") {
+
+        } else if (childElement.tagName() == "ho:COMPU-RATIONAL-COEFFS") {
+
+        } else if (childElement.tagName() == "ho:COMPU-GENERIC-MATH") {
 
         }
 

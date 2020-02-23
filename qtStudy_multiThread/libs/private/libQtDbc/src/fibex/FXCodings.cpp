@@ -1,12 +1,15 @@
 #include "FXCodings.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXCodings::FXCodings()
+FXCodings::FXCodings(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -19,9 +22,9 @@ void FXCodings::load(const QDomElement &element)
         QLOG_TRACE() << "FXCodings::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:CODING") {
-            CodingType ct;
-            ct.load(childElement);
-            m_codings[ct.m_id] = ct;
+            CodingType *ct = new CodingType(m_fibex, this);
+            ct->load(childElement);
+            m_codings[ct->m_id] = ct;
         }
 
         child = child.nextSibling();

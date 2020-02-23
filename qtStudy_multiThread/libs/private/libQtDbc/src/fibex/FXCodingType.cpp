@@ -1,13 +1,16 @@
 #include "FXCodingType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-CodingType::CodingType()
+CodingType::CodingType(FXFibex *fibex, QObject *parent)
     : FXRevisedElementType()
+    , QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -24,9 +27,15 @@ void CodingType::load(const QDomElement &element)
         if (childElement.tagName() == "ho:PHYSICAL-TYPE") {
 
         } else if (childElement.tagName() == "ho:CODED-TYPE") {
-            m_codedType.load(childElement);
+            if (!m_codedType) {
+                m_codedType = new HOCodedType(m_fibex, this);
+                m_codedType->load(childElement);
+            }
         } else if (childElement.tagName() == "ho:COMPU-METHODS") {
-            m_compuMethods.load(childElement);
+            if (!m_compuMethods) {
+                m_compuMethods = new HOCompuMethods(m_fibex, this);
+                m_compuMethods->load(childElement);
+            }
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 
         }

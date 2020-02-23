@@ -1,12 +1,15 @@
 #include "HOCompInternalToPhys.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-HOCompInternalToPhys::HOCompInternalToPhys()
+HOCompInternalToPhys::HOCompInternalToPhys(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -19,7 +22,10 @@ void HOCompInternalToPhys::load(const QDomElement &element)
         QLOG_TRACE() << "HOCompInternalToPhys::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ho:COMPU-SCALES") {
-            m_compuScales.load(childElement);
+            if (!m_compuScales) {
+                m_compuScales = new HOCompuScale(m_fibex, this);
+                m_compuScales->load(childElement);
+            }
         } else if (childElement.tagName() == "ho:COMPU-DEFAULT-VALUE") {
 
         }

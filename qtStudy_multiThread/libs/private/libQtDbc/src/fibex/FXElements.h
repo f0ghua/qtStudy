@@ -28,15 +28,21 @@ typedef int CompositeType;
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType ELEMENTS
  *
  * Root of all stand-alone elements
  */
-class VECTOR_DBC_EXPORT FXElements
+class VECTOR_DBC_EXPORT FXElements : public QObject
 {
 public:
-    FXElements();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXElements(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    ~FXElements();
 
     /** load from XML DOM element */
     bool load(const QDomElement &element);
@@ -60,24 +66,23 @@ public:
     QList<GatewayType> m_gatewayList;
 
     /** Electronic Control Unit (sometimes called 'node') */
-    QList<FXEcuType> m_ecuList;
+    QHash<QString, FXEcuType*> m_ecus;
 
-    QList<FXPduTypeCt> m_pduList;
+    QHash<QString, FXPduTypeCt*> m_pdus;
 
     /**
      * Smallest piece of information exchanged over the communication system.
      * A frame normally consists of a header and a data (payload) section.
      * The data section contains signals.
      */
-    QList<FXFrameTypeCt> m_frameList;
-
-    /** Part of the application running in an ECU */
-    QList<FunctionType> m_functionList;
+    QHash<QString, FXFrameTypeCt*> m_frames;
 
     /** Smallest logical piece of information exchanged by applications */
-    QList<FXSignalType> m_signalList;
+    QHash<QString, FXSignalType*> m_signals;
 
-    /** A hierarchical structure on functions or ecus. */
+    /** @todo Part of the application running in an ECU */
+    QList<FunctionType> m_functionList;
+    /** @todo A hierarchical structure on functions or ecus. */
     QList<CompositeType> m_compositeList;
 };
 

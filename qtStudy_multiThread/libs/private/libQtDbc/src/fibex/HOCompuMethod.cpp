@@ -1,13 +1,16 @@
 #include "HOCompuMethod.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-HOCompuMethod::HOCompuMethod()
+HOCompuMethod::HOCompuMethod(FXFibex *fibex, QObject *parent)
     : HONameDetails()
+    , QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -42,7 +45,10 @@ void HOCompuMethod::load(const QDomElement &element)
         } else if (childElement.tagName() == "ho:INTERNAL-CONSTRS") {
             m_internalConstrs.load(childElement);
         } else if (childElement.tagName() == "ho:COMPU-INTERNAL-TO-PHYS") {
-            m_compuInternalToPhys.load(childElement);
+            if (!m_compuInternalToPhys) {
+                m_compuInternalToPhys = new HOCompInternalToPhys(m_fibex, this);
+                m_compuInternalToPhys->load(childElement);
+            }
         } else if (childElement.tagName() == "ho:DESC") {
 
         }

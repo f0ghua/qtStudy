@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     QAppLogging *appLogging = QAppLogging::instance();
-    //appLogging->setFilterRulesByLevel(QAppLogging::LogLevel::DebugLevel);
+    appLogging->setFilterRulesByLevel(QAppLogging::LogLevel::DebugLevel);
     appLogging->setFilterRulesByLevel(QAppLogging::LogLevel::OffLevel);
     QAppLogging::installHandler();
 

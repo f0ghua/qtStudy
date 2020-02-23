@@ -1,18 +1,21 @@
 #include "HOCompuMethods.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-HOCompuMethods::HOCompuMethods()
+HOCompuMethods::HOCompuMethods(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
 void HOCompuMethods::load(const QDomElement &element)
 {
-    m_compuMethodList.clear();
+    m_compuMethods.clear();
 
     QDomNode child = element.firstChild();
     while (!child.isNull()) {
@@ -21,9 +24,9 @@ void HOCompuMethods::load(const QDomElement &element)
         QLOG_TRACE() << "HOCompuMethods::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ho:COMPU-METHOD") {
-            HOCompuMethod cm;
-            cm.load(childElement);
-            m_compuMethodList.append(cm);
+            HOCompuMethod *cm = new HOCompuMethod(m_fibex, this);
+            cm->load(childElement);
+            m_compuMethods.append(cm);
         }
 
         child = child.nextSibling();

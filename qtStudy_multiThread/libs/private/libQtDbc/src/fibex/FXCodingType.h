@@ -12,28 +12,29 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType CODING-TYPE
  *
  * Content model for the entity CODING.
  */
-class VECTOR_DBC_EXPORT CodingType : public FXRevisedElementType
+class VECTOR_DBC_EXPORT CodingType : public FXRevisedElementType, public QObject
 {
 public:
-    CodingType();
-    CodingType &operator=(const CodingType &other)
-    {
-        qDebug() << "CodingType copy function has been called";
-    }
+    FXFibex *m_fibex = nullptr;
+
+public:
+    CodingType(FXFibex *fibex, QObject *parent = Q_NULLPTR);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
     /** @todo element PHYSICAL-TYPE */
     /** element CODED-TYPE */
-    HOCodedType m_codedType;
+    HOCodedType *m_codedType;
     /** @todo element COMPU-METHODS */
-    HOCompuMethods m_compuMethods;
+    HOCompuMethods *m_compuMethods = nullptr;
     /** @todo element MANUFACTURER-EXTENSION */
 };
 

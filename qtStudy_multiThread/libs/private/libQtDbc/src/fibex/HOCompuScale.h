@@ -8,6 +8,8 @@ class QDomElement;
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType COMPU-SCALE
  *
@@ -15,10 +17,13 @@ namespace FIBEX {
  * the communication system) into phyiscal data of an application.
  *
  */
-class VECTOR_DBC_EXPORT HOCompuScale
+class VECTOR_DBC_EXPORT HOCompuScale : public QObject
 {
 public:
-    HOCompuScale();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    HOCompuScale(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

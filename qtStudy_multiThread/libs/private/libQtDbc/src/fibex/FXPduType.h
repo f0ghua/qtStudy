@@ -9,15 +9,20 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType PDU-TYPE
  *
  * Content model for the entity PDU.
  */
-class VECTOR_DBC_EXPORT FXPduTypeCt : public FXRevisedElementType
+class VECTOR_DBC_EXPORT FXPduTypeCt : public FXRevisedElementType, public QObject
 {
 public:
-    FXPduTypeCt();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXPduTypeCt(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

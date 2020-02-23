@@ -1,13 +1,16 @@
 #include "FXPduType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXPduTypeCt::FXPduTypeCt()
+FXPduTypeCt::FXPduTypeCt(FXFibex *fibex, QObject *parent)
     : FXRevisedElementType()
+    , QObject(parent)
+    , m_fibex(fibex)
 {
 }
 

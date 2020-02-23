@@ -55,7 +55,7 @@ Status File::loadFibexFile(const QString &fileName)
     qDebug() << root.tagName();
 
     //ret = xmlParseFibex(root);
-    Fibex fb;
+    ASAM::FIBEX::Fibex fb;
     fb.load(root);
 
     // convert to network tree

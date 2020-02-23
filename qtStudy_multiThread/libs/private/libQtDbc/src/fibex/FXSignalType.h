@@ -9,20 +9,23 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType SIGNAL-TYPE
  *
  * Content model for the entity SIGNAL.
  */
-class VECTOR_DBC_EXPORT FXSignalType : public FXRevisedElementType
+class VECTOR_DBC_EXPORT FXSignalType : public FXRevisedElementType, public QObject
 {
 public:
-    FXSignalType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXSignalType(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
-
-    QString m_id;
 
     /**
      * @brief element DEFAULT-VALUE

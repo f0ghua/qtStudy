@@ -8,15 +8,20 @@ class QDomElement;
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief element CODED-TYPE
  *
  * Coded Type of data on communication system.
  */
-class VECTOR_DBC_EXPORT HOCodedType
+class VECTOR_DBC_EXPORT HOCodedType : public QObject
 {
 public:
-    HOCodedType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    HOCodedType(FXFibex *fibex, QObject *parent = Q_NULLPTR);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

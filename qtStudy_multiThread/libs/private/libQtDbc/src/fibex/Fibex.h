@@ -16,7 +16,7 @@ namespace FIBEX {
 class VECTOR_DBC_EXPORT Fibex : public FXFibex
 {
 public:
-    Fibex();
+    Fibex(QObject *parent = nullptr);
     virtual ~Fibex();
 
     /**

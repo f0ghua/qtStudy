@@ -1,12 +1,15 @@
 #include "FXProcessingInformation.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXProcessingInformation::FXProcessingInformation()
+FXProcessingInformation::FXProcessingInformation(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -21,7 +24,8 @@ void FXProcessingInformation::load(const QDomElement &element)
         if (childElement.tagName() == "fx:UNIT-SPEC") {
             m_unitSpec.load(childElement);
         } else if (childElement.tagName() == "fx:CODINGS") {
-            m_codings.load(childElement);
+            m_codings = new FXCodings(m_fibex, this);
+            m_codings->load(childElement);
         }
 
         child = child.nextSibling();

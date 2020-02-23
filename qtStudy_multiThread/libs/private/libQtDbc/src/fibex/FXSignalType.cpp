@@ -1,13 +1,16 @@
 #include "FXSignalType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXSignalType::FXSignalType()
+FXSignalType::FXSignalType(FXFibex *fibex, QObject *parent)
     : FXRevisedElementType()
+    , QObject(parent)
+    , m_fibex(fibex)
     , m_defaultValue()
     , m_codingRef()
     , m_sigType()
@@ -17,10 +20,6 @@ FXSignalType::FXSignalType()
 
 void FXSignalType::load(const QDomElement &element)
 {
-    m_id = element.attribute("ID");
-#ifndef F_NO_DEBUG
-    QLOG_DEBUG() << "FXSignalType::load, m_id =" << m_id;
-#endif
     FXRevisedElementType::load(element);
 
     QDomNode child = element.firstChild();

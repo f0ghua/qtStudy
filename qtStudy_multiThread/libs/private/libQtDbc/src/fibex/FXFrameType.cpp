@@ -1,5 +1,6 @@
 #include "FXFrameType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 #include <QDebug>
@@ -7,8 +8,10 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXFrameTypeCt::FXFrameTypeCt()
-    //: RevisedElementType()
+FXFrameTypeCt::FXFrameTypeCt(FXFibex *fibex, QObject *parent)
+    : FXRevisedElementType()
+    , QObject(parent)
+    , m_fibex(fibex)
 {
 }
 

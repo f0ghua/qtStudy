@@ -13,15 +13,20 @@ class QDomElement;
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief element COMPU-METHOD
  *
  * Method to calulate the transmitted value to the physical representation
  */
-class VECTOR_DBC_EXPORT HOCompuMethod : public HONameDetails
+class VECTOR_DBC_EXPORT HOCompuMethod : public HONameDetails, public QObject
 {
 public:
-    HOCompuMethod();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    HOCompuMethod(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
@@ -35,7 +40,7 @@ public:
     /** element ho:INTERNAL-CONSTRS */
     HOScaleConstrType m_internalConstrs;
     /** element ho:COMPU-INTERNAL-TO-PHYS */
-    HOCompInternalToPhys m_compuInternalToPhys;
+    HOCompInternalToPhys *m_compuInternalToPhys;
     /** @todo element ho:DESC */
 };
 

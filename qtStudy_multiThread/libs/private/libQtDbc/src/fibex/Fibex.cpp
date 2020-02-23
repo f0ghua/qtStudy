@@ -3,8 +3,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-Fibex::Fibex()
-    : FXFibex()
+Fibex::Fibex(QObject *parent)
+    : FXFibex(parent)
     , m_domElement(nullptr)
 {
 

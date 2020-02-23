@@ -23,19 +23,19 @@ namespace FIBEX {
  *
  * Root element
  */
-class VECTOR_DBC_EXPORT FXFibex
+class VECTOR_DBC_EXPORT FXFibex : public QObject
 {
 public:
-    FXFibex();
+    FXFibex(QObject *parent = nullptr);
 
     /** load from XML DOM element */
     bool load(const QDomElement &element);
 
     /** element ELEMENTS */
-    FXElements m_elements;
+    FXElements *m_elements = nullptr;
 
     /** element PROCESSING-INFORMATION */
-    FXProcessingInformation m_processingInformation;
+    FXProcessingInformation *m_processingInformation = nullptr;
 
 #if 0
     /**
