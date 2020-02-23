@@ -15,11 +15,23 @@ Fibex::~Fibex()
 
 }
 
-bool Fibex::load(const QDomElement &element)
-{   
-    /* load Fibex tree */
-    return FXFibex::load(element);
+bool Fibex::covertXml2Db()
+{
+    return true;
 }
 
+bool Fibex::load(const QDomElement &element)
+{   
+    bool ret;
+
+    /* load Fibex tree */
+    ret = FXFibex::load(element);
+    if (!ret) {
+        return false;
+    }
+
+    return covertXml2Db();
 }
-}
+
+} // FIBEX
+} // ASAM

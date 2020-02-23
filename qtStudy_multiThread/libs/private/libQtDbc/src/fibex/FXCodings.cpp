@@ -21,7 +21,7 @@ void FXCodings::load(const QDomElement &element)
         if (childElement.tagName() == "fx:CODING") {
             CodingType ct;
             ct.load(childElement);
-            m_codingList.append(ct);
+            m_codings[ct.m_id] = ct;
         }
 
         child = child.nextSibling();

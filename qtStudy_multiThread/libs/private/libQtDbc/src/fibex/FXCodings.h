@@ -22,7 +22,7 @@ public:
     void load(const QDomElement &element);
 
     /** element CODING */
-    QList<CodingType> m_codingList;
+    QHash<QString, CodingType> m_codings;
 };
 
 } // FIBEX

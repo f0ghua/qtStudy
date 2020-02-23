@@ -123,5 +123,25 @@ FibexTypes::EnumParser<FibexTypes::FXMedium>::EnumParser()
     enumMap["OTHER"]                    = FibexTypes::FXMedium::OTHER;
 }
 
+template<>
+FibexTypes::EnumParser<FibexTypes::HOBaseDataType>::EnumParser()
+{
+    enumMap["A_UINT8"]                  = FibexTypes::HOBaseDataType::A_UINT8;
+    enumMap["A_INT8"]                   = FibexTypes::HOBaseDataType::A_INT8;
+    enumMap["A_UINT16"]                 = FibexTypes::HOBaseDataType::A_UINT16;
+    enumMap["A_INT16"]                  = FibexTypes::HOBaseDataType::A_INT16;
+    enumMap["A_UINT32"]                 = FibexTypes::HOBaseDataType::A_UINT32;
+    enumMap["A_INT32"]                  = FibexTypes::HOBaseDataType::A_INT32;
+    enumMap["A_UINT64"]                 = FibexTypes::HOBaseDataType::A_UINT64;
+    enumMap["A_INT64"]                  = FibexTypes::HOBaseDataType::A_INT64;
+    enumMap["A_FLOAT32"]                = FibexTypes::HOBaseDataType::A_FLOAT32;
+    enumMap["A_FLOAT64"]                = FibexTypes::HOBaseDataType::A_FLOAT64;
+    enumMap["A_ASCIISTRING"]            = FibexTypes::HOBaseDataType::A_ASCIISTRING;
+    enumMap["A_UNICODE2STRING"]         = FibexTypes::HOBaseDataType::A_UNICODE2STRING;
+    enumMap["A_BYTEFIELD"]              = FibexTypes::HOBaseDataType::A_BYTEFIELD;
+    enumMap["A_BITFIELD"]               = FibexTypes::HOBaseDataType::A_BITFIELD;
+    enumMap["OTHER"]                    = FibexTypes::HOBaseDataType::OTHER;
+}
+
 } // FIBEX
 } // ASAM

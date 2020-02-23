@@ -75,7 +75,8 @@ SOURCES += \
     $$PWD/src/fibex/FXIdentifier.cpp \
     $$PWD/src/fibex/FXClusterType.cpp \
     $$PWD/src/fibex/FRChannelType.cpp \
-    $$PWD/src/fibex/FRClusterType.cpp
+    $$PWD/src/fibex/FRClusterType.cpp \
+    $$PWD/src/fibex/FBSignal.cpp
 
 HEADERS += \
     $$PWD/inc/DbcHandle.h\
@@ -161,7 +162,10 @@ HEADERS += \
     $$PWD/src/fibex/FXIdentifier.h \
     $$PWD/src/fibex/FXClusterType.h \
     $$PWD/src/fibex/FRChannelType.h \
-    $$PWD/src/fibex/FRClusterType.h
+    $$PWD/src/fibex/FRClusterType.h \
+    $$PWD/src/fibex/FBAttribute.h \
+    $$PWD/src/fibex/FBSignal.h \
+    $$PWD/src/fibex/FBAttributeValueType.h
 
 
 OTHER_FILES += \

@@ -7,6 +7,8 @@
 #include "HOCodedType.h"
 #include "HOCompuMethods.h"
 
+#include <QDebug>
+
 namespace ASAM {
 namespace FIBEX {
 
@@ -19,6 +21,10 @@ class VECTOR_DBC_EXPORT CodingType : public FXRevisedElementType
 {
 public:
     CodingType();
+    CodingType &operator=(const CodingType &other)
+    {
+        qDebug() << "CodingType copy function has been called";
+    }
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

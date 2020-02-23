@@ -5,6 +5,7 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+#include "FBSignal.h"
 #include "FXFibex.h"
 
 class QDomElement;
@@ -26,8 +27,18 @@ public:
      */
     bool load(const QDomElement &element);
 
+public:
+    bool covertXml2Db();
+
+//    QList<FBChannel>  m_channelList;
+//    QList<FBEcu> m_ecuList;
+//    QList<FBFrame> m_frameList;
+//    QList<FBPdu> m_pduList;
+    QList<FBSignal> m_signals;
+
 private:
     QDomElement *m_domElement;
+
 };
 
 }

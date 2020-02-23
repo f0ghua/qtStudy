@@ -156,6 +156,27 @@ public:
         OTHER,
     };
 
+    /**
+     * @brief ho:BASE-DATA-TYPE
+     */
+    enum class HOBaseDataType {
+        A_UINT8,
+        A_INT8,
+        A_UINT16,
+        A_INT16,
+        A_UINT32,
+        A_INT32,
+        A_UINT64,
+        A_INT64,
+        A_FLOAT32,
+        A_FLOAT64,
+        A_ASCIISTRING,
+        A_UNICODE2STRING,
+        A_BYTEFIELD,
+        A_BITFIELD,
+        OTHER,
+    };
+
 };
 
 } // FIBEX

@@ -90,9 +90,9 @@
 	- fx:SIGNAL-INSTANCES
 		- fx:SIGNAL-INSTANCE[N]
 			- fx:BIT-POSITION/fx:IS-HIGH-LOW-BYTE-ORDER
-			- fx:SIGNAL-REF -> fx:SIGNAL
+			- fx:SIGNAL-REF(ID-REF=) -> fx:SIGNAL(ID)
 			
-- fx:SIGNAL
+- fx:SIGNAL(ID=)
 	- ho:SHORT-NAME/fx:SIGNAL-TYPE
 	- fx:CODING-REF -> fx:CODING
 		
