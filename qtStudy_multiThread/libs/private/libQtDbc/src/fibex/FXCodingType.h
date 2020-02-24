@@ -32,7 +32,7 @@ public:
 
     /** @todo element PHYSICAL-TYPE */
     /** element CODED-TYPE */
-    HOCodedType *m_codedType;
+    HOCodedType *m_codedType = nullptr;
     /** @todo element COMPU-METHODS */
     HOCompuMethods *m_compuMethods = nullptr;
     /** @todo element MANUFACTURER-EXTENSION */

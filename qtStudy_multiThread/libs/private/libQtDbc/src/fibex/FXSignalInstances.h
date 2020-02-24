@@ -8,21 +8,26 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType SIGNAL-INSTANCES
  *
  * A PDUs layout as a sequence of Signal-Instances
  */
-class VECTOR_DBC_EXPORT FXSignalInstances
+class VECTOR_DBC_EXPORT FXSignalInstances : public QObject
 {
 public:
-    FXSignalInstances();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXSignalInstances(FXFibex *fibex, QObject *parent = Q_NULLPTR);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
     /** element SIGNAL-INSTANCE */
-    QList<FXSignalInstanceType> m_sigInstanceList;
+    QHash<QString, FXSignalInstanceType*> m_sigInstances;
 };
 
 } // FIBEX

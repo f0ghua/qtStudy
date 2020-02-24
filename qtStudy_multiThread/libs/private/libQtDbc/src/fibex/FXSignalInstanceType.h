@@ -9,15 +9,20 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType SIGNAL-INSTANCE-TYPE
  *
  * Content model for the entity SIGNAL-INSTANCE
  */
-class VECTOR_DBC_EXPORT FXSignalInstanceType
+class VECTOR_DBC_EXPORT FXSignalInstanceType : public QObject
 {
 public:
-    FXSignalInstanceType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXSignalInstanceType(FXFibex *fibex, QObject *parent = Q_NULLPTR);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

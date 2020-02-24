@@ -34,7 +34,7 @@ public:
 //    QList<FBEcu> m_ecuList;
 //    QList<FBFrame> m_frameList;
 //    QList<FBPdu> m_pduList;
-    QList<FBSignal> m_signals;
+    QHash<QString, FBSignal *> m_signals;
 
 private:
     QDomElement *m_domElement;

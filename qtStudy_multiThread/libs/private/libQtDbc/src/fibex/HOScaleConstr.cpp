@@ -1,4 +1,4 @@
-#include "HOScaleConstrType.h"
+#include "HOScaleConstr.h"
 #include "LogDb.h"
 
 #include <QDomElement>
@@ -6,7 +6,7 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOScaleConstrType::HOScaleConstrType()
+HOScaleConstr::HOScaleConstr()
     : m_lowerLimit(0.0)
     , m_lowerLimitIntervalType(FibexTypes::HOIntervalTypeAb::CLOSED)
     , m_upperLimit(0.0)
@@ -14,13 +14,13 @@ HOScaleConstrType::HOScaleConstrType()
 {
 }
 
-void HOScaleConstrType::load(const QDomElement &element)
+void HOScaleConstr::load(const QDomElement &element)
 {
     QDomNode child = element.firstChild();
     while (!child.isNull()) {
         const QDomElement &childElement = child.toElement();
 #ifndef F_NO_DEBUG
-        QLOG_TRACE() << "HOScaleConstrType::load" << childElement.tagName();
+        QLOG_TRACE() << "HOScaleConstr::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ho:LOWER-LIMIT") {
             m_lowerLimit = childElement.text().toDouble();
@@ -31,7 +31,7 @@ void HOScaleConstrType::load(const QDomElement &element)
             if (isOk) {
                 m_lowerLimitIntervalType = type;
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "HOScaleConstrType::load, m_lowerLimitIntervalType =" << typeStr << (int)m_lowerLimitIntervalType;
+                QLOG_DEBUG() << "HOScaleConstr::load, m_lowerLimitIntervalType =" << typeStr << (int)m_lowerLimitIntervalType;
 #endif
             }
         } else if (childElement.tagName() == "ho:UPPER-LIMIT") {
@@ -43,12 +43,10 @@ void HOScaleConstrType::load(const QDomElement &element)
             if (isOk) {
                 m_upperLimitIntervalType = type;
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "HOScaleConstrType::load, m_upperLimitIntervalType =" << typeStr << (int)m_upperLimitIntervalType;
+                QLOG_DEBUG() << "HOScaleConstr::load, m_upperLimitIntervalType =" << typeStr << (int)m_upperLimitIntervalType;
 #endif
             }
 
-        } else if (childElement.tagName() == "ho:SCALE-CONSTR") {
-            m_scaleConstr.load(childElement);
         }
 
         child = child.nextSibling();

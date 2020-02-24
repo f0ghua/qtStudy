@@ -3,6 +3,8 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+#include "FibexTypes.h"
+
 class QDomElement;
 
 namespace ASAM {
@@ -22,11 +24,12 @@ public:
 
 public:
     HOCodedType(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    ~HOCodedType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    QString m_baseDataType;
+    FibexTypes::HOBaseDataType *m_baseDataType = nullptr;
     QString m_category;
     QString m_encoding;
 

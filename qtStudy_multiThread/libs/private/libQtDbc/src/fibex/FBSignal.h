@@ -12,10 +12,10 @@ namespace FIBEX {
 typedef FibexTypes::FXBitCountingPolicy ByteOrder;
 typedef FibexTypes::HOBaseDataType ValueType;
 
-class VECTOR_DBC_EXPORT FBSignal
+class VECTOR_DBC_EXPORT FBSignal : public QObject
 {
 public:
-    FBSignal();
+    FBSignal(QObject *parent);
 
     /** Name */
     QString m_name;

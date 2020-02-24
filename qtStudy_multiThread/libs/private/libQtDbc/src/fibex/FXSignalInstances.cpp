@@ -1,12 +1,15 @@
 #include "FXSignalInstances.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXSignalInstances::FXSignalInstances()
+FXSignalInstances::FXSignalInstances(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -19,9 +22,9 @@ void FXSignalInstances::load(const QDomElement &element)
         QLOG_TRACE() << "FXSignalInstances::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:SIGNAL-INSTANCE") {
-            FXSignalInstanceType si;
-            si.load(childElement);
-            m_sigInstanceList.append(si);
+            FXSignalInstanceType *si = new FXSignalInstanceType(m_fibex, this);
+            si->load(childElement);
+            m_sigInstances[si->m_id] = si;
         }
 
         child = child.nextSibling();

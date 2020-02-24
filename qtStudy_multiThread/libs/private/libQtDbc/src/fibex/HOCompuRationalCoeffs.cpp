@@ -1,12 +1,15 @@
 #include "HOCompuRationalCoeffs.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-HOCompuRationalCoeffs::HOCompuRationalCoeffs()
+HOCompuRationalCoeffs::HOCompuRationalCoeffs(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 

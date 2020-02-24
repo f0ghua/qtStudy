@@ -8,15 +8,20 @@ class QDomElement;
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType COMPU-RATIONAL-COEFFS
  *
  * ASAM rational coefficient.
  */
-class VECTOR_DBC_EXPORT HOCompuRationalCoeffs
+class VECTOR_DBC_EXPORT HOCompuRationalCoeffs : public QObject
 {
 public:
-    HOCompuRationalCoeffs();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    HOCompuRationalCoeffs(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

@@ -3,7 +3,7 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
-#include "HOScaleConstr.h"
+#include "FibexTypes.h"
 
 class QDomElement;
 
@@ -11,14 +11,16 @@ namespace ASAM {
 namespace FIBEX {
 
 /**
- * @brief complexType SCALE-CONSTR-TYPE
+ * @brief complexType SCALE-CONSTR
  *
- * For reusability scale constraints content model is specified using a type definition.
+ * For reusability scale constraints content model is specified using a type
+ * definition.
+ *
  */
-class VECTOR_DBC_EXPORT HOScaleConstrType
+class VECTOR_DBC_EXPORT HOScaleConstr
 {
 public:
-    HOScaleConstrType();
+    HOScaleConstr();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
@@ -31,8 +33,6 @@ public:
     double m_upperLimit;
     /** attribute ho:UPPER-LIMIT ho:INTERVAL-TYPE */
     FibexTypes::HOIntervalTypeAb m_upperLimitIntervalType;
-    /** element ho:SCALE-CONSTR */
-    HOScaleConstr m_scaleConstr;
 };
 
 } // FIBEX

@@ -32,7 +32,7 @@ public:
     /** element PDU-TYPE */
     FibexTypes::FXPduTypeSt m_pduType;
     /** element SIGNAL-INSTANCES */
-    FXSignalInstances m_sigInstances;
+    FXSignalInstances *m_sigInstances = nullptr;
 
     /** @todo element MULTIPLEXER */
     /** @todo element MANUFACTURER-EXTENSION */

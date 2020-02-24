@@ -97,7 +97,7 @@ public:
      * @brief COMPU-CATEGORY
      */
     enum class HOCompuCategorySt {
-        IDENTICAL,
+        IDENTICAL                       = 0,
         LINEAR,
         SCALE_LINEAR,
         TEXTTABLE,

@@ -22,9 +22,18 @@ void HOCompInternalToPhys::load(const QDomElement &element)
         QLOG_TRACE() << "HOCompInternalToPhys::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ho:COMPU-SCALES") {
-            if (!m_compuScales) {
-                m_compuScales = new HOCompuScale(m_fibex, this);
-                m_compuScales->load(childElement);
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "HOCompInternalToPhys::load COMPU-SCALES" << subChildElement.tagName();
+#endif
+                if (subChildElement.tagName() == "ho:COMPU-SCALE") {
+                    HOCompuScale *compuScale = new HOCompuScale(m_fibex, this);
+                    compuScale->load(subChildElement);
+                    m_compuScales.append(compuScale);
+                }
+                subChild = subChild.nextSibling();
             }
         } else if (childElement.tagName() == "ho:COMPU-DEFAULT-VALUE") {
 

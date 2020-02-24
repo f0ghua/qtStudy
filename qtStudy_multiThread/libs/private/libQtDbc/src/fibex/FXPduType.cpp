@@ -41,7 +41,10 @@ void FXPduTypeCt::load(const QDomElement &element)
 #endif
             }
         } else if (childElement.tagName() == "fx:SIGNAL-INSTANCES") {
-            m_sigInstances.load(childElement);
+            if (!m_sigInstances) {
+                m_sigInstances = new FXSignalInstances(m_fibex, this);
+                m_sigInstances->load(childElement);
+            }
         }
 
         child = child.nextSibling();

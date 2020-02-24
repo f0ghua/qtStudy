@@ -31,7 +31,7 @@ public:
     void load(const QDomElement &element);
 
     /** element ho:COMPU-SCALES */
-    HOCompuScale *m_compuScales;
+    QList<HOCompuScale*> m_compuScales;
     /** @todo element ho:COMPU-DEFAULT-VALUE */
 };
 

@@ -25,7 +25,7 @@ void HOCompuMethod::load(const QDomElement &element)
         QLOG_TRACE() << "HOCompuMethod::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ho:CATEGORY") {
-            QString typeStr = element.text();
+            QString typeStr = childElement.text();
             FibexTypes::EnumParser<FibexTypes::HOCompuCategorySt> ep;
             FibexTypes::HOCompuCategorySt type;
             bool isOk = ep.str2Enum(typeStr, type);

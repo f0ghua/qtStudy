@@ -40,7 +40,7 @@ public:
     /** element ho:INTERNAL-CONSTRS */
     HOScaleConstrType m_internalConstrs;
     /** element ho:COMPU-INTERNAL-TO-PHYS */
-    HOCompInternalToPhys *m_compuInternalToPhys;
+    HOCompInternalToPhys *m_compuInternalToPhys = nullptr;
     /** @todo element ho:DESC */
 };
 

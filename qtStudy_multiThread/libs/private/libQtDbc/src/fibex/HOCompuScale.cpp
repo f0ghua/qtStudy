@@ -34,7 +34,10 @@ void HOCompuScale::load(const QDomElement &element)
         } else if (childElement.tagName() == "ho:COMPU-CONST") {
 
         } else if (childElement.tagName() == "ho:COMPU-RATIONAL-COEFFS") {
-
+            if (!m_compuRationalCoeffs) {
+                m_compuRationalCoeffs = new HOCompuRationalCoeffs(m_fibex, this);
+                m_compuRationalCoeffs->load(childElement);
+            }
         } else if (childElement.tagName() == "ho:COMPU-GENERIC-MATH") {
 
         }

@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         File *dbFile = new File();
 
-        QString dbName = "2.xml";
+        QString dbName = "example.xml";
         if ((int)dbFile->load(dbName) != 0) {
             return;
         }

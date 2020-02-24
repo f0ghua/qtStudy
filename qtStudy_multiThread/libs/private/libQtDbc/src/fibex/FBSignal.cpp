@@ -10,40 +10,41 @@ using Vector::DBC::Utility;
 namespace ASAM {
 namespace FIBEX {
 
-FBSignal::FBSignal() :
-    m_name(),
+FBSignal::FBSignal(QObject *parent)
+    : QObject(parent)
+    , m_name()
 
     /* multiplexer indicator */
-    m_isMultiplexedSignal(false),
-    m_multiplexerSwitchValue(0),
-    m_isMultiplexorSwitch(false),
+    , m_isMultiplexedSignal(false)
+    , m_multiplexerSwitchValue(0)
+    , m_isMultiplexorSwitch(false)
 
     /* position */
-    m_startBit(0),
-    m_bitSize(0),
-    m_isBigEndian(true),
-    m_valueType(ValueType::A_UINT64),
+    , m_startBit(0)
+    , m_bitSize(0)
+    , m_isBigEndian(true)
+    , m_valueType(ValueType::A_UINT64)
 
     /* raw/physical conversion */
-    m_factor(0.0),
-    m_offset(0.0),
-    m_minimumPhysicalValue(0.0),
-    m_maximumPhysicalValue(0.0),
+    , m_factor(0.0)
+    , m_offset(0.0)
+    , m_minimumPhysicalValue(0.0)
+    , m_maximumPhysicalValue(0.0)
 
     /* unit */
-    m_unit(),
+    , m_unit()
 
     /* receivers */
-    m_receivers(),
+    , m_receivers()
 
     /* value type and description */
-    m_extendedValueType(FBSignal::ExtendedValueType::Undefined),
+    , m_extendedValueType(FBSignal::ExtendedValueType::Undefined)
     //valueDescriptions(),
-    m_type(),
+    , m_type()
 
     /* comments and attributes */
-    m_comment(),
-    m_attributeValues()
+    , m_comment()
+    , m_attributeValues()
 
     /* extended multiplexors */
     //extendedMultiplexors()

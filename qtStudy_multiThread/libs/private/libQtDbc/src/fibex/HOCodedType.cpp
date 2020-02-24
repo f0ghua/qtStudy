@@ -13,9 +13,28 @@ HOCodedType::HOCodedType(FXFibex *fibex, QObject *parent)
 {
 }
 
+HOCodedType::~HOCodedType()
+{
+    if (m_baseDataType) {
+        delete m_baseDataType;
+    }
+}
+
 void HOCodedType::load(const QDomElement &element)
 {
-    m_baseDataType = element.attribute("ho:BASE-DATA-TYPE");
+    QString baseDataTypeStr = element.attribute("ho:BASE-DATA-TYPE");
+    if (!baseDataTypeStr.isEmpty()) {
+        FibexTypes::EnumParser<FibexTypes::HOBaseDataType> ep;
+        FibexTypes::HOBaseDataType type;
+        bool isOk = ep.str2Enum(baseDataTypeStr, type);
+        if (isOk) {
+            m_baseDataType = new FibexTypes::HOBaseDataType();
+            *m_baseDataType = type;
+#ifndef F_NO_DEBUG
+            QLOG_DEBUG() << "HOCompuMethod::load, m_compuCategory =" << baseDataTypeStr << (int)m_baseDataType;
+#endif
+        }
+    }
     m_category = element.attribute("CATEGORY");
     m_encoding = element.attribute("ENCODING");
 

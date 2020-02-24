@@ -3,6 +3,8 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+#include "HOCompuRationalCoeffs.h"
+
 class QDomElement;
 
 namespace ASAM {
@@ -34,7 +36,8 @@ public:
     /** @todo element ho:LOWER-LIMIT */
     /** @todo element ho:UPPER-LIMIT */
     /** @todo element ho:COMPU-CONST */
-    /** @todo element ho:COMPU-RATIONAL-COEFFS */
+    /** element ho:COMPU-RATIONAL-COEFFS */
+    HOCompuRationalCoeffs *m_compuRationalCoeffs = nullptr;
     /** @todo element ho:COMPU-GENERIC-MATH */
 };
 
