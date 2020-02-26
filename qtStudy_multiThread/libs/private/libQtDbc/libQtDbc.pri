@@ -77,7 +77,13 @@ SOURCES += \
     $$PWD/src/fibex/FRChannelType.cpp \
     $$PWD/src/fibex/FRClusterType.cpp \
     $$PWD/src/fibex/FBSignal.cpp \
-    $$PWD/src/fibex/HOScaleConstr.cpp
+    $$PWD/src/fibex/HOScaleConstr.cpp \
+    $$PWD/src/fibex/HOCompuConst.cpp \
+    $$PWD/src/fibex/FBPdu.cpp \
+    $$PWD/src/fibex/FBFrame.cpp \
+    $$PWD/src/fibex/FBChannel.cpp \
+    $$PWD/src/fibex/FBCluster.cpp \
+    $$PWD/src/fibex/FBEcu.cpp
 
 HEADERS += \
     $$PWD/inc/DbcHandle.h\
@@ -167,7 +173,13 @@ HEADERS += \
     $$PWD/src/fibex/FBAttribute.h \
     $$PWD/src/fibex/FBSignal.h \
     $$PWD/src/fibex/FBAttributeValueType.h \
-    $$PWD/src/fibex/HOScaleConstr.h
+    $$PWD/src/fibex/HOScaleConstr.h \
+    $$PWD/src/fibex/HOCompuConst.h \
+    $$PWD/src/fibex/FBPdu.h \
+    $$PWD/src/fibex/FBFrame.h \
+    $$PWD/src/fibex/FBChannel.h \
+    $$PWD/src/fibex/FBCluster.h \
+    $$PWD/src/fibex/FBEcu.h
 
 
 OTHER_FILES += \

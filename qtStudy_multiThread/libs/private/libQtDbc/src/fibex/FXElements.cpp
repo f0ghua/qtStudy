@@ -12,7 +12,7 @@ FXElements::FXElements(FXFibex *fibex, QObject *parent)
     : QObject(parent)
     , m_fibex(fibex)
     , m_clusterList()
-    , m_channelList()
+    , m_channels()
     , m_gatewayList()
     , m_ecus()
     , m_pdus()
@@ -103,9 +103,9 @@ bool FXElements::load(const QDomElement &element)
                 QLOG_TRACE() << "FXElements::load CHANNELS" << childElement.tagName();
 #endif
                 if (subChild.toElement().tagName() == "fx:CHANNEL") {
-                    FRChannelType c;
-                    c.load(subChild.toElement());
-                    m_channelList.append(c);
+                    FRChannelType *c = new FRChannelType(m_fibex, this);
+                    c->load(subChild.toElement());
+                    m_channels[c->m_id] = c;
                 }
                 subChild = subChild.nextSibling();
             }

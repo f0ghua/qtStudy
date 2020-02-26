@@ -1,13 +1,16 @@
 #include "FRConnectorType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FRConnectorType::FRConnectorType() :
-    FXConnectorType()
+FRConnectorType::FRConnectorType(FXFibex *fibex, QObject *parent)
+    : FXConnectorType(fibex)
+    , QObject(parent)
+    , m_fibex(fibex)
 {
 }
 

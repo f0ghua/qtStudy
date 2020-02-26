@@ -33,26 +33,28 @@ void FXEcuType::load(const QDomElement &element)
         } else if (childElement.tagName() == "fx:CONTROLLERS") {
             QDomNode subChild = child.firstChild();
             while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
 #ifndef F_NO_DEBUG
                 QLOG_TRACE() << "FXEcuType::load CONTROLLERS" << childElement.tagName();
 #endif
-                if (subChild.toElement().tagName() == "fx:CONTROLLER") {
-                    FRControllerType c;
-                    c.load(subChild.toElement());
-                    m_controllerList.append(c);
+                if (subChildElement.tagName() == "fx:CONTROLLER") {
+                    FRControllerType *c = new FRControllerType(m_fibex, this);
+                    c->load(subChildElement);
+                    m_controllers[c->m_id] = c;
                 }
                 subChild = subChild.nextSibling();
             }
         } else if (childElement.tagName() == "fx:CONNECTORS") {
             QDomNode subChild = child.firstChild();
             while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
 #ifndef F_NO_DEBUG
                 QLOG_TRACE() << "FXEcuType::load CONNECTORS" << childElement.tagName();
 #endif
-                if (subChild.toElement().tagName() == "fx:CONNECTOR") {
-                    FRConnectorType c;
-                    c.load(subChild.toElement());
-                    m_connectorList.append(c);
+                if (subChildElement.tagName() == "fx:CONNECTOR") {
+                    FRConnectorType *c = new FRConnectorType(m_fibex, this);
+                    c->load(subChildElement);
+                    m_connectors[c->m_id] = c;
                 }
                 subChild = subChild.nextSibling();
             }

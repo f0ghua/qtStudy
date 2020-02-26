@@ -13,6 +13,12 @@ FXSignalInstanceType::FXSignalInstanceType(FXFibex *fibex, QObject *parent)
 {
 }
 
+FXSignalInstanceType::~FXSignalInstanceType()
+{
+    if (m_signalUpdateBitPosition)
+        delete m_signalUpdateBitPosition;
+}
+
 void FXSignalInstanceType::load(const QDomElement &element)
 {
     m_id = element.attribute("ID");
@@ -31,7 +37,8 @@ void FXSignalInstanceType::load(const QDomElement &element)
         if (childElement.tagName() == "fx:SIGNAL-REF") {
             m_sigRef.load(childElement);
         } else if (childElement.tagName() == "fx:SIGNAL-UPDATE-BIT-POSITION") {
-            m_signalUpdateBitPosition = childElement.text().toUInt();
+            m_signalUpdateBitPosition = new quint32();
+            *m_signalUpdateBitPosition = childElement.text().toUInt();
         }
 
         child = child.nextSibling();

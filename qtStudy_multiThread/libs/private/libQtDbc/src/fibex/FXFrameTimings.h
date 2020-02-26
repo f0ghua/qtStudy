@@ -9,23 +9,28 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType FRAME-TIMINGS
  *
  * Time behavior of a frame specified in a sequence of cluster specific timing types
  */
-class VECTOR_DBC_EXPORT FXFrameTimings
+class VECTOR_DBC_EXPORT FXFrameTimings : public QObject
 {
 public:
-    FXFrameTimings();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXFrameTimings(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** @todo element RELATIVELY-SCHEDULED-TIMING */
-    FXRelativelyScheduledTimingType m_relativelyScheduledTiming;
-    /** @todo element ABSOLUTELY-SCHEDULED-TIMING */
-    FXAbsolutelyScheduledTimingType m_absolutelyScheduledTiming;
+    /** @opt element RELATIVELY-SCHEDULED-TIMING */
+    QList<FXRelativelyScheduledTimingType*> m_relativelyScheduledTimings;
+    /** @opt element ABSOLUTELY-SCHEDULED-TIMING */
+    QList<FXAbsolutelyScheduledTimingType*> m_absolutelyScheduledTimings;
 };
 
 } // FIBEX

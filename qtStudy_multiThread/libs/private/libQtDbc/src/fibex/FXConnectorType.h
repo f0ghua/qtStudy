@@ -8,6 +8,8 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType CONNECTOR-TYPE
  *
@@ -16,7 +18,10 @@ namespace FIBEX {
 class VECTOR_DBC_EXPORT FXConnectorType
 {
 public:
-    FXConnectorType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXConnectorType(FXFibex *fibex);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
@@ -28,10 +33,10 @@ public:
     QString m_channelRef;
     /** element CONTROLLER-REF */
     QString m_controllerRef;
-    /** element INPUTS */
-    QList<FXEcuPortType> m_inputPortList;
-    /** element OUTPUTS */
-    QList<FXEcuPortType> m_outputPortList;
+    /** @opt element INPUTS */
+    QHash<QString, FXEcuPortType*> m_inputPorts;
+    /** @opt element OUTPUTS */
+    QHash<QString, FXEcuPortType*> m_outputPorts;
     /** @todo element MANUFACTURER-EXTENSION */
 
 };

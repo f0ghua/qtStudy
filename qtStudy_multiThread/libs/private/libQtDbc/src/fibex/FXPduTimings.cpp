@@ -1,12 +1,15 @@
 #include "FXPduTimings.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXPduTimings::FXPduTimings()
+FXPduTimings::FXPduTimings(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 

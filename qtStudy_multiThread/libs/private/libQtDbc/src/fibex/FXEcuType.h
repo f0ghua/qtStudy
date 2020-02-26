@@ -13,7 +13,7 @@ namespace FIBEX {
 class FXFibex;
 
 /**
- * @brief complexType ECU-TYPE
+ * @brief complexType fx:ECU-TYPE
  *
  * Content model for the entity ECU.
  * Platform-specific extensions are not possible, to maintain the capability to describe multi-platform networks.
@@ -31,10 +31,10 @@ public:
 
     /** @todo element DIAGNOSTIC-ADDRESSES */
     /** @todo element FUNCTION-REFS */
-    /** element CONTROLLERS */
-    QList<FRControllerType> m_controllerList;
-    /** element CONNECTORS */
-    QList<FRConnectorType> m_connectorList;
+    /** @opt element CONTROLLERS */
+    QHash<QString, FRControllerType*> m_controllers;
+    /** @opt element CONNECTORS */
+    QHash<QString, FRConnectorType*> m_connectors;
 
     /** @todo element MANUFACTURER-EXTENSION */
 };

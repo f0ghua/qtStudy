@@ -31,7 +31,7 @@ public:
 
     quint32 m_byteLength;
     FibexTypes::FXFrameTypeSt m_frameType;
-    FXPduInstances m_pduInstances;
+    FXPduInstances *m_pduInstances = nullptr;
     /** @todo BYTE-LENGTH */
     /** @todo FRAME-TYPE */
     /** @todo PDU-INSTANCES */

@@ -21,7 +21,7 @@ public:
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** attribute ID */
+    /** @must attribute ID */
     QString m_id;
 
     /** @todo attribute OID */

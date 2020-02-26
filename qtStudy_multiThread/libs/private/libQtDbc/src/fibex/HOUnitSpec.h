@@ -8,15 +8,20 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief element UNIT-SPEC
  *
  * Root element of ASAM unit specification.
  */
-class VECTOR_DBC_EXPORT HOUnitSpec
+class VECTOR_DBC_EXPORT HOUnitSpec : public QObject
 {
 public:
-    HOUnitSpec();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    HOUnitSpec(FXFibex *fibex, QObject *parent = Q_NULLPTR);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
@@ -25,7 +30,7 @@ public:
     /** @todo element ho:PHYSICAL-DIMENSIONS */
     /** @todo element ho:UNITGROUPS */
     /** @todo element ho:UNITS */
-    QList<HOUnit> m_unitList;
+    QHash<QString, HOUnit*> m_units;
 };
 
 } // FIBEX

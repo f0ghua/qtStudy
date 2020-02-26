@@ -1,12 +1,15 @@
 #include "HOUnitSpec.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-HOUnitSpec::HOUnitSpec()
+HOUnitSpec::HOUnitSpec(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -31,9 +34,9 @@ void HOUnitSpec::load(const QDomElement &element)
                 QLOG_TRACE() << "HOUnitSpec::load UNITS" << childElement.tagName();
 #endif
                 if (subChild.toElement().tagName() == "ho:UNIT") {
-                    HOUnit unit;
-                    unit.load(subChild.toElement());
-                    m_unitList.append(unit);
+                    HOUnit *unit = new HOUnit(m_fibex, this);
+                    unit->load(subChild.toElement());
+                    m_units[unit->m_id] = unit;
                 }
                 subChild = subChild.nextSibling();
             }

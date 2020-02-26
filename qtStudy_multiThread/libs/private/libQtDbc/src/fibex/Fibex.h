@@ -6,6 +6,11 @@
 #include "vector_dbc_export.h"
 
 #include "FBSignal.h"
+#include "FBPdu.h"
+#include "FBFrame.h"
+#include "FBChannel.h"
+#include "FBEcu.h"
+
 #include "FXFibex.h"
 
 class QDomElement;
@@ -30,11 +35,11 @@ public:
 public:
     bool covertXml2Db();
 
-//    QList<FBChannel>  m_channelList;
-//    QList<FBEcu> m_ecuList;
-//    QList<FBFrame> m_frameList;
-//    QList<FBPdu> m_pduList;
-    QHash<QString, FBSignal *> m_signals;
+    QHash<QString, FBEcu*> m_ecus;
+    QHash<QString, FBChannel*> m_channels;
+    QHash<QString, FBFrame*> m_frames;
+    QHash<QString, FBPdu*> m_pdus;
+    QHash<QString, FBSignal*> m_signals;
 
 private:
     QDomElement *m_domElement;

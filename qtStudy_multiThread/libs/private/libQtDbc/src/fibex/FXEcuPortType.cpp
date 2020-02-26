@@ -1,12 +1,15 @@
 #include "FXEcuPortType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXEcuPortType::FXEcuPortType()
+FXEcuPortType::FXEcuPortType(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -26,17 +29,18 @@ void FXEcuPortType::load(const QDomElement &element)
             QLOG_DEBUG() << "FXEcuPortType::load, m_frameTriggeringRef =" << m_frameTriggeringRef;
 #endif
         } else if (childElement.tagName() == "fx:INCLUDED-PDUS") {
-            QDomNode pduChild = child.firstChild();
-            while (!pduChild.isNull()) {
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
 #ifndef F_NO_DEBUG
                 QLOG_TRACE() << "FXEcuPortType::load INCLUDED-PDU" << childElement.tagName();
 #endif
-                if (pduChild.toElement().tagName() == "fx:INCLUDED-PDU") {
-                    FXIncludedPduType pdu;
-                    pdu.load(pduChild.toElement());
-                    m_includedPduList.append(pdu);
+                if (subChildElement.tagName() == "fx:INCLUDED-PDU") {
+                    FXIncludedPduType *pdu = new FXIncludedPduType(m_fibex, this);
+                    pdu->load(subChildElement);
+                    m_includedPdus.append(pdu);
                 }
-                pduChild = pduChild.nextSibling();
+                subChild = subChild.nextSibling();
             }
         } else if (childElement.tagName() == "fx:COMPLETE-FRAME") {
             m_completeFrame = true;

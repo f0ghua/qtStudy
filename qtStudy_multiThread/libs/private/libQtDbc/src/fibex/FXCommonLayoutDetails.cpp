@@ -29,7 +29,10 @@ void FXCommonLayoutDetails::load(const QDomElement &element)
             QLOG_DEBUG() << "FXCommonLayoutDetails::load, m_isBigEndian =" << m_isBigEndian;
 #endif
         } else if (childElement.tagName() == "fx:SEQUENCE-NUMBER") {
-
+            m_sequenceNumber = childElement.text().toUShort();
+#ifndef F_NO_DEBUG
+            QLOG_DEBUG() << "FXCommonLayoutDetails::load, m_sequenceNumber =" << m_sequenceNumber;
+#endif
         }
 
         child = child.nextSibling();

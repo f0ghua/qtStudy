@@ -10,15 +10,20 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType CONTROLLER-TYPE
  *
  * Content model for the entity CONTROLLER with platform specific extendability.
  */
-class VECTOR_DBC_EXPORT FRControllerType : public FXControllerType
+class VECTOR_DBC_EXPORT FRControllerType : public FXControllerType, public QObject
 {
 public:
-    FRControllerType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FRControllerType(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

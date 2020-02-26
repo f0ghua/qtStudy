@@ -9,21 +9,26 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType FRAME-TRIGGERING-TYPE
  *
  * Content model for the entity FRAME-TRIGGERING.
  */
-class VECTOR_DBC_EXPORT FXFrameTriggeringType
+class VECTOR_DBC_EXPORT FXFrameTriggeringType : public QObject
 {
 public:
-    FXFrameTriggeringType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXFrameTriggeringType(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
     /** @todo element TIMINGS */
-    FXFrameTimings m_timings;
+    FXFrameTimings *m_timings = nullptr;
     /** @todo element IDENTIFIER */
     FXIdentifier m_identifier;
     /** @todo element FRAME-REF */

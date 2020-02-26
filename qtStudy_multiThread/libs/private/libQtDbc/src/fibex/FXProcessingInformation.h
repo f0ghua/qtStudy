@@ -28,9 +28,9 @@ public:
     void load(const QDomElement &element);
 
     /** element UNIT-SPEC */
-    HOUnitSpec m_unitSpec;
+    HOUnitSpec *m_unitSpec = nullptr;
     /** element CODINGS */
-    FXCodings *m_codings;
+    FXCodings *m_codings = nullptr;
 };
 
 } // FIBEX

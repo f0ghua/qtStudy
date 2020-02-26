@@ -8,25 +8,30 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType PDU-TRIGGERING-TYPE
  *
  * Content model for the entity PDU-TRIGGERING.
  */
-class VECTOR_DBC_EXPORT FXPduTriggeringType
+class VECTOR_DBC_EXPORT FXPduTriggeringType : public QObject
 {
 public:
-    FXPduTriggeringType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXPduTriggeringType(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** @todo element TIMINGS */
-    FXPduTimings m_timings;
-    /** @todo element PDU-REF */
+    /** @opt element TIMINGS */
+    FXPduTimings *m_timings = nullptr;
+    /** @must element fx:PDU-REF */
     QString m_pduRef;
     /** @todo element MANUFACTURER-EXTENSION */
-    /** @todo attribute ID */
+    /** @must attribute ID */
     QString m_id;
 };
 

@@ -1,12 +1,20 @@
 #include "FXAbsolutelyScheduledTimingType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXAbsolutelyScheduledTimingType::FXAbsolutelyScheduledTimingType()
+FXAbsolutelyScheduledTimingType::FXAbsolutelyScheduledTimingType(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
+    , m_desc()
+    , m_slotId(0)
+    , m_cycleCounter(0)
+    , m_baseCycle(0)
+    , m_cycleRepetition(0)
 {
 }
 
@@ -17,7 +25,7 @@ void FXAbsolutelyScheduledTimingType::load(const QDomElement &element)
     while (!child.isNull()) {
         const QDomElement &childElement = child.toElement();
 #ifndef F_NO_DEBUG
-        QLOG_TRACE() << "FrameTriggeringType::load" << childElement.tagName();
+        QLOG_TRACE() << "FXAbsolutelyScheduledTimingType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ho:DESC") {
             m_desc = childElement.text();

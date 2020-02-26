@@ -1,17 +1,24 @@
 #include "HOScaleConstrType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-HOScaleConstrType::HOScaleConstrType()
-    : m_lowerLimit(0.0)
+HOScaleConstrType::HOScaleConstrType(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
     , m_lowerLimitIntervalType(FibexTypes::HOIntervalTypeAb::CLOSED)
-    , m_upperLimit(0.0)
     , m_upperLimitIntervalType(FibexTypes::HOIntervalTypeAb::CLOSED)
 {
+}
+
+HOScaleConstrType::~HOScaleConstrType()
+{
+    if (m_lowerLimit) delete m_lowerLimit;
+    if (m_upperLimit) delete m_upperLimit;
 }
 
 void HOScaleConstrType::load(const QDomElement &element)
@@ -23,32 +30,43 @@ void HOScaleConstrType::load(const QDomElement &element)
         QLOG_TRACE() << "HOScaleConstrType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ho:LOWER-LIMIT") {
-            m_lowerLimit = childElement.text().toDouble();
-            QString typeStr = childElement.attribute("INTERVAL-TYPE");
-            FibexTypes::EnumParser<FibexTypes::HOIntervalTypeAb> ep;
-            FibexTypes::HOIntervalTypeAb type;
-            bool isOk = ep.str2Enum(typeStr, type);
-            if (isOk) {
-                m_lowerLimitIntervalType = type;
-#ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "HOScaleConstrType::load, m_lowerLimitIntervalType =" << typeStr << (int)m_lowerLimitIntervalType;
-#endif
+            if (!m_lowerLimit) {
+                m_lowerLimit = new double();
+                *m_lowerLimit = childElement.text().toDouble();
+
+                QString typeStr = childElement.attribute("INTERVAL-TYPE");
+                FibexTypes::EnumParser<FibexTypes::HOIntervalTypeAb> ep;
+                FibexTypes::HOIntervalTypeAb type;
+                bool isOk = ep.str2Enum(typeStr, type);
+                if (isOk) {
+                    m_lowerLimitIntervalType = type;
+    #ifndef F_NO_DEBUG
+                    QLOG_DEBUG() << "HOScaleConstrType::load, m_lowerLimitIntervalType =" << typeStr << (int)m_lowerLimitIntervalType;
+    #endif
+                }
             }
         } else if (childElement.tagName() == "ho:UPPER-LIMIT") {
-            m_upperLimit = childElement.text().toDouble();
-            QString typeStr = childElement.attribute("INTERVAL-TYPE");
-            FibexTypes::EnumParser<FibexTypes::HOIntervalTypeAb> ep;
-            FibexTypes::HOIntervalTypeAb type;
-            bool isOk = ep.str2Enum(typeStr, type);
-            if (isOk) {
-                m_upperLimitIntervalType = type;
-#ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "HOScaleConstrType::load, m_upperLimitIntervalType =" << typeStr << (int)m_upperLimitIntervalType;
-#endif
+            if (!m_upperLimit) {
+                m_upperLimit = new double();
+                *m_upperLimit = childElement.text().toDouble();
+
+                QString typeStr = childElement.attribute("INTERVAL-TYPE");
+                FibexTypes::EnumParser<FibexTypes::HOIntervalTypeAb> ep;
+                FibexTypes::HOIntervalTypeAb type;
+                bool isOk = ep.str2Enum(typeStr, type);
+                if (isOk) {
+                    m_upperLimitIntervalType = type;
+    #ifndef F_NO_DEBUG
+                    QLOG_DEBUG() << "HOScaleConstrType::load, m_upperLimitIntervalType =" << typeStr << (int)m_upperLimitIntervalType;
+    #endif
+                }
             }
 
         } else if (childElement.tagName() == "ho:SCALE-CONSTR") {
-            m_scaleConstr.load(childElement);
+            if (!m_scaleConstr) {
+                m_scaleConstr = new HOScaleConstr(m_fibex, this);
+                m_scaleConstr->load(childElement);
+            }
         }
 
         child = child.nextSibling();

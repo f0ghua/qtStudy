@@ -8,15 +8,20 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType ECU-PORT-TYPE
  *
  * Content model for the entity PORT in the ECU related peculiarity.
  */
-class VECTOR_DBC_EXPORT FXEcuPortType
+class VECTOR_DBC_EXPORT FXEcuPortType : public QObject
 {
 public:
-    FXEcuPortType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXEcuPortType(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
@@ -28,7 +33,7 @@ public:
     /** element FRAME-TRIGGERING-REF */
     QString m_frameTriggeringRef;
     /** element INCLUDED-PDUS */
-    QList<FXIncludedPduType> m_includedPduList;
+    QList<FXIncludedPduType *> m_includedPdus;
     /** element COMPLETE-FRAME */
     bool m_completeFrame;
     /** @todo element MANUFACTURER-EXTENSION */

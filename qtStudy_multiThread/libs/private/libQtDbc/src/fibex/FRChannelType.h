@@ -11,10 +11,10 @@ namespace FIBEX {
 /**
  * @brief complexType CHANNEL-TYPE
  */
-class VECTOR_DBC_EXPORT FRChannelType : public FXChannelType
+class VECTOR_DBC_EXPORT FRChannelType : public FXChannelType, public QObject
 {
 public:
-    FRChannelType();
+    FRChannelType(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

@@ -8,15 +8,20 @@ class QDomElement;
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType ABSOLUTELY-SCHEDULED-TIMING-TYPE
  *
  * Content model for the entity TIMING in the absolutely scheduled peculiarity.
  */
-class VECTOR_DBC_EXPORT FXAbsolutelyScheduledTimingType
+class VECTOR_DBC_EXPORT FXAbsolutelyScheduledTimingType : public QObject
 {
 public:
-    FXAbsolutelyScheduledTimingType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXAbsolutelyScheduledTimingType(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

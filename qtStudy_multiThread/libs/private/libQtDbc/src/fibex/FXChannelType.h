@@ -10,6 +10,8 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType CHANNEL-TYPE
  *
@@ -18,15 +20,18 @@ namespace FIBEX {
 class VECTOR_DBC_EXPORT FXChannelType : public FXRevisedElementType
 {
 public:
-    FXChannelType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXChannelType(FXFibex *fibex);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
     /** @todo element PDU-TRIGGERINGS */
-    QList<FXPduTriggeringType> m_pduTriggeringList;
+    QHash<QString, FXPduTriggeringType*> m_pduTriggerings;
     /** @todo element FRAME-TRIGGERINGS */
-    QList<FXFrameTriggeringType> m_frameTriggeringList;
+    QHash<QString, FXFrameTriggeringType*> m_frameTriggerings;
     /** @todo element MANUFACTURER-EXTENSION */
 };
 

@@ -42,7 +42,11 @@ void FXFrameTypeCt::load(const QDomElement &element)
 #endif
             }
         } else if (childElement.tagName() == "fx:PDU-INSTANCES") {
-            m_pduInstances.load(childElement);
+            if (!m_pduInstances) {
+                m_pduInstances = new FXPduInstances(m_fibex, this);
+                m_pduInstances->load(childElement);
+            }
+
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 
         }

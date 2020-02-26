@@ -1,12 +1,15 @@
 #include "FXFrameTriggeringType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXFrameTriggeringType::FXFrameTriggeringType()
+FXFrameTriggeringType::FXFrameTriggeringType(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -25,7 +28,10 @@ void FXFrameTriggeringType::load(const QDomElement &element)
         QLOG_TRACE() << "FrameTriggeringType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:TIMINGS") {
-            m_timings.load(childElement);
+            if (!m_timings) {
+                m_timings = new FXFrameTimings(m_fibex, this);
+                m_timings->load(childElement);
+            }
         } else if (childElement.tagName() == "fx:IDENTIFIER") {
             m_identifier.load(childElement);
         } else if (childElement.tagName() == "fx:FRAME-REF") {

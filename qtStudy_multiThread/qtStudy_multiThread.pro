@@ -28,6 +28,7 @@ SOURCES += \
         mainwindow.cpp \
         worker.cpp
 
+
 HEADERS += \
         mainwindow.h \
         worker.h

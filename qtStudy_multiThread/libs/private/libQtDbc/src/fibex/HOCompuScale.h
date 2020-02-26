@@ -3,7 +3,9 @@
 #include "platform.h"
 #include "vector_dbc_export.h"
 
+#include "FibexTypes.h"
 #include "HOCompuRationalCoeffs.h"
+#include "HOCompuConst.h"
 
 class QDomElement;
 
@@ -26,6 +28,7 @@ public:
 
 public:
     HOCompuScale(FXFibex *fibex, QObject *parent = nullptr);
+    ~HOCompuScale();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
@@ -33,10 +36,17 @@ public:
     /** @todo element ho:SHORT-LABEL */
     /** @todo element ho:DESC */
     /** @todo element ho:MASK */
-    /** @todo element ho:LOWER-LIMIT */
-    /** @todo element ho:UPPER-LIMIT */
-    /** @todo element ho:COMPU-CONST */
-    /** element ho:COMPU-RATIONAL-COEFFS */
+    /** @opt element ho:LOWER-LIMIT */
+    double *m_lowerLimit = nullptr;
+    /** @opt attribute ho:LOWER-LIMIT ho:INTERVAL-TYPE */
+    FibexTypes::HOIntervalTypeAb m_lowerLimitIntervalType;
+    /** @opt element ho:UPPER-LIMIT */
+    double *m_upperLimit = nullptr;
+    /** @opt attribute ho:UPPER-LIMIT ho:INTERVAL-TYPE */
+    FibexTypes::HOIntervalTypeAb m_upperLimitIntervalType;
+    /** @must element ho:COMPU-CONST */
+    HOCompuConst m_compuConst;
+    /** @must element ho:COMPU-RATIONAL-COEFFS */
     HOCompuRationalCoeffs *m_compuRationalCoeffs = nullptr;
     /** @todo element ho:COMPU-GENERIC-MATH */
 };

@@ -35,11 +35,11 @@ public:
     FibexTypes::HOCompuCategorySt m_compuCategory;
     /** element ho:UNIT-REF */
     QString m_unitRef;
-    /** element ho:PHYS-CONSTRS */
-    HOScaleConstrType m_physConstrs;
-    /** element ho:INTERNAL-CONSTRS */
-    HOScaleConstrType m_internalConstrs;
-    /** element ho:COMPU-INTERNAL-TO-PHYS */
+    /** @opt element ho:PHYS-CONSTRS */
+    HOScaleConstrType *m_physConstrs = nullptr;
+    /** @opt element ho:INTERNAL-CONSTRS */
+    HOScaleConstrType *m_internalConstrs = nullptr;
+    /** @opt element ho:COMPU-INTERNAL-TO-PHYS */
     HOCompInternalToPhys *m_compuInternalToPhys = nullptr;
     /** @todo element ho:DESC */
 };

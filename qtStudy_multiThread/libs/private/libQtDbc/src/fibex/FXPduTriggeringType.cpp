@@ -1,12 +1,15 @@
 #include "FXPduTriggeringType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXPduTriggeringType::FXPduTriggeringType()
+FXPduTriggeringType::FXPduTriggeringType(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -25,7 +28,10 @@ void FXPduTriggeringType::load(const QDomElement &element)
         QLOG_TRACE() << "FXPduTriggeringType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:TIMINGS") {
-            m_timings.load(childElement);
+            if (!m_timings) {
+                m_timings = new FXPduTimings(m_fibex, this);
+                m_timings->load(childElement);
+            }
         } else if (childElement.tagName() == "fx:PDU-REF") {
             m_pduRef = childElement.attribute("ID-REF");
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {

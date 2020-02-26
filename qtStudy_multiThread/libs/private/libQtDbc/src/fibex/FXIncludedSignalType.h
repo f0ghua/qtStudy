@@ -8,15 +8,20 @@ class QDomElement;
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType INCLUDED-SIGNAL-TYPE
  *
  * Selected signal
  */
-class VECTOR_DBC_EXPORT FXIncludedSignalType
+class VECTOR_DBC_EXPORT FXIncludedSignalType : public QObject
 {
 public:
-    FXIncludedSignalType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXIncludedSignalType(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

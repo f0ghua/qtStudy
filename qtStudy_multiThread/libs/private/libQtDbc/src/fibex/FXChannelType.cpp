@@ -1,13 +1,15 @@
 #include "FXChannelType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXChannelType::FXChannelType()
+FXChannelType::FXChannelType(FXFibex *fibex)
     : FXRevisedElementType()
+    , m_fibex(fibex)
 {
 }
 
@@ -23,13 +25,34 @@ void FXChannelType::load(const QDomElement &element)
         QLOG_TRACE() << "FXChannelType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:PDU-TRIGGERINGS") {
-            FXPduTriggeringType tr;
-            tr.load(childElement);
-            m_pduTriggeringList.append(tr);
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "FXChannelType::load fx:PDU-TRIGGERINGS" << childElement.tagName();
+#endif
+                if (subChildElement.tagName() == "fx:PDU-TRIGGERING") {
+                    FXPduTriggeringType *tr = new FXPduTriggeringType(m_fibex, m_fibex);
+                    tr->load(subChildElement);
+                    m_pduTriggerings[tr->m_id] = tr;
+                }
+                subChild = subChild.nextSibling();
+            }
+
         } else if (childElement.tagName() == "fx:FRAME-TRIGGERINGS") {
-            FXFrameTriggeringType tr;
-            tr.load(childElement);
-            m_frameTriggeringList.append(tr);
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "FXChannelType::load fx:FRAME-TRIGGERINGS" << childElement.tagName();
+#endif
+                if (subChildElement.tagName() == "fx:FRAME-TRIGGERING") {
+                    FXFrameTriggeringType *tr = new FXFrameTriggeringType(m_fibex, m_fibex);
+                    tr->load(subChildElement);
+                    m_frameTriggerings[tr->m_id] = tr;
+                }
+                subChild = subChild.nextSibling();
+            }
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 
         }

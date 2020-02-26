@@ -1,13 +1,16 @@
 #include "FRControllerType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FRControllerType::FRControllerType()
-    : FXControllerType()
+FRControllerType::FRControllerType(FXFibex *fibex, QObject *parent)
+    : FXControllerType(fibex)
+    , QObject(parent)
+    , m_fibex(fibex)
 {
 }
 

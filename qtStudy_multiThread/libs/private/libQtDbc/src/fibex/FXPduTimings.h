@@ -10,15 +10,20 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType PDU-TIMINGS
  *
  * Time behavior of a PDU specified in a sequence of cluster specific timing types
  */
-class VECTOR_DBC_EXPORT FXPduTimings
+class VECTOR_DBC_EXPORT FXPduTimings : public QObject
 {
 public:
-    FXPduTimings();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXPduTimings(FXFibex *fibex, QObject *parent = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

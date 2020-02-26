@@ -27,11 +27,11 @@ public:
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** element BYTE-LENGTH */
+    /** @must element fx:BYTE-LENGTH */
     quint32 m_byteLength;
-    /** element PDU-TYPE */
+    /** @must element fx:PDU-TYPE */
     FibexTypes::FXPduTypeSt m_pduType;
-    /** element SIGNAL-INSTANCES */
+    /** @opt element fx:SIGNAL-INSTANCES */
     FXSignalInstances *m_sigInstances = nullptr;
 
     /** @todo element MULTIPLEXER */

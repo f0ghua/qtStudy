@@ -11,6 +11,8 @@ namespace FIBEX {
 
 typedef FibexTypes::FXBitCountingPolicy ByteOrder;
 typedef FibexTypes::HOBaseDataType ValueType;
+// @todo fibex textable item should mapping to a range
+typedef QMap<double, QString> ValueDescriptions;
 
 class VECTOR_DBC_EXPORT FBSignal : public QObject
 {
@@ -71,7 +73,7 @@ public:
     ExtendedValueType m_extendedValueType;
 
     /** Value Descriptions (VAL) */
-    //ValueDescriptions valueDescriptions;
+    ValueDescriptions m_valueDescriptions;
 
     /** Signal Type Refs (SGTYPE, obsolete) */
     QString m_type;

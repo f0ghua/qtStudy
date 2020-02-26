@@ -31,9 +31,9 @@ public:
     void load(const QDomElement &element);
 
     /** @todo element PHYSICAL-TYPE */
-    /** element CODED-TYPE */
+    /** @opt element CODED-TYPE */
     HOCodedType *m_codedType = nullptr;
-    /** @todo element COMPU-METHODS */
+    /** @opt element COMPU-METHODS */
     HOCompuMethods *m_compuMethods = nullptr;
     /** @todo element MANUFACTURER-EXTENSION */
 };

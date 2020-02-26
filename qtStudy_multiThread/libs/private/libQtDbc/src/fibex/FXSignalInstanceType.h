@@ -23,6 +23,7 @@ public:
 
 public:
     FXSignalInstanceType(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    ~FXSignalInstanceType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
@@ -33,8 +34,8 @@ public:
     FXCommonLayoutDetails m_commLayoutDetails;
     /** element SIGNAL-REF */
     FXSignalRef m_sigRef;
-    /** element SIGNAL-UPDATE-BIT-POSITION */
-    quint32 m_signalUpdateBitPosition;
+    /** @opt element SIGNAL-UPDATE-BIT-POSITION */
+    quint32 *m_signalUpdateBitPosition = nullptr;
 
     /** @todo element MANUFACTURER-EXTENSION */
 };

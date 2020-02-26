@@ -1,12 +1,14 @@
 #include "FXConnectorType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXConnectorType::FXConnectorType()
+FXConnectorType::FXConnectorType(FXFibex *fibex)
+    : m_fibex(fibex)
 {
 }
 
@@ -31,30 +33,32 @@ void FXConnectorType::load(const QDomElement &element)
             QLOG_DEBUG() << "FXConnectorType::load, m_controllerRef =" << m_controllerRef;
 #endif
         } else if (childElement.tagName() == "fx:INPUTS") {
-            QDomNode portChild = child.firstChild();
-            while (!portChild.isNull()) {
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
 #ifndef F_NO_DEBUG
                 QLOG_TRACE() << "FXConnectorType::load INPUTS" << childElement.tagName();
 #endif
-                if (portChild.toElement().tagName() == "fx:INPUT-PORT") {
-                    FXEcuPortType port;
-                    port.load(portChild.toElement());
-                    m_inputPortList.append(port);
+                if (subChildElement.tagName() == "fx:INPUT-PORT") {
+                    FXEcuPortType *port = new FXEcuPortType(m_fibex, m_fibex);
+                    port->load(subChildElement);
+                    m_inputPorts[port->m_id] = port;
                 }
-                portChild = portChild.nextSibling();
+                subChild = subChild.nextSibling();
             }
         } else if (childElement.tagName() == "fx:OUTPUTS") {
-            QDomNode portChild = child.firstChild();
-            while (!portChild.isNull()) {
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
 #ifndef F_NO_DEBUG
                 QLOG_TRACE() << "FXConnectorType::load OUTPUTS" << childElement.tagName();
 #endif
-                if (portChild.toElement().tagName() == "fx:OUTPUT-PORT") {
-                    FXEcuPortType port;
-                    port.load(portChild.toElement());
-                    m_outputPortList.append(port);
+                if (subChildElement.tagName() == "fx:OUTPUT-PORT") {
+                    FXEcuPortType *port = new FXEcuPortType(m_fibex, m_fibex);
+                    port->load(subChildElement);
+                    m_outputPorts[port->m_id] = port;
                 }
-                portChild = portChild.nextSibling();
+                subChild = subChild.nextSibling();
             }
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 

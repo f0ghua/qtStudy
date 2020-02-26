@@ -57,7 +57,7 @@ public:
      * In single-channel systems such as CAN or LIN known as 'bus'.
      * To avoid confusion, we decides not to use this term any more.
      */
-    QList<FRChannelType> m_channelList;
+    QHash<QString, FRChannelType*> m_channels;
 
     /**
      * A gateway is a specific ECU translating frames and signals from one channel into another.

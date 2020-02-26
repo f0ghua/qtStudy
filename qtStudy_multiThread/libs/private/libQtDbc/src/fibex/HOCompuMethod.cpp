@@ -41,9 +41,15 @@ void HOCompuMethod::load(const QDomElement &element)
             QLOG_DEBUG() << "HOCompuMethod::load, m_unitRef =" << m_unitRef;
 #endif
         } else if (childElement.tagName() == "ho:PHYS-CONSTRS") {
-            m_physConstrs.load(childElement);
+            if (!m_physConstrs) {
+                m_physConstrs = new HOScaleConstrType(m_fibex, this);
+                m_physConstrs->load(childElement);
+            }
         } else if (childElement.tagName() == "ho:INTERNAL-CONSTRS") {
-            m_internalConstrs.load(childElement);
+            if (!m_internalConstrs) {
+                m_internalConstrs = new HOScaleConstrType(m_fibex, this);
+                m_internalConstrs->load(childElement);
+            }
         } else if (childElement.tagName() == "ho:COMPU-INTERNAL-TO-PHYS") {
             if (!m_compuInternalToPhys) {
                 m_compuInternalToPhys = new HOCompInternalToPhys(m_fibex, this);

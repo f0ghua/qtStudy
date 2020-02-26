@@ -1,12 +1,15 @@
 #include "FXIncludedPduType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FXIncludedPduType::FXIncludedPduType()
+FXIncludedPduType::FXIncludedPduType(FXFibex *fibex, QObject *parent)
+    : QObject(parent)
+    , m_fibex(fibex)
 {
 }
 
@@ -24,17 +27,18 @@ void FXIncludedPduType::load(const QDomElement &element)
             QLOG_DEBUG() << "FXIncludedPduType::load, m_pduTriggeringRef =" << m_pduTriggeringRef;
 #endif
         } else if (childElement.tagName() == "fx:INCLUDED-SIGNALS") {
-            QDomNode sigChild = child.firstChild();
-            while (!sigChild.isNull()) {
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
 #ifndef F_NO_DEBUG
                 QLOG_TRACE() << "FXIncludedPduType::load INCLUDED-SIGNALS" << childElement.tagName();
 #endif
-                if (sigChild.toElement().tagName() == "fx:INCLUDED-SIGNAL") {
-                    FXIncludedSignalType sig;
-                    sig.load(sigChild.toElement());
-                    m_includedSignalList.append(sig);
+                if (subChildElement.tagName() == "fx:INCLUDED-SIGNAL") {
+                    FXIncludedSignalType *sig = new FXIncludedSignalType(m_fibex, this);
+                    sig->load(subChildElement);
+                    m_includedSignals.append(sig);
                 }
-                sigChild = sigChild.nextSibling();
+                subChild = subChild.nextSibling();
             }
         } else if (childElement.tagName() == "fx:COMPLETE-PDU") {
             m_completePdu = true;

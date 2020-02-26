@@ -8,6 +8,8 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFibex;
+
 /**
  * @brief complexType CONTROLLER-TYPE
  *
@@ -16,7 +18,10 @@ namespace FIBEX {
 class VECTOR_DBC_EXPORT FXControllerType : public FXNamedElementType
 {
 public:
-    FXControllerType();
+    FXFibex *m_fibex = nullptr;
+
+public:
+    FXControllerType(FXFibex *fibex);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

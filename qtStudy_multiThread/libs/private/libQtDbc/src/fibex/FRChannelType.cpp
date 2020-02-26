@@ -1,13 +1,15 @@
 #include "FRChannelType.h"
 #include "LogDb.h"
+#include "FXFibex.h"
 
 #include <QDomElement>
 
 namespace ASAM {
 namespace FIBEX {
 
-FRChannelType::FRChannelType()
-    :FXChannelType()
+FRChannelType::FRChannelType(FXFibex *fibex, QObject *parent)
+    : FXChannelType(fibex)
+    , QObject(parent)
 {
 }
 

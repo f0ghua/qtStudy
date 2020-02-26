@@ -25,8 +25,8 @@ public:
     quint16 m_bitPostion;
     /** element IS-HIGH-LOW-BYTE-ORDER */
     bool m_isBigEndian;
-
-    /** @todo element SEQUENCE-NUMBER */
+    /** element SEQUENCE-NUMBER */
+    quint16 m_sequenceNumber;
 };
 
 } // FIBEX
