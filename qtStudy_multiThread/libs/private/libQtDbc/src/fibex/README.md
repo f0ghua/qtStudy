@@ -18,6 +18,8 @@
 				- fx:CONTROLLER[N]
 			- fx:CONNECTORS
 				- fx:CONNECTOR[N]  flexray:CONNECTOR-TYPE
+					- fx:CHANNEL-REF
+					- fx:CONTROLLER-REF
 					- fx:INPUTS
 						- fx:INPUT-PORT[N]
 							- fx:FRAME-TRIGGERING-REF[N] ID-REF= fx:FRAME-TRIGGERING
@@ -62,22 +64,25 @@
 	
 # Entities Relationships
 
+- fx:CHANNEL
+	- @ecus
+
 - fx:ECU
-		- @rxFrames
-			- fx:CONNECTOR
-				- fx:INPUT-PORT
-					- fx:FRAME-TRIGGERING-REF[N]	-> fx:FRAME-TRIGGERING
-						- fx:FRAME-TRIGGERING
-							- fx:SLOT-ID/fx:BASE-CYCLE/fx:CYCLE-REPETITION
-							- fx:FRAME-REF	-> fx:FRAME
-		- @txFrames
-			- fx:CONNECTOR
-				- fx:OUTPUT-PORT
-					- fx:FRAME-TRIGGERING-REF[N]	-> fx:FRAME-TRIGGERING
-						- fx:FRAME-TRIGGERING
-							- fx:SLOT-ID/fx:BASE-CYCLE/fx:CYCLE-REPETITION
-							- fx:FRAME-REF	-> fx:FRAME
-							
+	- @rxFrames
+		- fx:CONNECTOR
+			- fx:INPUT-PORT
+				- fx:FRAME-TRIGGERING-REF[N]	-> fx:FRAME-TRIGGERING
+					- fx:FRAME-TRIGGERING
+						- fx:SLOT-ID/fx:BASE-CYCLE/fx:CYCLE-REPETITION
+						- fx:FRAME-REF	-> fx:FRAME
+	- @txFrames
+		- fx:CONNECTOR
+			- fx:OUTPUT-PORT
+				- fx:FRAME-TRIGGERING-REF[N]	-> fx:FRAME-TRIGGERING
+					- fx:FRAME-TRIGGERING
+						- fx:SLOT-ID/fx:BASE-CYCLE/fx:CYCLE-REPETITION
+						- fx:FRAME-REF	-> fx:FRAME
+						
 - fx:FRAME
 	- ho:SHORT-NAME/fx:BYTE-LENGTH/fx:FRAME-TYPE
 	- fx:PDU-INSTANCES

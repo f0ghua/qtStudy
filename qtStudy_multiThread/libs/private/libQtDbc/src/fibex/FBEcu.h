@@ -10,16 +10,17 @@ namespace FIBEX {
 
 class FBPdu;
 class FBFrame;
+class FXEcuType;
 
 class VECTOR_DBC_EXPORT FBEcu : public QObject
 {
 public:
     FBEcu(QObject *parent);
 
+    const FXEcuType *m_fxEcu;
     QHash<QString, FBFrame*> m_inputFrames;
     QHash<QString, FBFrame*> m_outputFrames;
     QHash<QString, FBPdu*> m_inputPdus;
-    QHash<QString, FBPdu*> m_outputPdus;
 };
 
 } // FIBEX

@@ -17,8 +17,8 @@ FXElements::FXElements(FXFibex *fibex, QObject *parent)
     , m_ecus()
     , m_pdus()
     , m_frames()
-    , m_functionList()
     , m_signals()
+    , m_functionList()
     , m_compositeList()
 {
 }

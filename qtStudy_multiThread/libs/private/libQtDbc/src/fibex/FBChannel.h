@@ -4,12 +4,14 @@
 #include "vector_dbc_export.h"
 
 #include "FibexTypes.h"
+#include "FibexKey.h"
 
 namespace ASAM {
 namespace FIBEX {
 
 class FBFrame;
 class FBPdu;
+class FRChannelType;
 
 class VECTOR_DBC_EXPORT FBFrameTriggering : public QObject
 {
@@ -31,6 +33,8 @@ class VECTOR_DBC_EXPORT FBChannel : public QObject
 {
 public:
     FBChannel(QObject *parent);
+
+    const FRChannelType *m_frChannel = nullptr;
 
     QHash<QString, FBFrameTriggering*> m_frameTriggerings;
     QHash<QString, FBPduTriggering*> m_pduTriggerings;

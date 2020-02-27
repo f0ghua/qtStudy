@@ -8,12 +8,15 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXFrameTypeCt;
 class FBPdu;
 
 class VECTOR_DBC_EXPORT FBFrame : public QObject
 {
 public:
     FBFrame(QObject *parent);
+
+    const FXFrameTypeCt *m_fxFrame = nullptr;
 
     QString m_shortName;
     quint32 m_byteLength;

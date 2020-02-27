@@ -143,16 +143,14 @@ bool Fibex::covertXml2Db()
         QHash<QString, FXFrameTypeCt*>::const_iterator ci;
         for (ci = frames.constBegin(); ci != frames.constEnd(); ci++) {
             FBFrame *fbFrame = new FBFrame(this);
-            const FXFrameTypeCt *frame = ci.value();
+            const FXFrameTypeCt *fxFrame = ci.value();
 
-            fbFrame->m_shortName = frame->m_shortName;
-            fbFrame->m_byteLength = frame->m_byteLength;
-            fbFrame->m_type = frame->m_frameType;
+            fbFrame->m_fxFrame = fxFrame;
 
-            if (frame->m_pduInstances
-                    && frame->m_pduInstances->m_pduInstances.count() > 0) {
+            if (fxFrame->m_pduInstances
+                    && fxFrame->m_pduInstances->m_pduInstances.count() > 0) {
                 QHash<QString, FXPduInstanceType*> &instances =
-                        frame->m_pduInstances->m_pduInstances;
+                        fxFrame->m_pduInstances->m_pduInstances;
                 QHash<QString, FXPduInstanceType*>::const_iterator ciPdu;
                 for (ciPdu = instances.constBegin();
                      ciPdu != instances.constEnd(); ciPdu++) {
@@ -167,7 +165,7 @@ bool Fibex::covertXml2Db()
                 }
             }
 
-            m_frames[frame->m_id] = fbFrame;
+            m_frames[fxFrame->m_id] = fbFrame;
         }
     }
 
@@ -176,9 +174,11 @@ bool Fibex::covertXml2Db()
         QHash<QString, FRChannelType*>::const_iterator ci;
         for (ci = channels.constBegin(); ci != channels.constEnd(); ci++) {
             FBChannel *fbChannel = new FBChannel(this);
-            const FRChannelType *channel = ci.value();
+            const FRChannelType *frChannel = ci.value();
 
-            foreach (const FXFrameTriggeringType *t, channel->m_frameTriggerings) {
+            fbChannel->m_frChannel = frChannel;
+
+            foreach (const FXFrameTriggeringType *t, frChannel->m_frameTriggerings) {
                 FBFrameTriggering *fbTriggering = new FBFrameTriggering(this);
                 fbChannel->m_frameTriggerings[t->m_id] = fbTriggering;
 
@@ -202,7 +202,7 @@ bool Fibex::covertXml2Db()
                 }
             }
 
-            foreach (const FXPduTriggeringType *t, channel->m_pduTriggerings) {
+            foreach (const FXPduTriggeringType *t, frChannel->m_pduTriggerings) {
                 FBPduTriggering *fbTriggering = new FBPduTriggering(this);
                 fbChannel->m_pduTriggerings[t->m_id] = fbTriggering;
                 if (m_pdus.contains(t->m_pduRef)) {
@@ -210,7 +210,7 @@ bool Fibex::covertXml2Db()
                 }
             }
 
-            m_channels[channel->m_id] = fbChannel;
+            m_channels[frChannel->m_id] = fbChannel;
         }
     }
 
@@ -219,9 +219,11 @@ bool Fibex::covertXml2Db()
         QHash<QString, FXEcuType*>::const_iterator ci;
         for (ci = ecus.constBegin(); ci != ecus.constEnd(); ci++) {
             FBEcu *fbEcu = new FBEcu(this);
-            const FXEcuType *ecu = ci.value();
+            const FXEcuType *fxEcu = ci.value();
 
-            foreach (const FRConnectorType *connector, ecu->m_connectors) {
+            fbEcu->m_fxEcu = fxEcu;
+
+            foreach (const FRConnectorType *connector, fxEcu->m_connectors) {
                 FBChannel *fbChannel;
                 if (m_channels.contains(connector->m_channelRef)) {
                     fbChannel = m_channels.value(connector->m_channelRef);
@@ -253,18 +255,10 @@ bool Fibex::covertXml2Db()
                         }
                     }
 
-                    foreach (FXIncludedPduType *pdu, port->m_includedPdus) {
-                        if (fbChannel) {
-                            if (fbChannel->m_pduTriggerings.contains(pdu->m_pduTriggeringRef)) {
-                                FBPduTriggering *tr = fbChannel->m_pduTriggerings.value(pdu->m_pduTriggeringRef);
-                                fbEcu->m_outputPdus.unite(tr->m_pdus);
-                            }
-                        }
-                    }
                 }
             }
 
-            m_ecus[ecu->m_id] = fbEcu;
+            m_ecus[fxEcu->m_id] = fbEcu;
         }
     }
 
