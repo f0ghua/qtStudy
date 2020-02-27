@@ -7,10 +7,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOCompuMethods::HOCompuMethods(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+HOCompuMethods::HOCompuMethods(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+HOCompuMethods::~HOCompuMethods()
+{
+    qDeleteAll(m_compuMethods);
+    m_compuMethods.clear();
 }
 
 void HOCompuMethods::load(const QDomElement &element)
@@ -24,7 +29,7 @@ void HOCompuMethods::load(const QDomElement &element)
         QLOG_TRACE() << "HOCompuMethods::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ho:COMPU-METHOD") {
-            HOCompuMethod *cm = new HOCompuMethod(m_fibex, this);
+            HOCompuMethod *cm = new HOCompuMethod(m_fibex);
             cm->load(childElement);
             m_compuMethods.append(cm);
         }

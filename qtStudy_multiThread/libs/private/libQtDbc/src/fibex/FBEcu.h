@@ -12,12 +12,16 @@ class FBPdu;
 class FBFrame;
 class FXEcuType;
 
-class VECTOR_DBC_EXPORT FBEcu : public QObject
+class VECTOR_DBC_EXPORT FBEcu
 {
 public:
-    FBEcu(QObject *parent);
+    FBEcu();
+    ~FBEcu();
 
-    const FXEcuType *m_fxEcu;
+    QString name() const;
+
+    const FXEcuType *m_fxEcu = nullptr;
+
     QHash<QString, FBFrame*> m_inputFrames;
     QHash<QString, FBFrame*> m_outputFrames;
     QHash<QString, FBPdu*> m_inputPdus;

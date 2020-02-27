@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOCompuRationalCoeffs::HOCompuRationalCoeffs(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+HOCompuRationalCoeffs::HOCompuRationalCoeffs(FXFibex *fibex)
+    : m_fibex(fibex)
 {
 }
 

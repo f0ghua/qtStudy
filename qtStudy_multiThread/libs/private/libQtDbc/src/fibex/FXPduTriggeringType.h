@@ -15,13 +15,14 @@ class FXFibex;
  *
  * Content model for the entity PDU-TRIGGERING.
  */
-class VECTOR_DBC_EXPORT FXPduTriggeringType : public QObject
+class VECTOR_DBC_EXPORT FXPduTriggeringType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXPduTriggeringType(FXFibex *fibex, QObject *parent = nullptr);
+    FXPduTriggeringType(FXFibex *fibex = nullptr);
+    ~FXPduTriggeringType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

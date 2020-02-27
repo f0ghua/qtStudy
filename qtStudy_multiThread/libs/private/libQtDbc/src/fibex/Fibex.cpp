@@ -4,8 +4,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-Fibex::Fibex(QObject *parent)
-    : FXFibex(parent)
+Fibex::Fibex()
+    : FXFibex()
     , m_domElement(nullptr)
 {
 
@@ -13,7 +13,20 @@ Fibex::Fibex(QObject *parent)
 
 Fibex::~Fibex()
 {
+    qDeleteAll(m_ecus);
+    m_ecus.clear();
 
+    qDeleteAll(m_channels);
+    m_channels.clear();
+
+    qDeleteAll(m_frames);
+    m_frames.clear();
+
+    qDeleteAll(m_pdus);
+    m_pdus.clear();
+
+    qDeleteAll(m_signals);
+    m_signals.clear();
 }
 
 bool Fibex::covertXml2Db()
@@ -28,16 +41,16 @@ bool Fibex::covertXml2Db()
         QHash<QString, FXSignalType*>::const_iterator ci;
 
         for (ci = sigs.constBegin(); ci != sigs.constEnd(); ci++) {
-            FBSignal *fbSignal = new FBSignal(this);
-            const FXSignalType *sig = ci.value();
+            FBSignal *fbSignal = new FBSignal();
+            const FXSignalType *fxSignal = ci.value();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << ci.key() << sig->m_shortName << sig->m_codingRef;
+            QLOG_DEBUG() << ci.key() << fxSignal->m_shortName << fxSignal->m_codingRef;
 #endif
-            fbSignal->m_name = sig->m_shortName;
+            fbSignal->m_fxSignal = fxSignal;
 
-            if (!sig->m_codingRef.isEmpty()
-                    && codings.contains(sig->m_codingRef)) {
-                CodingType *ct = codings.value(sig->m_codingRef);
+            if (!fxSignal->m_codingRef.isEmpty()
+                    && codings.contains(fxSignal->m_codingRef)) {
+                CodingType *ct = codings.value(fxSignal->m_codingRef);
 #ifndef F_NO_DEBUG
                 QLOG_DEBUG() << "found codingType" << ct->m_shortName;
 #endif
@@ -111,7 +124,7 @@ bool Fibex::covertXml2Db()
         QHash<QString, FXPduTypeCt*> &pdus = m_elements->m_pdus;
         QHash<QString, FXPduTypeCt*>::const_iterator ci;
         for (ci = pdus.constBegin(); ci != pdus.constEnd(); ci++) {
-            FBPdu *fbPdu = new FBPdu(this);
+            FBPdu *fbPdu = new FBPdu();
             const FXPduTypeCt *pdu = ci.value();
 
             fbPdu->m_shortName = pdu->m_shortName;
@@ -142,7 +155,7 @@ bool Fibex::covertXml2Db()
         QHash<QString, FXFrameTypeCt*> &frames = m_elements->m_frames;
         QHash<QString, FXFrameTypeCt*>::const_iterator ci;
         for (ci = frames.constBegin(); ci != frames.constEnd(); ci++) {
-            FBFrame *fbFrame = new FBFrame(this);
+            FBFrame *fbFrame = new FBFrame();
             const FXFrameTypeCt *fxFrame = ci.value();
 
             fbFrame->m_fxFrame = fxFrame;
@@ -173,13 +186,13 @@ bool Fibex::covertXml2Db()
         QHash<QString, FRChannelType*> &channels = m_elements->m_channels;
         QHash<QString, FRChannelType*>::const_iterator ci;
         for (ci = channels.constBegin(); ci != channels.constEnd(); ci++) {
-            FBChannel *fbChannel = new FBChannel(this);
+            FBChannel *fbChannel = new FBChannel();
             const FRChannelType *frChannel = ci.value();
 
             fbChannel->m_frChannel = frChannel;
 
             foreach (const FXFrameTriggeringType *t, frChannel->m_frameTriggerings) {
-                FBFrameTriggering *fbTriggering = new FBFrameTriggering(this);
+                FBFrameTriggering *fbTriggering = new FBFrameTriggering();
                 fbChannel->m_frameTriggerings[t->m_id] = fbTriggering;
 
                 FBFrame *fbFrame = NULL;
@@ -196,14 +209,19 @@ bool Fibex::covertXml2Db()
                         // @TODO If there are more than 1 timing, we should new frames except the first one
                         fbFrame->m_slotId = rst->m_slotId;
                         fbFrame->m_baseCycle = rst->m_baseCycle;
-                        fbFrame->m_cycleCounter = rst->m_cycleCounter;
                         fbFrame->m_cycleRepetition = rst->m_cycleRepetition;
+                        fbFrame->m_cycleCounter = rst->m_cycleCounter;
+
+                        FibexFrameKey key(fbFrame->m_slotId, fbFrame->m_baseCycle, fbFrame->m_cycleRepetition);
+                        fbChannel->m_frames[key] = fbFrame;
+
+                        break;
                     }
                 }
             }
 
             foreach (const FXPduTriggeringType *t, frChannel->m_pduTriggerings) {
-                FBPduTriggering *fbTriggering = new FBPduTriggering(this);
+                FBPduTriggering *fbTriggering = new FBPduTriggering();
                 fbChannel->m_pduTriggerings[t->m_id] = fbTriggering;
                 if (m_pdus.contains(t->m_pduRef)) {
                     fbTriggering->m_pdus[t->m_pduRef] = m_pdus.value(t->m_pduRef);
@@ -218,9 +236,10 @@ bool Fibex::covertXml2Db()
         QHash<QString, FXEcuType*> &ecus = m_elements->m_ecus;
         QHash<QString, FXEcuType*>::const_iterator ci;
         for (ci = ecus.constBegin(); ci != ecus.constEnd(); ci++) {
-            FBEcu *fbEcu = new FBEcu(this);
+            FBEcu *fbEcu = new FBEcu();
             const FXEcuType *fxEcu = ci.value();
 
+            m_ecus[fxEcu->m_id] = fbEcu;
             fbEcu->m_fxEcu = fxEcu;
 
             foreach (const FRConnectorType *connector, fxEcu->m_connectors) {
@@ -228,37 +247,32 @@ bool Fibex::covertXml2Db()
                 if (m_channels.contains(connector->m_channelRef)) {
                     fbChannel = m_channels.value(connector->m_channelRef);
                 }
+                if (!fbChannel) continue;
+
+                fbChannel->m_ecus[fxEcu->m_id] = fbEcu;
 
                 foreach (const FXEcuPortType *port, connector->m_inputPorts) {
-                    if (fbChannel) {
-                        if (fbChannel->m_frameTriggerings.contains(port->m_frameTriggeringRef)) {
-                            FBFrameTriggering *tr = fbChannel->m_frameTriggerings.value(port->m_frameTriggeringRef);
-                            fbEcu->m_inputFrames.unite(tr->m_frames);
-                        }
+                    if (fbChannel->m_frameTriggerings.contains(port->m_frameTriggeringRef)) {
+                        FBFrameTriggering *tr = fbChannel->m_frameTriggerings.value(port->m_frameTriggeringRef);
+                        fbEcu->m_inputFrames.unite(tr->m_frames);
                     }
 
                     foreach (FXIncludedPduType *pdu, port->m_includedPdus) {
-                        if (fbChannel) {
-                            if (fbChannel->m_pduTriggerings.contains(pdu->m_pduTriggeringRef)) {
-                                FBPduTriggering *tr = fbChannel->m_pduTriggerings.value(pdu->m_pduTriggeringRef);
-                                fbEcu->m_inputPdus.unite(tr->m_pdus);
-                            }
+                        if (fbChannel->m_pduTriggerings.contains(pdu->m_pduTriggeringRef)) {
+                            FBPduTriggering *tr = fbChannel->m_pduTriggerings.value(pdu->m_pduTriggeringRef);
+                            fbEcu->m_inputPdus.unite(tr->m_pdus);
                         }
+
                     }
                 }
 
                 foreach (const FXEcuPortType *port, connector->m_outputPorts) {
-                    if (fbChannel) {
-                        if (fbChannel->m_frameTriggerings.contains(port->m_frameTriggeringRef)) {
-                            FBFrameTriggering *tr = fbChannel->m_frameTriggerings.value(port->m_frameTriggeringRef);
-                            fbEcu->m_outputFrames.unite(tr->m_frames);
-                        }
+                    if (fbChannel->m_frameTriggerings.contains(port->m_frameTriggeringRef)) {
+                        FBFrameTriggering *tr = fbChannel->m_frameTriggerings.value(port->m_frameTriggeringRef);
+                        fbEcu->m_outputFrames.unite(tr->m_frames);
                     }
-
                 }
-            }
-
-            m_ecus[fxEcu->m_id] = fbEcu;
+            } 
         }
     }
 
@@ -270,7 +284,7 @@ bool Fibex::covertXml2Db()
                                 "m_signals name = %1 factor = %2, offset = %3, "
                                 "min = %4, max = %5, startbit = %6, bitsize = %7, isbig = %8"
                             ).\
-                            arg(fbSignal->m_name).\
+                            arg(fbSignal->name()).\
                             arg(fbSignal->m_factor).\
                             arg(fbSignal->m_offset).\
                             arg(fbSignal->m_minimumPhysicalValue).\
@@ -304,16 +318,16 @@ bool Fibex::covertXml2Db()
 #endif
 
         count = 0;
-        foreach (auto fbFrame, m_frames) {
+        foreach (const FBFrame *fbFrame, m_frames) {
 #ifndef F_NO_DEBUG
             QLOG_DEBUG() << QObject::tr(
                                 "m_frames name = %1 byteLength = %2, type = %3, "
                                 "m_slotId = %4, m_baseCycle = %5, m_cycleCounter = %6, "
                                 "m_cycleRepetition = %7, pduCount = %8"
                             ).\
-                            arg(fbFrame->m_shortName).\
-                            arg(fbFrame->m_byteLength).\
-                            arg((int)fbFrame->m_type).\
+                            arg(fbFrame->m_fxFrame->m_shortName).\
+                            arg(fbFrame->m_fxFrame->m_byteLength).\
+                            arg((int)fbFrame->m_fxFrame->m_frameType).\
                             arg(fbFrame->m_slotId).\
                             arg(fbFrame->m_baseCycle).\
                             arg(fbFrame->m_cycleCounter).\
@@ -324,6 +338,38 @@ bool Fibex::covertXml2Db()
         }
 #ifndef F_NO_DEBUG
         QLOG_INFO() << "Fibex::covertXml2Db frame count =" << count;
+#endif
+
+        count = 0;
+        foreach (const FBChannel *fbChannel, m_channels) {
+#ifndef F_NO_DEBUG
+            QLOG_DEBUG() << QObject::tr(
+                                "m_channel name = %1"
+                            ).\
+                            arg(fbChannel->name());
+#endif
+            foreach (const FBFrame *fbFrame, fbChannel->m_frames) {
+#ifndef F_NO_DEBUG
+            QLOG_DEBUG() << QObject::tr(
+                                "m_frames name = %1"
+                            ).\
+                            arg(fbFrame->name());
+#endif
+            }
+
+            foreach (const FBEcu *fbEcu, fbChannel->m_ecus) {
+#ifndef F_NO_DEBUG
+            QLOG_DEBUG() << QObject::tr(
+                                "m_ecu name = %1"
+                            ).\
+                            arg(fbEcu->name());
+#endif
+            }
+
+            count++;
+        }
+#ifndef F_NO_DEBUG
+        QLOG_INFO() << "Fibex::covertXml2Db channel count =" << count;
 #endif
     }
 

@@ -13,6 +13,8 @@
 
 #include "FXFibex.h"
 
+#include <QObject>
+
 class QDomElement;
 
 namespace ASAM {
@@ -21,8 +23,8 @@ namespace FIBEX {
 class VECTOR_DBC_EXPORT Fibex : public FXFibex
 {
 public:
-    Fibex(QObject *parent = nullptr);
-    virtual ~Fibex();
+    Fibex();
+    ~Fibex();
 
     /**
      * @brief Load Database

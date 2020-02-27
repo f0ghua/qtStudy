@@ -24,6 +24,7 @@ public:
 
 public:
     FXChannelType(FXFibex *fibex);
+    ~FXChannelType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

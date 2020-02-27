@@ -8,10 +8,13 @@
 namespace ASAM {
 namespace FIBEX {
 
-class VECTOR_DBC_EXPORT FBPdu : public QObject
+class FBSignal;
+
+class VECTOR_DBC_EXPORT FBPdu
 {
 public:
-    FBPdu(QObject *parent);
+    FBPdu();
+    ~FBPdu();
 
     QString m_shortName;
     quint32 m_byteLength;
@@ -20,6 +23,7 @@ public:
     quint16 m_startBit;
     bool m_isBigEndian;
 
+    QHash<QString, FBSignal*> m_signals;
 };
 
 } // FIBEX

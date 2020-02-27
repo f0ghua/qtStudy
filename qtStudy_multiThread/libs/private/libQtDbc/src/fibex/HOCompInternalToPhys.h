@@ -19,13 +19,14 @@ class FXFibex;
  *
  * Container for COMPU-METHOD elements
  */
-class VECTOR_DBC_EXPORT HOCompInternalToPhys : public QObject
+class VECTOR_DBC_EXPORT HOCompInternalToPhys
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    HOCompInternalToPhys(FXFibex *fibex, QObject *parent = nullptr);
+    HOCompInternalToPhys(FXFibex *fibex = nullptr);
+    ~HOCompInternalToPhys();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

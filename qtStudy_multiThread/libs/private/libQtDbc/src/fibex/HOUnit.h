@@ -15,13 +15,13 @@ class FXFibex;
  *
  * ASAM unit definition
  */
-class VECTOR_DBC_EXPORT HOUnit : public HONameDetails, public QObject
+class VECTOR_DBC_EXPORT HOUnit : public HONameDetails
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    HOUnit(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    HOUnit(FXFibex *fibex = Q_NULLPTR);
     ~HOUnit();
 
     /** load from XML DOM element */

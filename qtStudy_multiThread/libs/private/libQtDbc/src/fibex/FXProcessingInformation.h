@@ -12,24 +12,25 @@ namespace FIBEX {
 class FXFibex;
 
 /**
- * @brief complexType PROCESSING-INFORMATION
+ * @brief complexType fx:PROCESSING-INFORMATION
  *
  * Data needed to process data in elements.
  */
-class VECTOR_DBC_EXPORT FXProcessingInformation : public QObject
+class VECTOR_DBC_EXPORT FXProcessingInformation
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXProcessingInformation(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    FXProcessingInformation(FXFibex *fibex = Q_NULLPTR);
+    ~FXProcessingInformation();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** element UNIT-SPEC */
+    /** element ho:UNIT-SPEC */
     HOUnitSpec *m_unitSpec = nullptr;
-    /** element CODINGS */
+    /** element fx:CODINGS */
     FXCodings *m_codings = nullptr;
 };
 

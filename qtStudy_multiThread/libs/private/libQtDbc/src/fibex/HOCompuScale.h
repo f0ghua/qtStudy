@@ -21,13 +21,13 @@ class FXFibex;
  * the communication system) into phyiscal data of an application.
  *
  */
-class VECTOR_DBC_EXPORT HOCompuScale : public QObject
+class VECTOR_DBC_EXPORT HOCompuScale
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    HOCompuScale(FXFibex *fibex, QObject *parent = nullptr);
+    HOCompuScale(FXFibex *fibex = nullptr);
     ~HOCompuScale();
 
     /** load from XML DOM element */

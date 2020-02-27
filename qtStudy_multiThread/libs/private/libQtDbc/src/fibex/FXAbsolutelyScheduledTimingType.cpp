@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXAbsolutelyScheduledTimingType::FXAbsolutelyScheduledTimingType(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+FXAbsolutelyScheduledTimingType::FXAbsolutelyScheduledTimingType(FXFibex *fibex)
+    : m_fibex(fibex)
     , m_desc()
     , m_slotId(0)
     , m_cycleCounter(0)

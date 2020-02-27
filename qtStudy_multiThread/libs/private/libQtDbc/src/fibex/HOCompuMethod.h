@@ -20,13 +20,14 @@ class FXFibex;
  *
  * Method to calulate the transmitted value to the physical representation
  */
-class VECTOR_DBC_EXPORT HOCompuMethod : public HONameDetails, public QObject
+class VECTOR_DBC_EXPORT HOCompuMethod : public HONameDetails
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    HOCompuMethod(FXFibex *fibex, QObject *parent = nullptr);
+    HOCompuMethod(FXFibex *fibex = nullptr);
+    ~HOCompuMethod();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

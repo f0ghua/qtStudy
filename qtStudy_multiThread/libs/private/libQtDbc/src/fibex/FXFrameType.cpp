@@ -8,11 +8,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXFrameTypeCt::FXFrameTypeCt(FXFibex *fibex, QObject *parent)
+FXFrameTypeCt::FXFrameTypeCt(FXFibex *fibex)
     : FXRevisedElementType()
-    , QObject(parent)
     , m_fibex(fibex)
 {
+}
+
+FXFrameTypeCt::~FXFrameTypeCt()
+{
+    if (m_pduInstances) delete m_pduInstances;
 }
 
 void FXFrameTypeCt::load(const QDomElement &element)
@@ -43,7 +47,7 @@ void FXFrameTypeCt::load(const QDomElement &element)
             }
         } else if (childElement.tagName() == "fx:PDU-INSTANCES") {
             if (!m_pduInstances) {
-                m_pduInstances = new FXPduInstances(m_fibex, this);
+                m_pduInstances = new FXPduInstances(m_fibex);
                 m_pduInstances->load(childElement);
             }
 

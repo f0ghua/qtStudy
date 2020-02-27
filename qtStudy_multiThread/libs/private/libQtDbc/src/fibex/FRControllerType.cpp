@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-FRControllerType::FRControllerType(FXFibex *fibex, QObject *parent)
+FRControllerType::FRControllerType(FXFibex *fibex)
     : FXControllerType(fibex)
-    , QObject(parent)
     , m_fibex(fibex)
 {
 }

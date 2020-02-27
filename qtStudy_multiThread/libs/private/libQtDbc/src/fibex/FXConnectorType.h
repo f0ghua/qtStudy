@@ -22,6 +22,7 @@ public:
 
 public:
     FXConnectorType(FXFibex *fibex);
+    ~FXConnectorType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

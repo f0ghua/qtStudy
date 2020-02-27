@@ -1,3 +1,4 @@
+#include "FXEcuType.h"
 #include "FBEcu.h"
 #include "Utility.h"
 using Vector::DBC::Utility;
@@ -5,10 +6,21 @@ using Vector::DBC::Utility;
 namespace ASAM {
 namespace FIBEX {
 
-FBEcu::FBEcu(QObject *parent)
-    : QObject(parent)
+FBEcu::FBEcu()
 {
     /* nothing to do here */
+}
+
+FBEcu::~FBEcu()
+{
+    m_inputFrames.clear();
+    m_outputFrames.clear();
+    m_inputPdus.clear();
+}
+
+QString FBEcu::name() const
+{
+    return m_fxEcu?m_fxEcu->m_shortName:QString();
 }
 
 } // FIBEX

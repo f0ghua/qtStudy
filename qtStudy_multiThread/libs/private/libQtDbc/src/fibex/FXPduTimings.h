@@ -17,13 +17,13 @@ class FXFibex;
  *
  * Time behavior of a PDU specified in a sequence of cluster specific timing types
  */
-class VECTOR_DBC_EXPORT FXPduTimings : public QObject
+class VECTOR_DBC_EXPORT FXPduTimings
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXPduTimings(FXFibex *fibex, QObject *parent = nullptr);
+    FXPduTimings(FXFibex *fibex = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

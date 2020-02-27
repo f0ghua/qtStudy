@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXSignalType::FXSignalType(FXFibex *fibex, QObject *parent)
+FXSignalType::FXSignalType(FXFibex *fibex)
     : FXRevisedElementType()
-    , QObject(parent)
     , m_fibex(fibex)
     , m_defaultValue()
     , m_codingRef()

@@ -7,10 +7,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOCompInternalToPhys::HOCompInternalToPhys(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+HOCompInternalToPhys::HOCompInternalToPhys(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+HOCompInternalToPhys::~HOCompInternalToPhys()
+{
+    qDeleteAll(m_compuScales);
+    m_compuScales.clear();
 }
 
 void HOCompInternalToPhys::load(const QDomElement &element)
@@ -29,7 +34,7 @@ void HOCompInternalToPhys::load(const QDomElement &element)
                 QLOG_TRACE() << "HOCompInternalToPhys::load COMPU-SCALES" << subChildElement.tagName();
 #endif
                 if (subChildElement.tagName() == "ho:COMPU-SCALE") {
-                    HOCompuScale *compuScale = new HOCompuScale(m_fibex, this);
+                    HOCompuScale *compuScale = new HOCompuScale(m_fibex);
                     compuScale->load(subChildElement);
                     m_compuScales.append(compuScale);
                 }

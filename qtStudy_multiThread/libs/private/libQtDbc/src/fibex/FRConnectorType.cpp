@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-FRConnectorType::FRConnectorType(FXFibex *fibex, QObject *parent)
+FRConnectorType::FRConnectorType(FXFibex *fibex)
     : FXConnectorType(fibex)
-    , QObject(parent)
     , m_fibex(fibex)
 {
 }

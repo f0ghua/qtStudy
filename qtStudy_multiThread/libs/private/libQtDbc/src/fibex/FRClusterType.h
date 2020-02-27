@@ -4,6 +4,7 @@
 #include "vector_dbc_export.h"
 
 #include "FXClusterType.h"
+#include "FRWakeUp.h"
 
 namespace ASAM {
 namespace FIBEX {
@@ -14,7 +15,8 @@ namespace FIBEX {
 class VECTOR_DBC_EXPORT FRClusterType : public FXClusterType
 {
 public:
-    FRClusterType();
+    FRClusterType(FXFibex *fibex);
+    ~FRClusterType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
@@ -38,7 +40,7 @@ public:
     /** @todo element T-S-S-TRANSMITTER */
     quint8 m_TSSTransmitter = 5;
     /** @todo element WAKE-UP */
-
+    FRWakeUp *m_wakeUp = nullptr;
     /** @todo element LISTEN-NOISE */
     quint8 m_listenNoise = 8;
     /** @todo element MACRO-PER-CYCLE */

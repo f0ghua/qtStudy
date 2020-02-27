@@ -12,17 +12,17 @@ namespace FIBEX {
 class FXFibex;
 
 /**
- * @brief complexType SIGNAL-TYPE
+ * @brief complexType fx:SIGNAL-TYPE
  *
  * Content model for the entity SIGNAL.
  */
-class VECTOR_DBC_EXPORT FXSignalType : public FXRevisedElementType, public QObject
+class VECTOR_DBC_EXPORT FXSignalType : public FXRevisedElementType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXSignalType(FXFibex *fibex, QObject *parent = nullptr);
+    FXSignalType(FXFibex *fibex);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

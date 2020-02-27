@@ -13,6 +13,15 @@ FXChannelType::FXChannelType(FXFibex *fibex)
 {
 }
 
+FXChannelType::~FXChannelType()
+{
+    qDeleteAll(m_pduTriggerings);
+    m_pduTriggerings.clear();
+
+    qDeleteAll(m_frameTriggerings);
+    m_frameTriggerings.clear();
+}
+
 void FXChannelType::load(const QDomElement &element)
 {
     FXRevisedElementType::load(element);
@@ -32,7 +41,7 @@ void FXChannelType::load(const QDomElement &element)
                 QLOG_TRACE() << "FXChannelType::load fx:PDU-TRIGGERINGS" << childElement.tagName();
 #endif
                 if (subChildElement.tagName() == "fx:PDU-TRIGGERING") {
-                    FXPduTriggeringType *tr = new FXPduTriggeringType(m_fibex, m_fibex);
+                    FXPduTriggeringType *tr = new FXPduTriggeringType(m_fibex);
                     tr->load(subChildElement);
                     m_pduTriggerings[tr->m_id] = tr;
                 }
@@ -47,7 +56,7 @@ void FXChannelType::load(const QDomElement &element)
                 QLOG_TRACE() << "FXChannelType::load fx:FRAME-TRIGGERINGS" << childElement.tagName();
 #endif
                 if (subChildElement.tagName() == "fx:FRAME-TRIGGERING") {
-                    FXFrameTriggeringType *tr = new FXFrameTriggeringType(m_fibex, m_fibex);
+                    FXFrameTriggeringType *tr = new FXFrameTriggeringType(m_fibex);
                     tr->load(subChildElement);
                     m_frameTriggerings[tr->m_id] = tr;
                 }

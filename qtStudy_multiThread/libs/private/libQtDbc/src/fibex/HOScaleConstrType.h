@@ -17,13 +17,13 @@ class FXFibex;
  *
  * For reusability scale constraints content model is specified using a type definition.
  */
-class VECTOR_DBC_EXPORT HOScaleConstrType : public QObject
+class VECTOR_DBC_EXPORT HOScaleConstrType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    HOScaleConstrType(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    HOScaleConstrType(FXFibex *fibex = nullptr);
     ~HOScaleConstrType();
 
     /** load from XML DOM element */

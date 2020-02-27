@@ -7,10 +7,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOUnitSpec::HOUnitSpec(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+HOUnitSpec::HOUnitSpec(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+HOUnitSpec::~HOUnitSpec()
+{
+    qDeleteAll(m_units);
+    m_units.clear();
 }
 
 void HOUnitSpec::load(const QDomElement &element)
@@ -34,7 +39,7 @@ void HOUnitSpec::load(const QDomElement &element)
                 QLOG_TRACE() << "HOUnitSpec::load UNITS" << childElement.tagName();
 #endif
                 if (subChild.toElement().tagName() == "ho:UNIT") {
-                    HOUnit *unit = new HOUnit(m_fibex, this);
+                    HOUnit *unit = new HOUnit(m_fibex);
                     unit->load(subChild.toElement());
                     m_units[unit->m_id] = unit;
                 }

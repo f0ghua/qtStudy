@@ -11,21 +11,21 @@ namespace FIBEX {
 class FXFrameTypeCt;
 class FBPdu;
 
-class VECTOR_DBC_EXPORT FBFrame : public QObject
+class VECTOR_DBC_EXPORT FBFrame
 {
 public:
-    FBFrame(QObject *parent);
+    FBFrame();
+    ~FBFrame();
+
+    QString name() const;
+    quint32 byteLength() const;
+    FibexTypes::FXFrameTypeSt frameType() const;
 
     const FXFrameTypeCt *m_fxFrame = nullptr;
-
-    QString m_shortName;
-    quint32 m_byteLength;
-    FibexTypes::FXFrameTypeSt m_type;
-
     qint32 m_slotId;
     qint16 m_cycleCounter;
-    qint16 m_baseCycle;
     qint16 m_cycleRepetition;
+    qint16 m_baseCycle;
 
     QHash<QString, FBPdu*> m_pdus;
 };

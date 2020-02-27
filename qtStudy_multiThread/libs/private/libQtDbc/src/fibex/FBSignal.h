@@ -9,18 +9,20 @@
 namespace ASAM {
 namespace FIBEX {
 
+class FXSignalType;
 typedef FibexTypes::FXBitCountingPolicy ByteOrder;
 typedef FibexTypes::HOBaseDataType ValueType;
 // @todo fibex textable item should mapping to a range
 typedef QMap<double, QString> ValueDescriptions;
 
-class VECTOR_DBC_EXPORT FBSignal : public QObject
+class VECTOR_DBC_EXPORT FBSignal
 {
 public:
-    FBSignal(QObject *parent);
+    FBSignal();
 
-    /** Name */
-    QString m_name;
+    QString name();
+
+    const FXSignalType *m_fxSignal = nullptr;
 
     /** Multiplexed Signal (m) */
     bool m_isMultiplexedSignal; // m

@@ -17,13 +17,13 @@ class FXFibex;
  *
  * Coded Type of data on communication system.
  */
-class VECTOR_DBC_EXPORT HOCodedType : public QObject
+class VECTOR_DBC_EXPORT HOCodedType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    HOCodedType(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    HOCodedType(FXFibex *fibex = nullptr);
     ~HOCodedType();
 
     /** load from XML DOM element */

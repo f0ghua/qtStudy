@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOCompuScale::HOCompuScale(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+HOCompuScale::HOCompuScale(FXFibex *fibex)
+    : m_fibex(fibex)
     , m_lowerLimitIntervalType(FibexTypes::HOIntervalTypeAb::CLOSED)
     , m_upperLimitIntervalType(FibexTypes::HOIntervalTypeAb::CLOSED)
 {
@@ -19,6 +18,7 @@ HOCompuScale::~HOCompuScale()
 {
     if (m_lowerLimit) delete m_lowerLimit;
     if (m_upperLimit) delete m_upperLimit;
+    if (m_compuRationalCoeffs) delete m_compuRationalCoeffs;
 }
 
 void HOCompuScale::load(const QDomElement &element)
@@ -71,7 +71,7 @@ void HOCompuScale::load(const QDomElement &element)
             m_compuConst.load(childElement);
         } else if (childElement.tagName() == "ho:COMPU-RATIONAL-COEFFS") {
             if (!m_compuRationalCoeffs) {
-                m_compuRationalCoeffs = new HOCompuRationalCoeffs(m_fibex, this);
+                m_compuRationalCoeffs = new HOCompuRationalCoeffs(m_fibex);
                 m_compuRationalCoeffs->load(childElement);
             }
         } else if (childElement.tagName() == "ho:COMPU-GENERIC-MATH") {

@@ -7,10 +7,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXSignalInstances::FXSignalInstances(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+FXSignalInstances::FXSignalInstances(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+FXSignalInstances::~FXSignalInstances()
+{
+    qDeleteAll(m_sigInstances);
+    m_sigInstances.clear();
 }
 
 void FXSignalInstances::load(const QDomElement &element)
@@ -22,7 +27,7 @@ void FXSignalInstances::load(const QDomElement &element)
         QLOG_TRACE() << "FXSignalInstances::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:SIGNAL-INSTANCE") {
-            FXSignalInstanceType *si = new FXSignalInstanceType(m_fibex, this);
+            FXSignalInstanceType *si = new FXSignalInstanceType(m_fibex);
             si->load(childElement);
             m_sigInstances[si->m_id] = si;
         }

@@ -12,6 +12,15 @@ FXConnectorType::FXConnectorType(FXFibex *fibex)
 {
 }
 
+FXConnectorType::~FXConnectorType()
+{
+    qDeleteAll(m_inputPorts);
+    m_inputPorts.clear();
+
+    qDeleteAll(m_outputPorts);
+    m_outputPorts.clear();
+}
+
 void FXConnectorType::load(const QDomElement &element)
 {
     m_id = element.attribute("ID");
@@ -40,7 +49,7 @@ void FXConnectorType::load(const QDomElement &element)
                 QLOG_TRACE() << "FXConnectorType::load INPUTS" << childElement.tagName();
 #endif
                 if (subChildElement.tagName() == "fx:INPUT-PORT") {
-                    FXEcuPortType *port = new FXEcuPortType(m_fibex, m_fibex);
+                    FXEcuPortType *port = new FXEcuPortType(m_fibex);
                     port->load(subChildElement);
                     m_inputPorts[port->m_id] = port;
                 }
@@ -54,7 +63,7 @@ void FXConnectorType::load(const QDomElement &element)
                 QLOG_TRACE() << "FXConnectorType::load OUTPUTS" << childElement.tagName();
 #endif
                 if (subChildElement.tagName() == "fx:OUTPUT-PORT") {
-                    FXEcuPortType *port = new FXEcuPortType(m_fibex, m_fibex);
+                    FXEcuPortType *port = new FXEcuPortType(m_fibex);
                     port->load(subChildElement);
                     m_outputPorts[port->m_id] = port;
                 }

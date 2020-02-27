@@ -7,10 +7,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXIncludedPduType::FXIncludedPduType(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+FXIncludedPduType::FXIncludedPduType(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+FXIncludedPduType::~FXIncludedPduType()
+{
+    qDeleteAll(m_includedSignals);
+    m_includedSignals.clear();
 }
 
 void FXIncludedPduType::load(const QDomElement &element)
@@ -34,7 +39,7 @@ void FXIncludedPduType::load(const QDomElement &element)
                 QLOG_TRACE() << "FXIncludedPduType::load INCLUDED-SIGNALS" << childElement.tagName();
 #endif
                 if (subChildElement.tagName() == "fx:INCLUDED-SIGNAL") {
-                    FXIncludedSignalType *sig = new FXIncludedSignalType(m_fibex, this);
+                    FXIncludedSignalType *sig = new FXIncludedSignalType(m_fibex);
                     sig->load(subChildElement);
                     m_includedSignals.append(sig);
                 }

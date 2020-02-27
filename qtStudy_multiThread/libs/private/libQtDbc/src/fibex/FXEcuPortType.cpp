@@ -7,10 +7,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXEcuPortType::FXEcuPortType(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+FXEcuPortType::FXEcuPortType(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+FXEcuPortType::~FXEcuPortType()
+{
+    qDeleteAll(m_includedPdus);
+    m_includedPdus.clear();
 }
 
 void FXEcuPortType::load(const QDomElement &element)
@@ -36,7 +41,7 @@ void FXEcuPortType::load(const QDomElement &element)
                 QLOG_TRACE() << "FXEcuPortType::load INCLUDED-PDU" << childElement.tagName();
 #endif
                 if (subChildElement.tagName() == "fx:INCLUDED-PDU") {
-                    FXIncludedPduType *pdu = new FXIncludedPduType(m_fibex, this);
+                    FXIncludedPduType *pdu = new FXIncludedPduType(m_fibex);
                     pdu->load(subChildElement);
                     m_includedPdus.append(pdu);
                 }

@@ -7,10 +7,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXCodings::FXCodings(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+FXCodings::FXCodings(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+FXCodings::~FXCodings()
+{
+    qDeleteAll(m_codings);
+    m_codings.clear();
 }
 
 void FXCodings::load(const QDomElement &element)
@@ -22,7 +27,7 @@ void FXCodings::load(const QDomElement &element)
         QLOG_TRACE() << "FXCodings::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:CODING") {
-            CodingType *ct = new CodingType(m_fibex, this);
+            CodingType *ct = new CodingType(m_fibex);
             ct->load(childElement);
             m_codings[ct->m_id] = ct;
         }

@@ -15,13 +15,14 @@ class FXFibex;
  *
  * Content model for the entity PORT in the ECU related peculiarity.
  */
-class VECTOR_DBC_EXPORT FXEcuPortType : public QObject
+class VECTOR_DBC_EXPORT FXEcuPortType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXEcuPortType(FXFibex *fibex, QObject *parent = nullptr);
+    FXEcuPortType(FXFibex *fibex = nullptr);
+    ~FXEcuPortType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

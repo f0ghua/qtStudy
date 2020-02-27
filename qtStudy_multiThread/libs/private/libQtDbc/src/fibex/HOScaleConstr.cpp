@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOScaleConstr::HOScaleConstr(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+HOScaleConstr::HOScaleConstr(FXFibex *fibex)
+    : m_fibex(fibex)
     , m_lowerLimitIntervalType(FibexTypes::HOIntervalTypeAb::CLOSED)
     , m_upperLimitIntervalType(FibexTypes::HOIntervalTypeAb::CLOSED)
 {

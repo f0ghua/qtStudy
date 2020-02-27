@@ -16,13 +16,14 @@ class FXFibex;
  *
  * Content model for the entity PDU.
  */
-class VECTOR_DBC_EXPORT FXPduTypeCt : public FXRevisedElementType, public QObject
+class VECTOR_DBC_EXPORT FXPduTypeCt : public FXRevisedElementType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXPduTypeCt(FXFibex *fibex, QObject *parent = nullptr);
+    FXPduTypeCt(FXFibex *fibex);
+    ~FXPduTypeCt();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

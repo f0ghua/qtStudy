@@ -7,11 +7,17 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOCompuMethod::HOCompuMethod(FXFibex *fibex, QObject *parent)
+HOCompuMethod::HOCompuMethod(FXFibex *fibex)
     : HONameDetails()
-    , QObject(parent)
     , m_fibex(fibex)
 {
+}
+
+HOCompuMethod::~HOCompuMethod()
+{
+    if (m_physConstrs) delete m_physConstrs;
+    if (m_internalConstrs) delete m_internalConstrs;
+    if (m_compuInternalToPhys) delete m_compuInternalToPhys;
 }
 
 void HOCompuMethod::load(const QDomElement &element)
@@ -42,17 +48,17 @@ void HOCompuMethod::load(const QDomElement &element)
 #endif
         } else if (childElement.tagName() == "ho:PHYS-CONSTRS") {
             if (!m_physConstrs) {
-                m_physConstrs = new HOScaleConstrType(m_fibex, this);
+                m_physConstrs = new HOScaleConstrType(m_fibex);
                 m_physConstrs->load(childElement);
             }
         } else if (childElement.tagName() == "ho:INTERNAL-CONSTRS") {
             if (!m_internalConstrs) {
-                m_internalConstrs = new HOScaleConstrType(m_fibex, this);
+                m_internalConstrs = new HOScaleConstrType(m_fibex);
                 m_internalConstrs->load(childElement);
             }
         } else if (childElement.tagName() == "ho:COMPU-INTERNAL-TO-PHYS") {
             if (!m_compuInternalToPhys) {
-                m_compuInternalToPhys = new HOCompInternalToPhys(m_fibex, this);
+                m_compuInternalToPhys = new HOCompInternalToPhys(m_fibex);
                 m_compuInternalToPhys->load(childElement);
             }
         } else if (childElement.tagName() == "ho:DESC") {

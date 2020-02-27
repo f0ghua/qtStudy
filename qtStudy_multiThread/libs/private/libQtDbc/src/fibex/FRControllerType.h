@@ -17,13 +17,13 @@ class FXFibex;
  *
  * Content model for the entity CONTROLLER with platform specific extendability.
  */
-class VECTOR_DBC_EXPORT FRControllerType : public FXControllerType, public QObject
+class VECTOR_DBC_EXPORT FRControllerType : public FXControllerType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FRControllerType(FXFibex *fibex, QObject *parent = nullptr);
+    FRControllerType(FXFibex *fibex = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

@@ -7,11 +7,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXPduTypeCt::FXPduTypeCt(FXFibex *fibex, QObject *parent)
+FXPduTypeCt::FXPduTypeCt(FXFibex *fibex)
     : FXRevisedElementType()
-    , QObject(parent)
     , m_fibex(fibex)
 {
+}
+
+FXPduTypeCt::~FXPduTypeCt()
+{
+    if (m_sigInstances) delete m_sigInstances;
 }
 
 void FXPduTypeCt::load(const QDomElement &element)
@@ -42,7 +46,7 @@ void FXPduTypeCt::load(const QDomElement &element)
             }
         } else if (childElement.tagName() == "fx:SIGNAL-INSTANCES") {
             if (!m_sigInstances) {
-                m_sigInstances = new FXSignalInstances(m_fibex, this);
+                m_sigInstances = new FXSignalInstances(m_fibex);
                 m_sigInstances->load(childElement);
             }
         }

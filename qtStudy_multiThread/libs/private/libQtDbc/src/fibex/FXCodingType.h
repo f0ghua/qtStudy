@@ -19,13 +19,14 @@ class FXFibex;
  *
  * Content model for the entity CODING.
  */
-class VECTOR_DBC_EXPORT CodingType : public FXRevisedElementType, public QObject
+class VECTOR_DBC_EXPORT CodingType : public FXRevisedElementType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    CodingType(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    CodingType(FXFibex *fibex = nullptr);
+    ~CodingType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

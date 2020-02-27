@@ -7,11 +7,16 @@
 namespace ASAM {
 namespace FIBEX {
 
-CodingType::CodingType(FXFibex *fibex, QObject *parent)
+CodingType::CodingType(FXFibex *fibex)
     : FXRevisedElementType()
-    , QObject(parent)
     , m_fibex(fibex)
 {
+}
+
+CodingType::~CodingType()
+{
+    if (m_codedType) delete m_codedType;
+    if (m_compuMethods) delete m_compuMethods;
 }
 
 void CodingType::load(const QDomElement &element)
@@ -28,12 +33,12 @@ void CodingType::load(const QDomElement &element)
 
         } else if (childElement.tagName() == "ho:CODED-TYPE") {
             if (!m_codedType) {
-                m_codedType = new HOCodedType(m_fibex, this);
+                m_codedType = new HOCodedType(m_fibex);
                 m_codedType->load(childElement);
             }
         } else if (childElement.tagName() == "ho:COMPU-METHODS") {
             if (!m_compuMethods) {
-                m_compuMethods = new HOCompuMethods(m_fibex, this);
+                m_compuMethods = new HOCompuMethods(m_fibex);
                 m_compuMethods->load(childElement);
             }
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {

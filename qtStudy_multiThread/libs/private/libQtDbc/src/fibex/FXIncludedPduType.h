@@ -15,13 +15,14 @@ class FXFibex;
  *
  * SIGNALs within a referenced PDU
  */
-class VECTOR_DBC_EXPORT FXIncludedPduType : public QObject
+class VECTOR_DBC_EXPORT FXIncludedPduType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXIncludedPduType(FXFibex *fibex, QObject *parent = nullptr);
+    FXIncludedPduType(FXFibex *fibex = nullptr);
+    ~FXIncludedPduType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

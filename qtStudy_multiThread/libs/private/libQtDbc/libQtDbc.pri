@@ -84,7 +84,8 @@ SOURCES += \
     $$PWD/src/fibex/FBChannel.cpp \
     $$PWD/src/fibex/FBCluster.cpp \
     $$PWD/src/fibex/FBEcu.cpp \
-    $$PWD/src/fibex/FibexKey.cpp
+    $$PWD/src/fibex/FibexKey.cpp \
+    $$PWD/src/fibex/FRWakeUp.cpp
 
 HEADERS += \
     $$PWD/inc/DbcHandle.h\
@@ -181,7 +182,8 @@ HEADERS += \
     $$PWD/src/fibex/FBChannel.h \
     $$PWD/src/fibex/FBCluster.h \
     $$PWD/src/fibex/FBEcu.h \
-    $$PWD/src/fibex/FibexKey.h
+    $$PWD/src/fibex/FibexKey.h \
+    $$PWD/src/fibex/FRWakeUp.h
 
 
 OTHER_FILES += \

@@ -16,13 +16,14 @@ class FXFibex;
  *
  * Content model for the entity FRAME-TRIGGERING.
  */
-class VECTOR_DBC_EXPORT FXFrameTriggeringType : public QObject
+class VECTOR_DBC_EXPORT FXFrameTriggeringType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXFrameTriggeringType(FXFibex *fibex, QObject *parent = nullptr);
+    FXFrameTriggeringType(FXFibex *fibex = nullptr);
+    ~FXFrameTriggeringType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

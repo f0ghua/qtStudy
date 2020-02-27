@@ -8,10 +8,10 @@
 namespace ASAM {
 namespace FIBEX {
 
-class VECTOR_DBC_EXPORT FBCluster : public QObject
+class VECTOR_DBC_EXPORT FBCluster
 {
 public:
-    FBCluster(QObject *parent);
+    FBCluster();
 
 };
 

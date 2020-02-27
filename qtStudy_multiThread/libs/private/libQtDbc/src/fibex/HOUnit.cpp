@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOUnit::HOUnit(FXFibex *fibex, QObject *parent)
+HOUnit::HOUnit(FXFibex *fibex)
     : HONameDetails()
-    , QObject(parent)
     , m_fibex(fibex)
 {
 }

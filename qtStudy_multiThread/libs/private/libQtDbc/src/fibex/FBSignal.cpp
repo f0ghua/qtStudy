@@ -1,7 +1,6 @@
-#include "FBSignal.h"
-//#include "Message.h"
 #include "Utility.h"
-//#include "ByteOrder.h"
+#include "FXSignalType.h"
+#include "FBSignal.h"
 
 #include <QtMath>
 
@@ -10,12 +9,8 @@ using Vector::DBC::Utility;
 namespace ASAM {
 namespace FIBEX {
 
-FBSignal::FBSignal(QObject *parent)
-    : QObject(parent)
-    , m_name()
-
-    /* multiplexer indicator */
-    , m_isMultiplexedSignal(false)
+FBSignal::FBSignal()
+    : m_isMultiplexedSignal(false)
     , m_multiplexerSwitchValue(0)
     , m_isMultiplexorSwitch(false)
 
@@ -50,6 +45,11 @@ FBSignal::FBSignal(QObject *parent)
     //extendedMultiplexors()
 {
     /* nothing to do here */
+}
+
+QString FBSignal::name()
+{
+    return m_fxSignal?m_fxSignal->m_shortName:QString();
 }
 
 #if 0

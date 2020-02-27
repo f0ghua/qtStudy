@@ -7,11 +7,19 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXEcuType::FXEcuType(FXFibex *fibex, QObject *parent)
+FXEcuType::FXEcuType(FXFibex *fibex)
     : FXRevisedElementType()
-    , QObject(parent)
     , m_fibex(fibex)
 {
+}
+
+FXEcuType::~FXEcuType()
+{
+    qDeleteAll(m_controllers);
+    m_controllers.clear();
+
+    qDeleteAll(m_connectors);
+    m_connectors.clear();
 }
 
 void FXEcuType::load(const QDomElement &element)
@@ -38,7 +46,7 @@ void FXEcuType::load(const QDomElement &element)
                 QLOG_TRACE() << "FXEcuType::load CONTROLLERS" << childElement.tagName();
 #endif
                 if (subChildElement.tagName() == "fx:CONTROLLER") {
-                    FRControllerType *c = new FRControllerType(m_fibex, this);
+                    FRControllerType *c = new FRControllerType(m_fibex);
                     c->load(subChildElement);
                     m_controllers[c->m_id] = c;
                 }
@@ -52,7 +60,7 @@ void FXEcuType::load(const QDomElement &element)
                 QLOG_TRACE() << "FXEcuType::load CONNECTORS" << childElement.tagName();
 #endif
                 if (subChildElement.tagName() == "fx:CONNECTOR") {
-                    FRConnectorType *c = new FRConnectorType(m_fibex, this);
+                    FRConnectorType *c = new FRConnectorType(m_fibex);
                     c->load(subChildElement);
                     m_connectors[c->m_id] = c;
                 }

@@ -18,13 +18,14 @@ class FXFibex;
  *
  * Content model for the entity FRAME.
  */
-class VECTOR_DBC_EXPORT FXFrameTypeCt : public FXRevisedElementType, public QObject
+class VECTOR_DBC_EXPORT FXFrameTypeCt : public FXRevisedElementType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXFrameTypeCt(FXFibex *fibex, QObject *parent = nullptr);
+    FXFrameTypeCt(FXFibex *fibex = nullptr);
+    ~FXFrameTypeCt();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

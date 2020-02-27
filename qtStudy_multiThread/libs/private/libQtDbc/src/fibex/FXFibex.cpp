@@ -7,17 +7,14 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXFibex::FXFibex(QObject *parent)
-    : QObject(parent)
-/*
-    : project()
-    , protocols()
-    , elements()
-    , processingInformation()
-    , requirements()
-    , version()
-*/
+FXFibex::FXFibex()
 {
+}
+
+FXFibex::~FXFibex()
+{
+    if (m_elements) delete m_elements;
+    if (m_processingInformation) delete m_processingInformation;
 }
 
 bool FXFibex::load(const QDomElement &element)
@@ -32,12 +29,12 @@ bool FXFibex::load(const QDomElement &element)
 #endif
         if (childElement.tagName() == "fx:PROCESSING-INFORMATION") {
             if (!m_processingInformation) {
-                m_processingInformation = new FXProcessingInformation(this, this);
+                m_processingInformation = new FXProcessingInformation(this);
                 m_processingInformation->load(childElement);
             }
         } else if (childElement.tagName() == "fx:ELEMENTS") {
             if (!m_elements) {
-                m_elements = new FXElements(this, this);
+                m_elements = new FXElements(this);
                 m_elements->load(child.toElement());
             }
         } else if (childElement.tagName() == "fx:PROJECT") {

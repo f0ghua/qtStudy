@@ -16,13 +16,13 @@ class FXFibex;
  *
  * Content model for the entity SIGNAL-INSTANCE
  */
-class VECTOR_DBC_EXPORT FXSignalInstanceType : public QObject
+class VECTOR_DBC_EXPORT FXSignalInstanceType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXSignalInstanceType(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    FXSignalInstanceType(FXFibex *fibex = nullptr);
     ~FXSignalInstanceType();
 
     /** load from XML DOM element */

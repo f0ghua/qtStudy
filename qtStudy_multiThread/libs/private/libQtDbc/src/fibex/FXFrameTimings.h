@@ -16,13 +16,14 @@ class FXFibex;
  *
  * Time behavior of a frame specified in a sequence of cluster specific timing types
  */
-class VECTOR_DBC_EXPORT FXFrameTimings : public QObject
+class VECTOR_DBC_EXPORT FXFrameTimings
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXFrameTimings(FXFibex *fibex, QObject *parent = nullptr);
+    FXFrameTimings(FXFibex *fibex = nullptr);
+    ~FXFrameTimings();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

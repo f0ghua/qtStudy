@@ -15,13 +15,13 @@ class FXFibex;
  *
  * Selected signal
  */
-class VECTOR_DBC_EXPORT FXIncludedSignalType : public QObject
+class VECTOR_DBC_EXPORT FXIncludedSignalType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXIncludedSignalType(FXFibex *fibex, QObject *parent = nullptr);
+    FXIncludedSignalType(FXFibex *fibex = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

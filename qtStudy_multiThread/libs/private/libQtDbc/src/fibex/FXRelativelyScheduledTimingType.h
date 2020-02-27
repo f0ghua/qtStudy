@@ -17,13 +17,13 @@ class FXFibex;
  *
  * Content model for the entity TIMING in the relatively scheduled peculiarity.
  */
-class VECTOR_DBC_EXPORT FXRelativelyScheduledTimingType : public QObject
+class VECTOR_DBC_EXPORT FXRelativelyScheduledTimingType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXRelativelyScheduledTimingType(FXFibex *fibex, QObject *parent = nullptr);
+    FXRelativelyScheduledTimingType(FXFibex *fibex = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

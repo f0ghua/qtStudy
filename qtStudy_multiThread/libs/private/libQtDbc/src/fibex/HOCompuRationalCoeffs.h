@@ -15,13 +15,13 @@ class FXFibex;
  *
  * ASAM rational coefficient.
  */
-class VECTOR_DBC_EXPORT HOCompuRationalCoeffs : public QObject
+class VECTOR_DBC_EXPORT HOCompuRationalCoeffs
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    HOCompuRationalCoeffs(FXFibex *fibex, QObject *parent = nullptr);
+    HOCompuRationalCoeffs(FXFibex *fibex = nullptr);
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

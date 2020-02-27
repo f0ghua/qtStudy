@@ -8,10 +8,15 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXPduInstances::FXPduInstances(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+FXPduInstances::FXPduInstances(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+FXPduInstances::~FXPduInstances()
+{
+    qDeleteAll(m_pduInstances);
+    m_pduInstances.clear();
 }
 
 void FXPduInstances::load(const QDomElement &element)
@@ -23,7 +28,7 @@ void FXPduInstances::load(const QDomElement &element)
         QLOG_TRACE() << "FXPduInstances::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:PDU-INSTANCE") {
-            FXPduInstanceType *pi = new FXPduInstanceType(m_fibex, this);
+            FXPduInstanceType *pi = new FXPduInstanceType(m_fibex);
             pi->load(childElement);
             m_pduInstances[pi->m_id] = pi;
         }

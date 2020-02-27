@@ -7,10 +7,18 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXFrameTimings::FXFrameTimings(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+FXFrameTimings::FXFrameTimings(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+FXFrameTimings::~FXFrameTimings()
+{
+    qDeleteAll(m_relativelyScheduledTimings);
+    m_relativelyScheduledTimings.clear();
+
+    qDeleteAll(m_absolutelyScheduledTimings);
+    m_absolutelyScheduledTimings.clear();
 }
 
 void FXFrameTimings::load(const QDomElement &element)
@@ -23,11 +31,11 @@ void FXFrameTimings::load(const QDomElement &element)
         QLOG_TRACE() << "FXFrameTimings::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:RELATIVELY-SCHEDULED-TIMING") {
-            FXRelativelyScheduledTimingType *relativelyScheduledTiming = new FXRelativelyScheduledTimingType(m_fibex, this);
+            FXRelativelyScheduledTimingType *relativelyScheduledTiming = new FXRelativelyScheduledTimingType(m_fibex);
             relativelyScheduledTiming->load(childElement);
             m_relativelyScheduledTimings.append(relativelyScheduledTiming);
         } else if (childElement.tagName() == "fx:ABSOLUTELY-SCHEDULED-TIMING") {
-            FXAbsolutelyScheduledTimingType *absolutelyScheduledTiming = new FXAbsolutelyScheduledTimingType(m_fibex, this);
+            FXAbsolutelyScheduledTimingType *absolutelyScheduledTiming = new FXAbsolutelyScheduledTimingType(m_fibex);
             absolutelyScheduledTiming->load(childElement);
             m_absolutelyScheduledTimings.append(absolutelyScheduledTiming);
         }

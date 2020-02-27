@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXPduTimings::FXPduTimings(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+FXPduTimings::FXPduTimings(FXFibex *fibex)
+    : m_fibex(fibex)
 {
 }
 

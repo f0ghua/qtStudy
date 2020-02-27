@@ -17,13 +17,14 @@ class FXFibex;
  *
  * A frames layout as a sequence of PDUs
  */
-class VECTOR_DBC_EXPORT FXPduInstances : public QObject
+class VECTOR_DBC_EXPORT FXPduInstances
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXPduInstances(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    FXPduInstances(FXFibex *fibex = nullptr);
+    ~FXPduInstances();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

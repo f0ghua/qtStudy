@@ -19,13 +19,13 @@ class FXFibex;
  * definition.
  *
  */
-class VECTOR_DBC_EXPORT HOScaleConstr : public QObject
+class VECTOR_DBC_EXPORT HOScaleConstr
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    HOScaleConstr(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    HOScaleConstr(FXFibex *fibex = nullptr);
     ~HOScaleConstr();
 
     /** load from XML DOM element */

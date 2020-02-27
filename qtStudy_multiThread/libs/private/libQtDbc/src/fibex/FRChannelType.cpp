@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-FRChannelType::FRChannelType(FXFibex *fibex, QObject *parent)
+FRChannelType::FRChannelType(FXFibex *fibex)
     : FXChannelType(fibex)
-    , QObject(parent)
 {
 }
 

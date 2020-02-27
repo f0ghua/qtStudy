@@ -7,10 +7,14 @@
 namespace ASAM {
 namespace FIBEX {
 
-FXPduTriggeringType::FXPduTriggeringType(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+FXPduTriggeringType::FXPduTriggeringType(FXFibex *fibex)
+    : m_fibex(fibex)
 {
+}
+
+FXPduTriggeringType::~FXPduTriggeringType()
+{
+    if (m_timings) delete m_timings;
 }
 
 void FXPduTriggeringType::load(const QDomElement &element)
@@ -29,7 +33,7 @@ void FXPduTriggeringType::load(const QDomElement &element)
 #endif
         if (childElement.tagName() == "fx:TIMINGS") {
             if (!m_timings) {
-                m_timings = new FXPduTimings(m_fibex, this);
+                m_timings = new FXPduTimings(m_fibex);
                 m_timings->load(childElement);
             }
         } else if (childElement.tagName() == "fx:PDU-REF") {

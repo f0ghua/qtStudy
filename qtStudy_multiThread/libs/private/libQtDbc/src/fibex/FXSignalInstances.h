@@ -15,13 +15,14 @@ class FXFibex;
  *
  * A PDUs layout as a sequence of Signal-Instances
  */
-class VECTOR_DBC_EXPORT FXSignalInstances : public QObject
+class VECTOR_DBC_EXPORT FXSignalInstances
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXSignalInstances(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    FXSignalInstances(FXFibex *fibex);
+    ~FXSignalInstances();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

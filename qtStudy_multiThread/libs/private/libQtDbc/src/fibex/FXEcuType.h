@@ -16,15 +16,19 @@ class FXFibex;
  * @brief complexType fx:ECU-TYPE
  *
  * Content model for the entity ECU.
- * Platform-specific extensions are not possible, to maintain the capability to describe multi-platform networks.
+ *
+ * Platform-specific extensions are not possible, to maintain the capability to
+ * describe multi-platform networks.
+ *
  */
-class VECTOR_DBC_EXPORT FXEcuType : public FXRevisedElementType, public QObject
+class VECTOR_DBC_EXPORT FXEcuType : public FXRevisedElementType
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    FXEcuType(FXFibex *fibex, QObject *parent = nullptr);
+    FXEcuType(FXFibex *fibex = nullptr);
+    ~FXEcuType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

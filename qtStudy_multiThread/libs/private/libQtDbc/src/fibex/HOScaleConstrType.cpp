@@ -7,9 +7,8 @@
 namespace ASAM {
 namespace FIBEX {
 
-HOScaleConstrType::HOScaleConstrType(FXFibex *fibex, QObject *parent)
-    : QObject(parent)
-    , m_fibex(fibex)
+HOScaleConstrType::HOScaleConstrType(FXFibex *fibex)
+    : m_fibex(fibex)
     , m_lowerLimitIntervalType(FibexTypes::HOIntervalTypeAb::CLOSED)
     , m_upperLimitIntervalType(FibexTypes::HOIntervalTypeAb::CLOSED)
 {
@@ -19,6 +18,7 @@ HOScaleConstrType::~HOScaleConstrType()
 {
     if (m_lowerLimit) delete m_lowerLimit;
     if (m_upperLimit) delete m_upperLimit;
+    if (m_scaleConstr) delete m_scaleConstr;
 }
 
 void HOScaleConstrType::load(const QDomElement &element)
@@ -64,7 +64,7 @@ void HOScaleConstrType::load(const QDomElement &element)
 
         } else if (childElement.tagName() == "ho:SCALE-CONSTR") {
             if (!m_scaleConstr) {
-                m_scaleConstr = new HOScaleConstr(m_fibex, this);
+                m_scaleConstr = new HOScaleConstr(m_fibex);
                 m_scaleConstr->load(childElement);
             }
         }

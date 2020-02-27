@@ -17,13 +17,14 @@ class FXFibex;
  *
  * Container for COMPU-METHOD elements
  */
-class VECTOR_DBC_EXPORT HOCompuMethods : public QObject
+class VECTOR_DBC_EXPORT HOCompuMethods
 {
 public:
     FXFibex *m_fibex = nullptr;
 
 public:
-    HOCompuMethods(FXFibex *fibex, QObject *parent = Q_NULLPTR);
+    HOCompuMethods(FXFibex *fibex = nullptr);
+    ~HOCompuMethods();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);

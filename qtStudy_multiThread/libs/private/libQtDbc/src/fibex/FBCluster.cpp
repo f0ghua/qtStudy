@@ -5,8 +5,7 @@ using Vector::DBC::Utility;
 namespace ASAM {
 namespace FIBEX {
 
-FBCluster::FBCluster(QObject *parent)
-    : QObject(parent)
+FBCluster::FBCluster()
 {
     /* nothing to do here */
 }
