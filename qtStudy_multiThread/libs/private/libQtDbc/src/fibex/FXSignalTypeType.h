@@ -19,16 +19,18 @@ class VECTOR_DBC_EXPORT FXSignalTypeType
 {
 public:
     FXSignalTypeType();
+    ~FXSignalTypeType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** element TYPE */
+    /** @required element TYPE */
     FibexTypes::FXTypeTypeSt m_type;
-    /** element METHOD */
-    QString m_method;
+    /** @opt element METHOD */
+    QString *m_method = nullptr;
 
     /** @todo element ATTRIBUTES */
+    QList<QString> m_attributes;
 };
 
 } // FIBEX

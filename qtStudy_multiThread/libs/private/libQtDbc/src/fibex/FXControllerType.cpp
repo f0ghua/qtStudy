@@ -26,22 +26,22 @@ void FXControllerType::load(const QDomElement &element)
         if (childElement.tagName() == "fx:VENDOR-NAME") {
             m_vendorName = childElement.text();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXPduTypeCt::load, m_vendorName =" << m_vendorName;
+            QLOG_TRACE() << "FXPduTypeCt::load, m_vendorName =" << m_vendorName;
 #endif
         } else if (childElement.tagName() == "fx:CHIP-NAME") {
             m_chipName = childElement.text();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXPduTypeCt::load, m_chipName =" << m_chipName;
+            QLOG_TRACE() << "FXPduTypeCt::load, m_chipName =" << m_chipName;
 #endif
         } else if (childElement.tagName() == "fx:TERMINATION-IMPEDANCE") {
             m_terminationImpedance = childElement.text().toULong();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXPduTypeCt::load, m_terminationImpedance =" << m_terminationImpedance;
+            QLOG_TRACE() << "FXPduTypeCt::load, m_terminationImpedance =" << m_terminationImpedance;
 #endif
         } else if (childElement.tagName() == "fx:TRANSCEIVER") {
             m_transceiver = childElement.text();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXPduTypeCt::load, m_transceiver =" << m_transceiver;
+            QLOG_TRACE() << "FXPduTypeCt::load, m_transceiver =" << m_transceiver;
 #endif
         }
 

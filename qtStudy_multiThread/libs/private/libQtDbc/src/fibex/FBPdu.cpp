@@ -1,4 +1,4 @@
-#include "FBPdu.h"
+#include "FXPduType.h"
 #include "FBPdu.h"
 #include "Utility.h"
 using Vector::DBC::Utility;
@@ -7,9 +7,6 @@ namespace ASAM {
 namespace FIBEX {
 
 FBPdu::FBPdu()
-    : m_shortName()
-    , m_byteLength(0)
-    , m_type(FibexTypes::FXPduTypeSt::APPLICATION)
 {
     /* nothing to do here */
 }
@@ -18,6 +15,22 @@ FBPdu::~FBPdu()
 {
     m_signals.clear();
 }
+
+QString FBPdu::name() const
+{
+    return m_fxPdu?m_fxPdu->m_shortName:QString();
+}
+
+quint32 FBPdu::byteLength() const
+{
+    return m_fxPdu?m_fxPdu->m_byteLength:0;
+}
+
+FibexTypes::FXPduTypeSt FBPdu::pduType() const
+{
+    return m_fxPdu?m_fxPdu->m_pduType:FibexTypes::FXPduTypeSt::APPLICATION;
+}
+
 
 } // FIBEX
 } // ASAM

@@ -25,7 +25,7 @@ void HOUnit::load(const QDomElement &element)
 {
     m_id = element.attribute("ID");
 #ifndef F_NO_DEBUG
-    QLOG_DEBUG() << "HOUnit::load, m_id =" << m_id;
+    QLOG_TRACE() << "HOUnit::load, m_id =" << m_id;
 #endif
 
     QDomNode child = element.firstChild();
@@ -39,7 +39,7 @@ void HOUnit::load(const QDomElement &element)
                 m_displayName = new QString();
                 *m_displayName = childElement.text();
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "HOUnit::load, m_displayName =" << *m_displayName;
+                QLOG_TRACE() << "HOUnit::load, m_displayName =" << *m_displayName;
 #endif
             }
 

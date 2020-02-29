@@ -23,7 +23,7 @@ void FXIncludedSignalType::load(const QDomElement &element)
         if (childElement.tagName() == "fx:SIGNAL-INSTANCE-REF") {
             m_signalInstanceRef = childElement.attribute("ID-REF");
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXIncludedSignalType::load, m_signalInstanceRef =" << m_signalInstanceRef;
+            QLOG_TRACE() << "FXIncludedSignalType::load, m_signalInstanceRef =" << m_signalInstanceRef;
 #endif
         }
 

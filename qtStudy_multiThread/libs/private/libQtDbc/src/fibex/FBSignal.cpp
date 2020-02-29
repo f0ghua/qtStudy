@@ -18,7 +18,7 @@ FBSignal::FBSignal()
     , m_startBit(0)
     , m_bitSize(0)
     , m_isBigEndian(true)
-    , m_valueType(ValueType::A_UINT64)
+    , m_codedType(CodedType::A_UINT64)
 
     /* raw/physical conversion */
     , m_factor(0.0)
@@ -27,7 +27,7 @@ FBSignal::FBSignal()
     , m_maximumPhysicalValue(0.0)
 
     /* unit */
-    , m_unit()
+    , m_unit("Unitless")
 
     /* receivers */
     , m_receivers()
@@ -47,9 +47,18 @@ FBSignal::FBSignal()
     /* nothing to do here */
 }
 
-QString FBSignal::name()
+QString FBSignal::name() const
 {
     return m_fxSignal?m_fxSignal->m_shortName:QString();
+}
+
+bool FBSignal::getDefaultValue(double &v) const
+{
+    if (m_fxSignal && m_fxSignal->m_defaultValue) {
+        v = *m_fxSignal->m_defaultValue;
+        return true;
+    }
+    return false;
 }
 
 #if 0
@@ -270,12 +279,12 @@ double FBSignal::physicalToRawValue(double physicalValue) const
     return (physicalValue - m_offset) / m_factor;
 }
 
-inline bool isValueTypeSigned(ValueType t)
+inline bool isValueTypeSigned(CodedType t)
 {
-    return ((t == ValueType::A_INT8)
-            || (t == ValueType::A_INT16)
-            || (t == ValueType::A_INT32)
-            || (t == ValueType::A_INT64));
+    return ((t == CodedType::A_INT8)
+            || (t == CodedType::A_INT16)
+            || (t == CodedType::A_INT32)
+            || (t == CodedType::A_INT64));
 }
 
 double FBSignal::minimumPhyValue(bool isOutputDirectly) const
@@ -299,24 +308,24 @@ double FBSignal::minimumRawValue() const
     /* calculate minimum raw value */
     double minimumRawValue = 0.0;
 	
-    switch (m_valueType) {
-        case ValueType::A_UINT8:
-        case ValueType::A_UINT16:
-        case ValueType::A_UINT32:
-        case ValueType::A_UINT64:
+    switch (m_codedType) {
+        case CodedType::A_UINT8:
+        case CodedType::A_UINT16:
+        case CodedType::A_UINT32:
+        case CodedType::A_UINT64:
             minimumRawValue = 0.0;
             break;
-        case ValueType::A_INT8:
-        case ValueType::A_INT16:
-        case ValueType::A_INT32:
-        case ValueType::A_INT64:
+        case CodedType::A_INT8:
+        case CodedType::A_INT16:
+        case CodedType::A_INT32:
+        case CodedType::A_INT64:
             minimumRawValue = -(2<<(m_bitSize-2));
             break;
-        case ValueType::A_FLOAT32:
+        case CodedType::A_FLOAT32:
         	minimumRawValue = 3.4e-38;
         	break;
 
-        case ValueType::A_FLOAT64:
+        case CodedType::A_FLOAT64:
         	minimumRawValue = 1.7e-308;
         	break;
 
@@ -332,24 +341,24 @@ double FBSignal::maximumRawValue() const
     /* calculate maximum raw value */
     double maximumRawValue = 0.0;
 	
-    switch (m_valueType) {
-        case ValueType::A_UINT8:
-        case ValueType::A_UINT16:
-        case ValueType::A_UINT32:
-        case ValueType::A_UINT64:
+    switch (m_codedType) {
+        case CodedType::A_UINT8:
+        case CodedType::A_UINT16:
+        case CodedType::A_UINT32:
+        case CodedType::A_UINT64:
             maximumRawValue = (m_bitSize<1)?0:(2<<(m_bitSize-1))-1;
             break;
-        case ValueType::A_INT8:
-        case ValueType::A_INT16:
-        case ValueType::A_INT32:
-        case ValueType::A_INT64:
+        case CodedType::A_INT8:
+        case CodedType::A_INT16:
+        case CodedType::A_INT32:
+        case CodedType::A_INT64:
             maximumRawValue = (m_bitSize<2)?0:(2<<(m_bitSize-2))-1;
             break;
-        case ValueType::A_FLOAT32:
+        case CodedType::A_FLOAT32:
         	maximumRawValue = 3.4e38;
         	break;
 
-        case ValueType::A_FLOAT64:
+        case CodedType::A_FLOAT64:
         	maximumRawValue = 1.7e308;
         	break;
 
@@ -402,7 +411,7 @@ uint64_t FBSignal::decode(const uint8_t *msgData) const
     }
 
     /* if signed, then fill all bits above MSB with 1 */
-    if (isValueTypeSigned(m_valueType)) {
+    if (isValueTypeSigned(m_codedType)) {
         uint64_t msb = (retVal >> (size - 1)) & 1;
         if (msb) {
             for (unsigned int i = size; i < 8*sizeof(retVal); ++i) {

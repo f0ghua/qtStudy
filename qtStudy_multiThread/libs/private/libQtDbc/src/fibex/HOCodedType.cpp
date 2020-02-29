@@ -30,7 +30,7 @@ void HOCodedType::load(const QDomElement &element)
             m_baseDataType = new FibexTypes::HOBaseDataType();
             *m_baseDataType = type;
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "HOCompuMethod::load, m_compuCategory =" << baseDataTypeStr << (int)m_baseDataType;
+            QLOG_TRACE() << "HOCompuMethod::load, m_compuCategory =" << baseDataTypeStr << (int)m_baseDataType;
 #endif
         }
     }
@@ -38,9 +38,9 @@ void HOCodedType::load(const QDomElement &element)
     m_encoding = element.attribute("ENCODING");
 
 #ifndef F_NO_DEBUG
-    QLOG_DEBUG() << "HOCodedType::load m_baseDataType" << m_baseDataType;
-    QLOG_DEBUG() << "HOCodedType::load m_category" << m_category;
-    QLOG_DEBUG() << "HOCodedType::load m_encoding" << m_encoding;
+    QLOG_TRACE() << "HOCodedType::load m_baseDataType" << m_baseDataType;
+    QLOG_TRACE() << "HOCodedType::load m_category" << m_category;
+    QLOG_TRACE() << "HOCodedType::load m_encoding" << m_encoding;
 #endif
 
     QDomNode child = element.firstChild();
@@ -52,17 +52,17 @@ void HOCodedType::load(const QDomElement &element)
         if (childElement.tagName() == "ho:BIT-LENGTH") {
             m_bitLength = childElement.text().toUInt();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "HOCodedType::load m_bitLength" << m_bitLength;
+            QLOG_TRACE() << "HOCodedType::load m_bitLength" << m_bitLength;
 #endif
         } else if (childElement.tagName() == "ho:MIN-LENGTH") {
             m_minLength = childElement.text().toUInt();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "HOCodedType::load m_minLength" << m_minLength;
+            QLOG_TRACE() << "HOCodedType::load m_minLength" << m_minLength;
 #endif
         } else if (childElement.tagName() == "ho:MAX-LENGTH") {
             m_maxLength = childElement.text().toUInt();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "HOCodedType::load m_maxLength" << m_maxLength;
+            QLOG_TRACE() << "HOCodedType::load m_maxLength" << m_maxLength;
 #endif
         }
 

@@ -34,7 +34,7 @@ void FXEcuType::load(const QDomElement &element)
 #endif
         if (childElement.tagName() == "fx:DIAGNOSTIC-ADDRESSES") {
 #ifndef F_NO_DEBUG
-            //QLOG_DEBUG() << "FXEcuType::load, m_byteLength =" << m_byteLength;
+            //QLOG_TRACE() << "FXEcuType::load, m_byteLength =" << m_byteLength;
 #endif
         } else if (childElement.tagName() == "fx:FUNCTION-REFS") {
 

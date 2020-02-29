@@ -31,7 +31,7 @@ void FXEcuPortType::load(const QDomElement &element)
         if (childElement.tagName() == "fx:FRAME-TRIGGERING-REF") {
             m_frameTriggeringRef = childElement.attribute("ID-REF");
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXEcuPortType::load, m_frameTriggeringRef =" << m_frameTriggeringRef;
+            QLOG_TRACE() << "FXEcuPortType::load, m_frameTriggeringRef =" << m_frameTriggeringRef;
 #endif
         } else if (childElement.tagName() == "fx:INCLUDED-PDUS") {
             QDomNode subChild = child.firstChild();

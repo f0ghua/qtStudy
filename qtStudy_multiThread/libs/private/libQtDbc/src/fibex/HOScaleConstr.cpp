@@ -40,7 +40,7 @@ void HOScaleConstr::load(const QDomElement &element)
                 if (isOk) {
                     m_lowerLimitIntervalType = type;
     #ifndef F_NO_DEBUG
-                    QLOG_DEBUG() << "HOScaleConstr::load, m_lowerLimitIntervalType =" << typeStr << (int)m_lowerLimitIntervalType;
+                    QLOG_TRACE() << "HOScaleConstr::load, m_lowerLimitIntervalType =" << typeStr << (int)m_lowerLimitIntervalType;
     #endif
                 }
             }
@@ -57,7 +57,7 @@ void HOScaleConstr::load(const QDomElement &element)
                 if (isOk) {
                     m_upperLimitIntervalType = type;
     #ifndef F_NO_DEBUG
-                    QLOG_DEBUG() << "HOScaleConstr::load, m_upperLimitIntervalType =" << typeStr << (int)m_upperLimitIntervalType;
+                    QLOG_TRACE() << "HOScaleConstr::load, m_upperLimitIntervalType =" << typeStr << (int)m_upperLimitIntervalType;
     #endif
                 }
             }

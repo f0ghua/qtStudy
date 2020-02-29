@@ -25,17 +25,17 @@ void HONameDetails::load(const QDomElement &element)
         if (childElement.tagName() == "ho:LONG-NAME") {
             m_longName = childElement.text();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "HONameDetails::load, m_longName =" << m_longName;
+            QLOG_TRACE() << "HONameDetails::load, m_longName =" << m_longName;
 #endif
         } else if (childElement.tagName() == "ho:SHORT-NAME") {
             m_shortName = childElement.text();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "HONameDetails::load, m_shortName =" << m_shortName;
+            QLOG_TRACE() << "HONameDetails::load, m_shortName =" << m_shortName;
 #endif
         } else if (childElement.tagName() == "ho:DESC") {
             m_desc = childElement.text();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "HONameDetails::load, m_desc =" << m_desc;
+            QLOG_TRACE() << "HONameDetails::load, m_desc =" << m_desc;
 #endif
         }
 

@@ -27,7 +27,7 @@ void FXSystemTrigger::load(const QDomElement &element)
             if (isOk) {
                 m_systemStateList.append(type);
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "FXSystemTrigger::load, m_systemStateList append" << typeStr << (int)type;
+                QLOG_TRACE() << "FXSystemTrigger::load, m_systemStateList append" << typeStr << (int)type;
 #endif
             }
         }

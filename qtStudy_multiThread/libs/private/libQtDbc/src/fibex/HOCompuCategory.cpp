@@ -19,7 +19,7 @@ void HOCompuCategory::load(const QDomElement &element)
     if (isOk) {
         m_compuCategory = type;
 #ifndef F_NO_DEBUG
-        QLOG_DEBUG() << "CompuCategory::load, m_compuCategory =" << typeStr << (int)m_compuCategory;
+        QLOG_TRACE() << "CompuCategory::load, m_compuCategory =" << typeStr << (int)m_compuCategory;
 #endif
     }
 }

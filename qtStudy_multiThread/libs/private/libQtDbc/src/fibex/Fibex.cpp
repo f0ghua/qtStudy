@@ -36,29 +36,39 @@ bool Fibex::covertXml2Db()
 #endif
 
     {
-        QHash<QString, CodingType*> &codings = m_processingInformation->m_codings->m_codings;
         QHash<QString, FXSignalType*> &sigs = m_elements->m_signals;
         QHash<QString, FXSignalType*>::const_iterator ci;
 
         for (ci = sigs.constBegin(); ci != sigs.constEnd(); ci++) {
             FBSignal *fbSignal = new FBSignal();
+            m_signals[ci.key()] = fbSignal;
             const FXSignalType *fxSignal = ci.value();
-#ifndef F_NO_DEBUG
-            QLOG_DEBUG() << ci.key() << fxSignal->m_shortName << fxSignal->m_codingRef;
-#endif
             fbSignal->m_fxSignal = fxSignal;
+
+#ifndef F_NO_DEBUG
+            //QLOG_DEBUG() << ci.key() << fxSignal->m_shortName << fxSignal->m_codingRef;
+#endif
+            if (fxSignal->m_sigType) {
+                fbSignal->m_signalType = &fxSignal->m_sigType->m_type;
+            }
+
+            if (!m_processingInformation->m_codings) {
+                continue;
+            }
+
+            QHash<QString, CodingType*> &codings = m_processingInformation->m_codings->m_codings;
 
             if (!fxSignal->m_codingRef.isEmpty()
                     && codings.contains(fxSignal->m_codingRef)) {
                 CodingType *ct = codings.value(fxSignal->m_codingRef);
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "found codingType" << ct->m_shortName;
+                //QLOG_DEBUG() << "found codingType" << ct->m_shortName;
 #endif
 
                 if (ct->m_codedType) {
                     fbSignal->m_bitSize = ct->m_codedType->m_bitLength;
                     if (ct->m_codedType->m_baseDataType) {
-                        fbSignal->m_valueType = *ct->m_codedType->m_baseDataType;
+                        fbSignal->m_codedType = *ct->m_codedType->m_baseDataType;
                     }
                 }
 
@@ -66,8 +76,19 @@ bool Fibex::covertXml2Db()
                         && ct->m_compuMethods->m_compuMethods.count() > 0) {
                     HOCompuMethod *cm = ct->m_compuMethods->m_compuMethods.at(0);
 #ifndef F_NO_DEBUG
-                    QLOG_DEBUG() << QObject::tr("m_compuCategory = %1").arg((int)cm->m_compuCategory);
+                    //QLOG_DEBUG() << QObject::tr("m_compuCategory = %1").arg((int)cm->m_compuCategory);
 #endif
+                    if (cm->m_unitRef
+                            && (m_processingInformation->m_codings)) {
+                        QHash<QString, HOUnit*> &units = m_processingInformation->m_unitSpec->m_units;
+                        if (units.contains(*cm->m_unitRef)) {
+                            HOUnit *unit = units.value(*cm->m_unitRef);
+                            if (unit->m_displayName) {
+                                fbSignal->m_unit = *unit->m_displayName;
+                            }
+                        }
+                    }
+
                     if (cm->m_physConstrs) {
                         if (cm->m_physConstrs->m_scaleConstr->m_lowerLimit) {
                             fbSignal->m_minimumPhysicalValue = *cm->m_physConstrs->m_scaleConstr->m_lowerLimit;
@@ -114,8 +135,6 @@ bool Fibex::covertXml2Db()
                     }
                 }
             }
-
-            m_signals[ci.key()] = fbSignal;
         }
 
     }
@@ -125,16 +144,14 @@ bool Fibex::covertXml2Db()
         QHash<QString, FXPduTypeCt*>::const_iterator ci;
         for (ci = pdus.constBegin(); ci != pdus.constEnd(); ci++) {
             FBPdu *fbPdu = new FBPdu();
-            const FXPduTypeCt *pdu = ci.value();
+            const FXPduTypeCt *fxPdu = ci.value();
 
-            fbPdu->m_shortName = pdu->m_shortName;
-            fbPdu->m_byteLength = pdu->m_byteLength;
-            fbPdu->m_type = pdu->m_pduType;
+            fbPdu->m_fxPdu = fxPdu;
 
-            if (pdu->m_sigInstances
-                    && pdu->m_sigInstances->m_sigInstances.count() > 0) {
+            if (fxPdu->m_sigInstances
+                    && fxPdu->m_sigInstances->m_sigInstances.count() > 0) {
                 QHash<QString, FXSignalInstanceType*> &sigInstances =
-                        pdu->m_sigInstances->m_sigInstances;
+                        fxPdu->m_sigInstances->m_sigInstances;
                 QHash<QString, FXSignalInstanceType*>::const_iterator ciSig;
                 for (ciSig = sigInstances.constBegin();
                      ciSig != sigInstances.constEnd(); ciSig++) {
@@ -143,11 +160,15 @@ bool Fibex::covertXml2Db()
                         FBSignal *fbSignal = m_signals[si->m_sigRef.m_idRef];
                         fbSignal->m_startBit = si->m_commLayoutDetails.m_bitPostion;
                         fbSignal->m_isBigEndian = si->m_commLayoutDetails.m_isBigEndian;
+                        fbSignal->m_signalUpdateBitPosition = si->m_signalUpdateBitPosition;
+
+                        fbPdu->m_signals[si->m_sigRef.m_idRef] = fbSignal;
                     }
+
                 }
             }
 
-            m_pdus[pdu->m_id] = fbPdu;
+            m_pdus[fxPdu->m_id] = fbPdu;
         }
     }
 
@@ -174,6 +195,7 @@ bool Fibex::covertXml2Db()
                         fbPdu->m_isBigEndian = ist->m_commLayoutDetails.m_isBigEndian;
 
                         fbFrame->m_pdus[ist->m_idRef] = fbPdu;
+                        fbFrame->m_signals.unite(fbPdu->m_signals);
                     }
                 }
             }
@@ -276,101 +298,69 @@ bool Fibex::covertXml2Db()
         }
     }
 
+
     {
         int count = 0;
+#if 0
         foreach (auto fbSignal, m_signals) {
-#ifndef F_NO_DEBUG
-            QLOG_DEBUG() << QObject::tr(
-                                "m_signals name = %1 factor = %2, offset = %3, "
-                                "min = %4, max = %5, startbit = %6, bitsize = %7, isbig = %8"
-                            ).\
-                            arg(fbSignal->name()).\
-                            arg(fbSignal->m_factor).\
-                            arg(fbSignal->m_offset).\
-                            arg(fbSignal->m_minimumPhysicalValue).\
-                            arg(fbSignal->m_maximumPhysicalValue).\
-                            arg(fbSignal->m_startBit).\
-                            arg(fbSignal->m_bitSize).\
-                            arg(fbSignal->m_isBigEndian) << fbSignal->m_valueDescriptions;
-#endif
+            QLOG_DEBUG() << *fbSignal;
             count++;
         }
-#ifndef F_NO_DEBUG
         QLOG_INFO() << "Fibex::covertXml2Db signal count =" << count;
-#endif
+
 
         count = 0;
-        foreach (auto fbPdu, m_pdus) {
-#ifndef F_NO_DEBUG
-            QLOG_DEBUG() << QObject::tr(
-                                "m_pdus name = %1 byteLength = %2, type = %3, "
-                                "startbit = %4, isBigEndian = %5"
-                            ).\
-                            arg(fbPdu->m_shortName).\
-                            arg(fbPdu->m_byteLength).\
-                            arg((int)fbPdu->m_type).\
-                            arg(fbPdu->m_startBit).\
-                            arg(fbPdu->m_isBigEndian);
-#endif
+        foreach (const FBPdu *fbPdu, m_pdus) {
+            QLOG_DEBUG() << *fbPdu;
         }
-#ifndef F_NO_DEBUG
         QLOG_INFO() << "Fibex::covertXml2Db pdu count =" << count;
-#endif
+
 
         count = 0;
         foreach (const FBFrame *fbFrame, m_frames) {
-#ifndef F_NO_DEBUG
-            QLOG_DEBUG() << QObject::tr(
-                                "m_frames name = %1 byteLength = %2, type = %3, "
-                                "m_slotId = %4, m_baseCycle = %5, m_cycleCounter = %6, "
-                                "m_cycleRepetition = %7, pduCount = %8"
-                            ).\
-                            arg(fbFrame->m_fxFrame->m_shortName).\
-                            arg(fbFrame->m_fxFrame->m_byteLength).\
-                            arg((int)fbFrame->m_fxFrame->m_frameType).\
-                            arg(fbFrame->m_slotId).\
-                            arg(fbFrame->m_baseCycle).\
-                            arg(fbFrame->m_cycleCounter).\
-                            arg(fbFrame->m_cycleRepetition).\
-                            arg(fbFrame->m_pdus.count());
-#endif
+            QLOG_DEBUG() << *fbFrame;
             count++;
         }
-#ifndef F_NO_DEBUG
+
         QLOG_INFO() << "Fibex::covertXml2Db frame count =" << count;
-#endif
+
+#endif // if 0
 
         count = 0;
         foreach (const FBChannel *fbChannel, m_channels) {
-#ifndef F_NO_DEBUG
-            QLOG_DEBUG() << QObject::tr(
-                                "m_channel name = %1"
-                            ).\
-                            arg(fbChannel->name());
-#endif
+            QLOG_DEBUG() << *fbChannel;
+
             foreach (const FBFrame *fbFrame, fbChannel->m_frames) {
-#ifndef F_NO_DEBUG
-            QLOG_DEBUG() << QObject::tr(
-                                "m_frames name = %1"
-                            ).\
-                            arg(fbFrame->name());
-#endif
+                QLOG_DEBUG() << *fbFrame;
+
+                foreach (const FBPdu *fbPdu, fbFrame->m_pdus) {
+                    QLOG_DEBUG() << *fbPdu;
+                }
+
+                foreach (const FBSignal *fbSignal, fbFrame->m_signals) {
+                    QLOG_DEBUG() << *fbSignal;
+                }
             }
 
             foreach (const FBEcu *fbEcu, fbChannel->m_ecus) {
-#ifndef F_NO_DEBUG
-            QLOG_DEBUG() << QObject::tr(
-                                "m_ecu name = %1"
-                            ).\
-                            arg(fbEcu->name());
-#endif
+                QLOG_DEBUG() << *fbEcu;
+
+                QLOG_DEBUG() << "ecu" << fbEcu->name() << "input frames:" << fbEcu->m_inputFrames.count();
+                foreach (auto fbFrame, fbEcu->m_inputFrames) {
+                    QLOG_DEBUG() << *fbFrame;
+                }
+
+                QLOG_DEBUG() << "ecu" << fbEcu->name() << "output frames:" << fbEcu->m_outputFrames.count();
+                foreach (auto fbFrame, fbEcu->m_outputFrames) {
+                    QLOG_DEBUG() << *fbFrame;
+                }
             }
 
             count++;
         }
-#ifndef F_NO_DEBUG
+
         QLOG_INFO() << "Fibex::covertXml2Db channel count =" << count;
-#endif
+
     }
 
     return true;

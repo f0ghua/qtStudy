@@ -32,7 +32,7 @@ void FXFrameTypeCt::load(const QDomElement &element)
         if (childElement.tagName() == "fx:BYTE-LENGTH") {
             m_byteLength = childElement.text().toUInt();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXFrameTypeCt::load, m_byteLength =" << m_byteLength;
+            QLOG_TRACE() << "FXFrameTypeCt::load, m_byteLength =" << m_byteLength;
 #endif
         } else if (childElement.tagName() == "fx:FRAME-TYPE") {
             QString typeStr = childElement.text();
@@ -42,7 +42,7 @@ void FXFrameTypeCt::load(const QDomElement &element)
             if (isOk) {
                 m_frameType = type;
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "FXFrameTypeCt::load, m_frameType =" << typeStr << (int)m_frameType;
+                QLOG_TRACE() << "FXFrameTypeCt::load, m_frameType =" << typeStr << (int)m_frameType;
 #endif
             }
         } else if (childElement.tagName() == "fx:PDU-INSTANCES") {

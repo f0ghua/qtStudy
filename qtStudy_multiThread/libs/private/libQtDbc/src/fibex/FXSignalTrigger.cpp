@@ -28,7 +28,7 @@ void FXSignalTrigger::load(const QDomElement &element)
             if (isOk) {
                 m_signalStateList.append(type);
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "FXSignalTrigger::load, m_signalStateList append" << typeStr << (int)type;
+                QLOG_TRACE() << "FXSignalTrigger::load, m_signalStateList append" << typeStr << (int)type;
 #endif
             }
         }

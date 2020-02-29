@@ -46,7 +46,7 @@ void FXClusterType::load(const QDomElement &element)
             if (isOk) {
                 m_bitCountingPolicy = type;
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "FXClusterType::load, m_bitCountingPolicy =" << typeStr << (int)m_bitCountingPolicy;
+                QLOG_TRACE() << "FXClusterType::load, m_bitCountingPolicy =" << typeStr << (int)m_bitCountingPolicy;
 #endif
             }
         } else if (childElement.tagName() == "fx:PROTOCOL") {
@@ -89,7 +89,7 @@ void FXClusterType::load(const QDomElement &element)
                 if (isOk) {
                     *m_medium = type;
     #ifndef F_NO_DEBUG
-                    QLOG_DEBUG() << "FXClusterType::load, m_medium =" << typeStr << (int)(*m_medium);
+                    QLOG_TRACE() << "FXClusterType::load, m_medium =" << typeStr << (int)(*m_medium);
     #endif
                 }
             }

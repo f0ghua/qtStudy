@@ -15,6 +15,7 @@ HOCompuMethod::HOCompuMethod(FXFibex *fibex)
 
 HOCompuMethod::~HOCompuMethod()
 {
+    if (m_unitRef) delete m_unitRef;
     if (m_physConstrs) delete m_physConstrs;
     if (m_internalConstrs) delete m_internalConstrs;
     if (m_compuInternalToPhys) delete m_compuInternalToPhys;
@@ -38,14 +39,18 @@ void HOCompuMethod::load(const QDomElement &element)
             if (isOk) {
                 m_compuCategory = type;
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "HOCompuMethod::load, m_compuCategory =" << typeStr << (int)m_compuCategory;
+                QLOG_TRACE() << "HOCompuMethod::load, m_compuCategory =" << typeStr << (int)m_compuCategory;
 #endif
             }
         } else if (childElement.tagName() == "ho:UNIT-REF") {
-            m_unitRef = childElement.attribute("ID-REF");
+            if (!m_unitRef) {
+                m_unitRef = new QString();
+                *m_unitRef = childElement.attribute("ID-REF");
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "HOCompuMethod::load, m_unitRef =" << m_unitRef;
+                QLOG_TRACE() << "HOCompuMethod::load, m_unitRef =" << *m_unitRef;
 #endif
+            }
+
         } else if (childElement.tagName() == "ho:PHYS-CONSTRS") {
             if (!m_physConstrs) {
                 m_physConstrs = new HOScaleConstrType(m_fibex);

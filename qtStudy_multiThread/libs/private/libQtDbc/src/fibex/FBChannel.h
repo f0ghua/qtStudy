@@ -2,9 +2,10 @@
 
 #include "platform.h"
 #include "vector_dbc_export.h"
-
 #include "FibexTypes.h"
 #include "FibexKey.h"
+
+#include <QDebug>
 
 namespace ASAM {
 namespace FIBEX {
@@ -46,6 +47,18 @@ public:
     QHash<QString, FBFrameTriggering*> m_frameTriggerings;
     QHash<QString, FBPduTriggering*> m_pduTriggerings;
 };
+
+QDebug inline operator<<(QDebug d, const FBChannel &o)
+{
+    QDebugStateSaver saver(d);
+    d.nospace().noquote() << "FBChannel: ("
+      << "name:"        << o.name() << ","
+      << "ecuCount:"   << o.m_ecus.count() << ","
+      << "frmCount:"   << (int)o.m_frames.count()
+      << ")";
+
+    return d;
+}
 
 } // FIBEX
 } // ASAM

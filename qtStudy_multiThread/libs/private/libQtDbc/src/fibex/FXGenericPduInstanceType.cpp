@@ -15,7 +15,7 @@ void FXGenericPduInstanceType::load(const QDomElement &element)
 {
     m_id = element.attribute("ID");
 #ifndef F_NO_DEBUG
-    QLOG_DEBUG() << "FXGenericPduInstanceType::load, m_id =" << m_id;
+    QLOG_TRACE() << "FXGenericPduInstanceType::load, m_id =" << m_id;
 #endif
 
     QDomNode child = element.firstChild();
@@ -27,7 +27,7 @@ void FXGenericPduInstanceType::load(const QDomElement &element)
         if (childElement.tagName() == "fx:PDU-REF") {
             m_idRef = childElement.attribute("ID-REF");
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXGenericPduInstanceType::load, m_idRef =" << m_idRef;
+            QLOG_TRACE() << "FXGenericPduInstanceType::load, m_idRef =" << m_idRef;
 #endif
         } else if (childElement.tagName() == "fx:MANUFACTURER-EXTENSION") {
 

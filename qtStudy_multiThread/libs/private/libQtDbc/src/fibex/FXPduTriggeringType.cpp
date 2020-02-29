@@ -21,7 +21,7 @@ void FXPduTriggeringType::load(const QDomElement &element)
 {
     m_id = element.attribute("ID");
 #ifndef F_NO_DEBUG
-    QLOG_DEBUG() << "FXPduTriggeringType::load, m_id =" << m_id;
+    QLOG_TRACE() << "FXPduTriggeringType::load, m_id =" << m_id;
 #endif
 
     /* read childs */

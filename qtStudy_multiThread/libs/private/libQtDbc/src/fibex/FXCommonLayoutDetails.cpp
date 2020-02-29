@@ -21,17 +21,17 @@ void FXCommonLayoutDetails::load(const QDomElement &element)
         if (childElement.tagName() == "fx:BIT-POSITION") {
             m_bitPostion = childElement.text().toUShort();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXCommonLayoutDetails::load, m_bitPostion =" << m_bitPostion;
+            QLOG_TRACE() << "FXCommonLayoutDetails::load, m_bitPostion =" << m_bitPostion;
 #endif
         } else if (childElement.tagName() == "fx:IS-HIGH-LOW-BYTE-ORDER") {
             m_isBigEndian = childElement.text().toInt();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXCommonLayoutDetails::load, m_isBigEndian =" << m_isBigEndian;
+            QLOG_TRACE() << "FXCommonLayoutDetails::load, m_isBigEndian =" << m_isBigEndian;
 #endif
         } else if (childElement.tagName() == "fx:SEQUENCE-NUMBER") {
             m_sequenceNumber = childElement.text().toUShort();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXCommonLayoutDetails::load, m_sequenceNumber =" << m_sequenceNumber;
+            QLOG_TRACE() << "FXCommonLayoutDetails::load, m_sequenceNumber =" << m_sequenceNumber;
 #endif
         }
 

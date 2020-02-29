@@ -34,12 +34,12 @@ void FXConnectorType::load(const QDomElement &element)
         if (childElement.tagName() == "fx:CHANNEL-REF") {
             m_channelRef = childElement.attribute("ID-REF");
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXConnectorType::load, m_channelRef =" << m_channelRef;
+            QLOG_TRACE() << "FXConnectorType::load, m_channelRef =" << m_channelRef;
 #endif
         } else if (childElement.tagName() == "fx:CONTROLLER-REF") {
             m_controllerRef = childElement.attribute("ID-REF");
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXConnectorType::load, m_controllerRef =" << m_controllerRef;
+            QLOG_TRACE() << "FXConnectorType::load, m_controllerRef =" << m_controllerRef;
 #endif
         } else if (childElement.tagName() == "fx:INPUTS") {
             QDomNode subChild = child.firstChild();

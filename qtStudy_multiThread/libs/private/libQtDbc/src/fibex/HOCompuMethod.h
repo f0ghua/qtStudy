@@ -32,10 +32,10 @@ public:
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** element ho:CATEGORY */
+    /** @required element ho:CATEGORY */
     FibexTypes::HOCompuCategorySt m_compuCategory;
-    /** element ho:UNIT-REF */
-    QString m_unitRef;
+    /** @opt element ho:UNIT-REF */
+    QString *m_unitRef = nullptr;
     /** @opt element ho:PHYS-CONSTRS */
     HOScaleConstrType *m_physConstrs = nullptr;
     /** @opt element ho:INTERNAL-CONSTRS */

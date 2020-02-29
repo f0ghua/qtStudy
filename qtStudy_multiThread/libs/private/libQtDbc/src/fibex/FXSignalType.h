@@ -23,32 +23,33 @@ public:
 
 public:
     FXSignalType(FXFibex *fibex);
+    ~FXSignalType();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
     /**
-     * @brief element DEFAULT-VALUE
+     * @opt element DEFAULT-VALUE
      *
      * A signals encoded value (internal) indicating that the actual value is currently not published / not of interest
      */
-    double m_defaultValue;
+    double *m_defaultValue = nullptr;
 
     /**
-     * @brief element CODING-REF
+     * @required element CODING-REF
      *
      * Category of the signal
      */
     QString m_codingRef;
 
-    FXSignalTypeType m_sigType;
+    FXSignalTypeType *m_sigType = nullptr;
 
     /**
-     * @brief element PRIORITY
+     * @opt element PRIORITY
      *
      * A positive integer indicating the signals priority. 1 means highest priority.
      */
-    quint32 m_priority;
+    quint32 *m_priority = nullptr;
 };
 
 } // FIBEX

@@ -14,7 +14,7 @@ void FXSignalRef::load(const QDomElement &element)
 {
     m_idRef = element.attribute("ID-REF");
 #ifndef F_NO_DEBUG
-    QLOG_DEBUG() << "FXSignalRef::load, m_idRef =" << m_idRef;
+    QLOG_TRACE() << "FXSignalRef::load, m_idRef =" << m_idRef;
 #endif
 }
 

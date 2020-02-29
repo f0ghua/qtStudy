@@ -26,7 +26,7 @@ void FRConnectorType::load(const QDomElement &element)
         if (childElement.tagName() == "flexray:WAKE-UP-CHANNEL") {
             m_wakeUpChannel = QVariant(childElement.text()).toBool();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FRConnectorType::load, m_wakeUpChannel =" << m_wakeUpChannel;
+            QLOG_TRACE() << "FRConnectorType::load, m_wakeUpChannel =" << m_wakeUpChannel;
 #endif
         }
 

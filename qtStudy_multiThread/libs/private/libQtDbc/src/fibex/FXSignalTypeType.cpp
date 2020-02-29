@@ -10,6 +10,12 @@ FXSignalTypeType::FXSignalTypeType()
 {
 }
 
+FXSignalTypeType::~FXSignalTypeType()
+{
+    if (m_method) delete m_method;
+    m_attributes.clear();
+}
+
 void FXSignalTypeType::load(const QDomElement &element)
 {
     QDomNode child = element.firstChild();
@@ -26,16 +32,31 @@ void FXSignalTypeType::load(const QDomElement &element)
             if (isOk) {
                 m_type = type;
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "FXSignalTypeType::load, m_type =" << typeStr << (int)m_type;
+                QLOG_TRACE() << "FXSignalTypeType::load, m_type =" << typeStr << (int)m_type;
 #endif
             }
         } else if (childElement.tagName() == "fx:METHOD") {
-            m_method = childElement.text();
+            if (!m_method) {
+                m_method = new QString();
+                *m_method = childElement.text();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXSignalTypeType::load, m_method =" << m_method;
+                QLOG_TRACE() << "FXSignalTypeType::load, m_method =" << *m_method;
 #endif
-        } else if (childElement.tagName() == "fx:ATTRIBUTES") {
+            }
 
+        } else if (childElement.tagName() == "fx:ATTRIBUTES") {
+            QDomNode subChild = child.firstChild();
+            while (!subChild.isNull()) {
+                const QDomElement &subChildElement = subChild.toElement();
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "FXSignalTypeType::load ATTRIBUTES" << subChildElement.tagName();
+#endif
+                if (subChildElement.tagName() == "fx:ATTRIBUTE") {
+                    QString attr = subChildElement.text();
+                    m_attributes.append(attr);
+                }
+                subChild = subChild.nextSibling();
+            }
         }
 
         child = child.nextSibling();

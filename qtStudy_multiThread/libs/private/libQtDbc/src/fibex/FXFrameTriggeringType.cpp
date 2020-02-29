@@ -21,7 +21,7 @@ void FXFrameTriggeringType::load(const QDomElement &element)
 {
     m_id = element.attribute("ID");
 #ifndef F_NO_DEBUG
-    QLOG_DEBUG() << "FrameTriggeringType::load, m_id =" << m_id;
+    QLOG_TRACE() << "FrameTriggeringType::load, m_id =" << m_id;
 #endif
 
     /* read childs */

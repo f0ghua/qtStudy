@@ -10,11 +10,15 @@ namespace FIBEX {
 FXSignalType::FXSignalType(FXFibex *fibex)
     : FXRevisedElementType()
     , m_fibex(fibex)
-    , m_defaultValue()
     , m_codingRef()
-    , m_sigType()
-    , m_priority()
 {
+}
+
+FXSignalType::~FXSignalType()
+{
+    if (m_defaultValue) delete m_defaultValue;
+    if (m_sigType) delete m_sigType;
+    if (m_priority) delete m_priority;
 }
 
 void FXSignalType::load(const QDomElement &element)
@@ -28,19 +32,29 @@ void FXSignalType::load(const QDomElement &element)
         QLOG_TRACE() << "FXSignalType::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "fx:DEFAULT-VALUE") {
-            m_defaultValue = childElement.text().toDouble();
+            if (!m_defaultValue) {
+                m_defaultValue = new double();
+                *m_defaultValue = childElement.text().toDouble();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXSignalType::load, m_defaultValue =" << m_defaultValue;
+                QLOG_TRACE() << "FXSignalType::load, m_defaultValue =" << m_defaultValue;
 #endif
+            }
+
         } else if (childElement.tagName() == "fx:CODING-REF") {
             m_codingRef = childElement.attribute("ID-REF");
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXSignalType::load, m_codingRef =" << m_codingRef;
+            QLOG_TRACE() << "FXSignalType::load, m_codingRef =" << m_codingRef;
 #endif
         } else if (childElement.tagName() == "fx:SIGNAL-TYPE") {
-            m_sigType.load(childElement);
+            if (!m_sigType) {
+                m_sigType = new FXSignalTypeType();
+                m_sigType->load(childElement);
+            }
         } else if (childElement.tagName() == "fx:PRIORITY") {
-            m_priority = childElement.text().toUInt();
+            if (!m_priority) {
+                m_priority = new quint32();
+                *m_priority = childElement.text().toUInt();
+            }
         }
 
         child = child.nextSibling();

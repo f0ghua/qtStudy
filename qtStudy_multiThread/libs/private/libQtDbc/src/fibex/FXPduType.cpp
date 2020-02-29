@@ -31,7 +31,7 @@ void FXPduTypeCt::load(const QDomElement &element)
         if (childElement.tagName() == "fx:BYTE-LENGTH") {
             m_byteLength = childElement.text().toUInt();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXPduTypeCt::load, m_byteLength =" << m_byteLength;
+            QLOG_TRACE() << "FXPduTypeCt::load, m_byteLength =" << m_byteLength;
 #endif
         } else if (childElement.tagName() == "fx:PDU-TYPE") {
             QString typeStr = childElement.text();
@@ -41,7 +41,7 @@ void FXPduTypeCt::load(const QDomElement &element)
             if (isOk) {
                 m_pduType = type;
 #ifndef F_NO_DEBUG
-                QLOG_DEBUG() << "FXPduTypeCt::load, m_pduType =" << typeStr << (int)m_pduType;
+                QLOG_TRACE() << "FXPduTypeCt::load, m_pduType =" << typeStr << (int)m_pduType;
 #endif
             }
         } else if (childElement.tagName() == "fx:SIGNAL-INSTANCES") {

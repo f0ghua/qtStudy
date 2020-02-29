@@ -29,7 +29,7 @@ void FXIncludedPduType::load(const QDomElement &element)
         if (childElement.tagName() == "fx:PDU-TRIGGERING-REF") {
             m_pduTriggeringRef = childElement.attribute("ID-REF");
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FXIncludedPduType::load, m_pduTriggeringRef =" << m_pduTriggeringRef;
+            QLOG_TRACE() << "FXIncludedPduType::load, m_pduTriggeringRef =" << m_pduTriggeringRef;
 #endif
         } else if (childElement.tagName() == "fx:INCLUDED-SIGNALS") {
             QDomNode subChild = child.firstChild();

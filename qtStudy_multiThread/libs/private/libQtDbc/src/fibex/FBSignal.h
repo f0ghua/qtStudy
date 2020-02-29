@@ -6,12 +6,15 @@
 #include "FibexTypes.h"
 #include "FBAttribute.h"
 
+#include <QDebug>
+
 namespace ASAM {
 namespace FIBEX {
 
 class FXSignalType;
 typedef FibexTypes::FXBitCountingPolicy ByteOrder;
-typedef FibexTypes::HOBaseDataType ValueType;
+typedef FibexTypes::HOBaseDataType CodedType;
+typedef FibexTypes::FXTypeTypeSt SignalType;
 // @todo fibex textable item should mapping to a range
 typedef QMap<double, QString> ValueDescriptions;
 
@@ -20,9 +23,12 @@ class VECTOR_DBC_EXPORT FBSignal
 public:
     FBSignal();
 
-    QString name();
+    QString name() const;
+    bool getDefaultValue(double &v) const;
 
     const FXSignalType *m_fxSignal = nullptr;
+    quint32 *m_signalUpdateBitPosition = nullptr;
+    SignalType *m_signalType = nullptr;
 
     /** Multiplexed Signal (m) */
     bool m_isMultiplexedSignal; // m
@@ -43,7 +49,7 @@ public:
     bool m_isBigEndian;
 
     /** Value Type */
-    ValueType m_valueType;
+    CodedType m_codedType;
 
     /** Factor */
     double m_factor;
@@ -142,6 +148,31 @@ public:
     void encodePhy(uint8_t *msgData, double phyValue) const;
     double decodePhy(const uint8_t *msgData) const;
 };
+
+QDebug inline operator<<(QDebug d, const FBSignal &s)
+{
+    double v;
+
+    QDebugStateSaver saver(d);
+    d.nospace().noquote() << "FBSignal: ("
+      << "name:" << s.name() << ","
+      << "ftr:" << s.m_factor << ","
+      << "off:" << s.m_offset << ","
+      << "ct:" << (int)s.m_codedType << ","
+      << "st:" << (s.m_signalType?(QString::number((int)*s.m_signalType)):"N/A") << ","
+      << "min:" << s.m_minimumPhysicalValue << ","
+      << "max:" << s.m_maximumPhysicalValue << ","
+      << "sb:" << s.m_startBit << ","
+      << "sz:" << s.m_bitSize << ","
+      << "big:" << s.m_isBigEndian << ","
+      << "upb:" << (s.m_signalUpdateBitPosition?(QString::number(*s.m_signalUpdateBitPosition)):"N/A") << ","
+      << "def:" << ((s.getDefaultValue(v))?(QString::number(v)):"N/A") << ","
+      << "unit:" << s.m_unit << ","
+      << "txt:" << s.m_valueDescriptions
+      << ")";
+
+    return d;
+}
 
 }
 }

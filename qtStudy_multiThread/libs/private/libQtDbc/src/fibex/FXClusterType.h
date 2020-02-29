@@ -28,29 +28,29 @@ public:
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** @todo element SPEED */
-    quint64 m_speed;
-    /** @todo element IS-HIGH-LOW-BIT-ORDER */
+    /** @required element SPEED */
+    quint64 m_speed = 10000000;
+    /** @required element IS-HIGH-LOW-BIT-ORDER */
     bool isHighLowBitOrder;
-    /** @todo element BIT-COUNTING-POLICY */
+    /** @required element BIT-COUNTING-POLICY */
     FibexTypes::FXBitCountingPolicy m_bitCountingPolicy;
-    /** @todo element PROTOCOL */
-    QString m_protocol;
+    /** @required element PROTOCOL */
+    QString m_protocol = "CAN";
     /** @opt element PROTOCOL-VERSION */
     QString *m_protocolVersion = nullptr;
     /** @opt element PHYSICAL */
     QString *m_physical = nullptr;
-    /** @todo element PHYSICAL-VERSION */
+    /** @opt element PHYSICAL-VERSION */
     QString *m_physicalVersion = nullptr;
-    /** @todo element CHANNEL-REFS */
+    /** @opt element CHANNEL-REFS */
     QList<QString> m_channelRefList;
-    /** @todo element MEDIUM */
+    /** @opt element MEDIUM */
     FibexTypes::FXMedium *m_medium = nullptr;
-    /** @todo element NUMBER-OF-CYCLES */
+    /** @opt element NUMBER-OF-CYCLES */
     qint16 *m_numberOfCycles = nullptr;
-    /** @todo element MAX-FRAME-LENGTH */
+    /** @opt element MAX-FRAME-LENGTH */
     quint32 *m_maxFrameLength = nullptr;
-    /** @todo element fx:CAN-FD-SPEED */
+    /** @opt element fx:CAN-FD-SPEED */
     quint64 *m_canFdSpeed = nullptr;
     /** @todo element MANUFACTURER-EXTENSION */
 };

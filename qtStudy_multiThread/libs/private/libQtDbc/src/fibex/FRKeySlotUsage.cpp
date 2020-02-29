@@ -22,20 +22,20 @@ void FRKeySlotUsage::load(const QDomElement &element)
             m_keySlotUsage = FibexTypes::FRKeySlotUsageSt::STARTUP_SYNC;
             m_keySlotId = childElement.text().toUShort();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FRKeySlotUsage::load, m_keySlotUsage =" << (int)m_keySlotUsage;
-            QLOG_DEBUG() << "FRKeySlotUsage::load, m_keySlotId =" << m_keySlotId;
+            QLOG_TRACE() << "FRKeySlotUsage::load, m_keySlotUsage =" << (int)m_keySlotUsage;
+            QLOG_TRACE() << "FRKeySlotUsage::load, m_keySlotId =" << m_keySlotId;
 #endif
         } else if (childElement.tagName() == "flexray:SYNC") {
             m_keySlotUsage = FibexTypes::FRKeySlotUsageSt::SYNC;
             m_keySlotId = childElement.text().toUShort();
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FRKeySlotUsage::load, m_keySlotUsage =" << (int)m_keySlotUsage;
-            QLOG_DEBUG() << "FRKeySlotUsage::load, m_keySlotId =" << m_keySlotId;
+            QLOG_TRACE() << "FRKeySlotUsage::load, m_keySlotUsage =" << (int)m_keySlotUsage;
+            QLOG_TRACE() << "FRKeySlotUsage::load, m_keySlotId =" << m_keySlotId;
 #endif
         } else if (childElement.tagName() == "flexray:NONE") {
             m_keySlotUsage = FibexTypes::FRKeySlotUsageSt::NONE;
 #ifndef F_NO_DEBUG
-            QLOG_DEBUG() << "FRKeySlotUsage::load, m_keySlotUsage =" << (int)m_keySlotUsage;
+            QLOG_TRACE() << "FRKeySlotUsage::load, m_keySlotUsage =" << (int)m_keySlotUsage;
 #endif
         }
 

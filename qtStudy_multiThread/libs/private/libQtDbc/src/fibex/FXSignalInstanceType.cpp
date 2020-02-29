@@ -22,7 +22,7 @@ void FXSignalInstanceType::load(const QDomElement &element)
 {
     m_id = element.attribute("ID");
 #ifndef F_NO_DEBUG
-    QLOG_DEBUG() << "FXSignalInstanceType::load, m_id =" << m_id;
+    QLOG_TRACE() << "FXSignalInstanceType::load, m_id =" << m_id;
 #endif
 
     m_commLayoutDetails.load(element);
