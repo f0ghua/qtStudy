@@ -1,12 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "worker.h"
-#include "DBC.h"
+#include "File.h"
 
 #include <QThread>
 #include <QDebug>
 
-using namespace Vector::DBC;
+using namespace ASAM::FIBEX;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,9 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
         if ((int)dbFile->load(dbName) != 0) {
             return;
         }
-
-        NetworkHandle *nh = dbFile->netHandle();
-        nh->dumpMessages();
     }
 }
 

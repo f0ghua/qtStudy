@@ -40,4 +40,5 @@ TOPSRCDIR   = $$PWD
 TOPBUILDDIR = $$shadowed($$PWD)
 
 include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
-include($${TOPSRCDIR}/libs/private/libQtDbc/libQtDbc.pri)
+#include($${TOPSRCDIR}/libs/private/libQtDbc/libQtDbc.pri)
+include($${TOPSRCDIR}/libs/private/libQtFibex/libQtFibex.pri)
