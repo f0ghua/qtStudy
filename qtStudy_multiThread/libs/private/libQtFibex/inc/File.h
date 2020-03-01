@@ -10,6 +10,8 @@ class QDomElement;
 namespace ASAM {
 namespace FIBEX {
 
+class Fibex;
+
 /**
  * File
  */
@@ -24,8 +26,7 @@ public:
     bool load(const QString &fileName);
 
 private:
-    bool loadFibexFile(const QString &fileName);
-
+    Fibex *m_fibex;
     QString m_fileName;
 
 };

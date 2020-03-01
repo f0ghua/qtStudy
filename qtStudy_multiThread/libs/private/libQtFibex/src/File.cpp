@@ -16,28 +16,21 @@ namespace FIBEX {
 
 File::File()
 {
-    /* nothing to do here */
-    //m_pNetHandle = new NetworkHandle();
-    //m_pNetwork = m_pNetHandle->getNetwork();
+    m_fibex = new Fibex();
 }
 
 File::~File()
 {
-    /* nothing to do here */
-    //delete m_pNetHandle;
+    delete m_fibex;
 }
 
 bool File::load(const QString &fileName)
 {
+    bool ret = true;
+
     QFileInfo fi = QFileInfo(fileName);
     QString ext = fi.suffix();
 
-    return loadFibexFile(fileName);
-}
-
-bool File::loadFibexFile(const QString &fileName)
-{
-    bool ret = true;
     QFile *inFile = new QFile(fileName);
 
 #ifndef F_NO_DEBUG
@@ -72,9 +65,7 @@ bool File::loadFibexFile(const QString &fileName)
 
     qDebug() << root.tagName();
 
-    //ret = xmlParseFibex(root);
-    ASAM::FIBEX::Fibex fb;
-    fb.load(root);
+    m_fibex->load(root);
 
     inFile->close();
     delete inFile;
