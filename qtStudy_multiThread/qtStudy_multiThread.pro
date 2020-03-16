@@ -26,14 +26,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        worker.cpp
+        worker.cpp \
+    CalculatorDialog.cpp \
+    ValidateExpressionThread.cpp
 
 HEADERS += \
         mainwindow.h \
-        worker.h
+        worker.h \
+    CalculatorDialog.h \
+    ValidateExpressionThread.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    CalculatorDialog.ui
 
 TOPSRCDIR   = $$PWD
 TOPBUILDDIR = $$shadowed($$PWD)
