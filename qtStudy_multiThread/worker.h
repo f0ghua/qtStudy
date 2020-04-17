@@ -2,6 +2,7 @@
 #define WORKER_H
 
 #include "busframe.h"
+#include "tracemodel.h"
 
 #include <QObject>
 
@@ -9,7 +10,7 @@ class Worker : public QObject
 {
     Q_OBJECT
 public:
-    explicit Worker(QObject *parent = nullptr);
+    explicit Worker(TraceModel *model, QObject *parent = nullptr);
 
 signals:
     void frameCatched(const BusFrame &frame);
@@ -20,6 +21,8 @@ public slots:
 
 private:
     bool loadBinLogFile(const QString &fileName);
+
+    TraceModel *m_model;
 };
 
 #endif // WORKER_H

@@ -8,12 +8,13 @@ TraceModel::TraceModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     m_columnList.clear();
+    m_columnList.append(TraceColumn(TraceColumn::COL_INDEX));
     m_columnList.append(TraceColumn(TraceColumn::COL_TIME));
 //    m_columnList.append(TraceColumn(TraceColumn::COL_NAME));
-//    m_columnList.append(TraceColumn(TraceColumn::COL_CHANNEL));
+    m_columnList.append(TraceColumn(TraceColumn::COL_CHANNEL));
+    m_columnList.append(TraceColumn(TraceColumn::COL_DIRECTION));
     m_columnList.append(TraceColumn(TraceColumn::COL_ID));
 //    m_columnList.append(TraceColumn(TraceColumn::COL_FORMAT));
-//    m_columnList.append(TraceColumn(TraceColumn::COL_DIRECTION));
 //    m_columnList.append(TraceColumn(TraceColumn::COL_DLC));
     m_columnList.append(TraceColumn(TraceColumn::COL_DATA));
 //    m_columnList.append(TraceColumn(TraceColumn::COL_INFO));
@@ -34,8 +35,11 @@ void TraceModel::updateView()
 {
     //qDebug() << tr("m_items.size = %1").arg(m_items.size());
     if (m_items.size()) {
-        emit dataChanged(index(0, 0), index(columnCount()-1, m_items.size()-1));
-        emit layoutChanged();
+//        emit dataChanged(index(0, 0), index(columnCount()-1, m_items.size()-1));
+//        emit layoutChanged();
+
+        beginResetModel();
+        endResetModel();
     }
 }
 
@@ -56,6 +60,13 @@ void TraceModel::frameCatched(const BusFrame &frame)
     }
 }
 
+void TraceModel::frameAppendAll(const QVector<BusFrame> &frames)
+{
+    qDebug() << frames.at(0);
+    m_items.append(frames);
+    updateView();
+}
+
 QVariant TraceModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -74,6 +85,10 @@ QVariant TraceModel::data(const QModelIndex &index, int role) const
 
     if (role != Qt::DisplayRole)
         return QVariant();
+
+    if (m_columnList[col].id() == TraceColumn::COL_INDEX) {
+        return row;
+    }
 
     return m_columnList[col].value(m_items[row]);
 }

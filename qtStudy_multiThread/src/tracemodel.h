@@ -29,6 +29,9 @@ public:
         const BusFrame &i = m_items[index];
         return i;
     }
+    const QList<TraceColumn> &columns() const {return m_columnList;}
+
+    void frameAppendAll(const QVector<BusFrame> &frames);
 
 public slots:
     void frameCatched(const BusFrame &frame);

@@ -7,7 +7,9 @@
 #include <QDebug>
 #include <QThread>
 
-Worker::Worker(QObject *parent) : QObject(parent)
+Worker::Worker(TraceModel *model, QObject *parent)
+    : QObject(parent)
+    , m_model(model)
 {
 
 }
@@ -37,6 +39,8 @@ bool Worker::loadBinLogFile(const QString &fileName)
     quint8 dataLen = 0;
     quint8 busInfo = 0;
     quint8 bus = 0;
+
+    QVector<BusFrame> frames;
 
     while(!ds.atEnd()) {
         ds >> timestamp >> msgLen >> busInfo >> idFmtTestByte;
@@ -101,10 +105,14 @@ bool Worker::loadBinLogFile(const QString &fileName)
         frame.setDir(isTx?BusFrame::eDirTx:BusFrame::eDirRx);
         frame.setTime(timestamp);
 
-        emit frameCatched(frame);
-
-        QThread::msleep(1);
+        frames.append(frame);
+        //emit frameCatched(frame);
+        //QThread::usleep(10);
     }
+
+    qDebug() << "parser finished with frame count" << frames.count();
+
+    m_model->frameAppendAll(frames);
 
     return true;
 }

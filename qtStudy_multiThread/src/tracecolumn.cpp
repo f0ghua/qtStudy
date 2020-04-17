@@ -1,5 +1,6 @@
 #include "busframe.h"
 #include "tracecolumn.h"
+#include "xcommdefine.h"
 
 #include <QString>
 #include <QStringList>
@@ -21,6 +22,7 @@ static const TraceColumnInfo g_defaultTrColValue = {
 };
 
 static const QMap<int, TraceColumnInfo> g_trColInfos = QMap<int, TraceColumnInfo>{
+    {TraceColumn::COL_INDEX,        {TraceColumn::COL_INDEX,        "#",            "Index"}},
     {TraceColumn::COL_TIME,         {TraceColumn::COL_TIME,         "Time",         "Absolute/Relative time"}},
     {TraceColumn::COL_CHANNEL,      {TraceColumn::COL_CHANNEL,      "Channel",      "Channel"} },
     {TraceColumn::COL_ID,           {TraceColumn::COL_ID,           "ID",           "Identify"} },
@@ -44,16 +46,16 @@ QVariant TraceColumn::getTrColumnValueString(int id, const BusFrame &f)
     switch (id) {
         case COL_TIME:
             return f.time();
-//        case COL_CHANNEL:
-//            return chnString(f);
+        case COL_CHANNEL:
+            return (f.bus() < BUS_NUMBER)? (XCD_CONSTANTS::infNames[f.bus()]) : "Err";
         case COL_ID:
             return QString("0x%1").arg(f.id(), 0, 16);
 //        case COL_NAME:
 //            return f->name;
 //        case COL_FORMAT:
 //            return f->format;
-//        case COL_DIRECTION:
-//            return f->dir;
+        case COL_DIRECTION:
+            return (f.dir() == BusFrame::eDirRx)?"rx":"tx";
 //        case COL_DLC:
 //            return f->dataLen;
         case COL_DATA:

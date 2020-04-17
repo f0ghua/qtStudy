@@ -15,7 +15,8 @@ public:
     };
 
     enum {
-        COL_TIME            = 0,
+        COL_INDEX            = 0,
+        COL_TIME,
         COL_CHANNEL,
         COL_ID,
         COL_NAME,

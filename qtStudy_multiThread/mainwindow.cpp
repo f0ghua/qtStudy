@@ -3,6 +3,7 @@
 #include "worker.h"
 #include "tracemodel.h"
 #include "xcommdefine.h"
+#include "tracecolumn.h"
 
 #include <QSortFilterProxyModel>
 #include <QFileDialog>
@@ -19,6 +20,15 @@ void MainWindow::init()
     m_sortModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
     m_sortModel->setFilterKeyColumn(0);
     ui->tblFrame->setModel(m_sortModel);
+
+    const QList<TraceColumn> &tcols = m_model->columns();
+    ui->cbColumn->clear();
+    foreach (const TraceColumn &c, tcols) {
+        ui->cbColumn->addItem(c.title());
+    }
+//    ui->tblFrame->setColumnWidth(tcols., 20);
+//    ui->tblFrame->setColumnWidth(1, 20);
+//    ui->tblFrame->setColumnWidth(2, 20);
 
     ui->tblFrame->setContextMenuPolicy(Qt::CustomContextMenu);
 //    connect(ui->tblFrame, &QWidget::customContextMenuRequested, this, &MainWindow::tvCustomContextMenu);
@@ -46,7 +56,7 @@ MainWindow::~MainWindow()
 void MainWindow::startWorker()
 {
     m_workThread = new QThread();
-    m_worker = new Worker();
+    m_worker = new Worker(m_model);
     m_worker->moveToThread(m_workThread);
     QObject::connect(m_workThread, &QThread::started, m_worker, &Worker::run);
     QObject::connect(m_workThread, &QThread::finished, m_worker, &Worker::deleteLater);
