@@ -26,16 +26,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        worker.cpp
+        worker.cpp \
+    src/tracecolumn.cpp \
+    src/tracemodel.cpp \
+    src/xcommdefine.cpp \
+    src/busframe.cpp
 
 HEADERS += \
         mainwindow.h \
-        worker.h
+        worker.h \
+    src/tracecolumn.h \
+    src/tracemodel.h \
+    src/xcommdefine.h \
+    src/busframe.h
 
 FORMS += \
         mainwindow.ui
 
 TOPSRCDIR   = $$PWD
 TOPBUILDDIR = $$shadowed($$PWD)
+
+INCLUDEPATH += ./src
 
 include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
