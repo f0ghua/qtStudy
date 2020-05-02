@@ -18,6 +18,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+signals:
+    void workStart();
+    void workStop();
+
 private:
     void startWorker();
     void stopWorker();

@@ -27,15 +27,20 @@ void MainWindow::startWorker()
     QObject::connect(m_workThread, &QThread::started, m_worker, &Worker::run);
     QObject::connect(m_workThread, &QThread::finished, m_worker, &Worker::deleteLater);
     QObject::connect(m_workThread, &QThread::finished, m_workThread, &QThread::deleteLater);
-    //QObject::connect(this, &MainWindow::workStop, m_worker, &Worker::onWorkStop);
+
+    QObject::connect(this, &MainWindow::workStart, m_worker, &Worker::onWorkStart);
+    QObject::connect(this, &MainWindow::workStop, m_worker, &Worker::onWorkStop);
+
+//    QObject::connect(m_worker, &Worker::finished, m_workThread, &QThread::finished);
 
     m_workThread->start(QThread::HighPriority);
+    emit workStart();
     qDebug() << "Worker thread started.";
 }
 
 void MainWindow::stopWorker()
 {
-    //emit workStop();
+    emit workStop();
 
     if(m_workThread && (!m_workThread->isFinished())) {
         m_workThread->quit();
