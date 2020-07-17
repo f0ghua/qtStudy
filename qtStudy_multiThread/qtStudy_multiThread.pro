@@ -24,11 +24,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+        gaugecar.cpp \
+        gaugespeed.cpp \
         main.cpp \
         mainwindow.cpp \
         worker.cpp
 
 HEADERS += \
+        gaugecar.h \
+        gaugespeed.h \
         mainwindow.h \
         worker.h
 
@@ -38,4 +42,24 @@ FORMS += \
 TOPSRCDIR   = $$PWD
 TOPBUILDDIR = $$shadowed($$PWD)
 
-include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
+#include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
+
+Qt += concurrent
+DEFINES += LOG4QT_STATIC
+LOG4QT_VERSION_MAJOR = 1
+LOG4QT_VERSION_MINOR = 0
+LOG4QT_VERSION_RELEASE = 0
+LOG4QT_VERSION_PATCH = 0
+LOG4QT_VERSION = '\\"$${LOG4QT_VERSION_MAJOR}.$${LOG4QT_VERSION_MINOR}.$${LOG4QT_VERSION_RELEASE}\\"'
+DEFINES += LOG4QT_VERSION_STR=\"$${LOG4QT_VERSION}\"
+#DEFINES += LOG4QT_VERSION=$${LOG4QT_VERSION}
+DEFINES += LOG4QT_VERSION_MAJOR=$${LOG4QT_VERSION_MAJOR}
+DEFINES += LOG4QT_VERSION_MINOR=$${LOG4QT_VERSION_MINOR}
+DEFINES += LOG4QT_VERSION_PATCH=$${LOG4QT_VERSION_PATCH}
+
+include($${TOPSRCDIR}/libs/Log4Qt/src/log4qt/log4qt.pri)
+INCLUDEPATH += $${TOPSRCDIR}/libs/Log4Qt/src
+INCLUDEPATH += $${TOPSRCDIR}/libs/Log4Qt/src/log4qt
+
+RESOURCES += \
+    app.qrc

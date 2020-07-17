@@ -18,6 +18,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    void resizeEvent(QResizeEvent *evt);
+
 private:
     void startWorker();
     void stopWorker();
@@ -25,6 +28,7 @@ private:
     Ui::MainWindow *ui;
     Worker *m_worker = NULL;
     QThread *m_workThread = NULL;
+    int m_v;
 };
 
 #endif // MAINWINDOW_H
