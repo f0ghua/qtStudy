@@ -54,9 +54,21 @@ void MainWindow::on_pushButton_2_clicked()
     m_socket = new QUdpSocket(this);
     connect(m_socket, &QUdpSocket::readyRead, this, [&]{
         qDebug() << "ready Read received";
+        while (m_socket->hasPendingDatagrams()) {
+
+            QByteArray datagram;
+            datagram.resize(m_socket->pendingDatagramSize());
+
+            m_socket->readDatagram(datagram.data(), datagram.size(),
+                                   &m_sender, &m_senderPort);
+//            m_socket->writeDatagram(datagram.data(), datagram.size(),
+//                                    m_sender, m_senderPort);
+            qDebug() << "client ready Read received";
+
+        }
     });
 
-    m_socket->bind(QHostAddress("127.0.0.1"), 9998);
+    //m_socket->bind(9998);
 
     QByteArray ba = QByteArrayLiteral("\x11\x22");
     m_socket->writeDatagram(ba, ba.size(), QHostAddress("127.0.0.1"), 9999);
@@ -78,6 +90,7 @@ void MainWindow::on_pushButton_clicked()
                                    &m_sender, &m_senderPort);
             m_socket->writeDatagram(datagram.data(), datagram.size(),
                                     m_sender, m_senderPort);
+            qDebug() << "server ready Read received";
 
         }
     });
@@ -89,5 +102,5 @@ void MainWindow::on_pushButton_3_clicked()
 {
     QByteArray ba = QByteArrayLiteral("\x33\x44");
     m_socket->writeDatagram(ba.data(), ba.size(),
-                            m_sender, 9998);
+                            m_sender, m_senderPort);
 }
