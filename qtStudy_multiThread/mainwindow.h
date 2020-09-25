@@ -21,6 +21,7 @@ public:
 private:
     void startWorker();
     void stopWorker();
+    void executeTask();
 
     Ui::MainWindow *ui;
     Worker *m_worker = NULL;
