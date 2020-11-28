@@ -10,12 +10,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    startWorker();
+//    startWorker();
 }
 
 MainWindow::~MainWindow()
 {
-    stopWorker();
+//    stopWorker();
     delete ui;
 }
 
