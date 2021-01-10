@@ -1,15 +1,22 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "worker.h"
+#include "CDDFile.h"
 
 #include <QThread>
 #include <QDebug>
+
+using namespace vector::cdd;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    CDDFile f;
+    f.load("");
+
 //    startWorker();
 }
 

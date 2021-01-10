@@ -39,3 +39,7 @@ TOPSRCDIR   = $$PWD
 TOPBUILDDIR = $$shadowed($$PWD)
 
 include($${TOPSRCDIR}/libs/private/QAppLogging/QAppLogging.pri)
+
+DEFINES += LIB_STATIC
+CONFIG += libqtdbc-buildlib
+include($${TOPSRCDIR}/libs/libqtcdd/libqtcdd.pri)
