@@ -23,20 +23,27 @@ bool CDDDbECUDoc::load(const QDomElement &element)
     while (!child.isNull()) {
         const QDomElement &childElement = child.toElement();
 #ifndef F_NO_DEBUG
-        QLOG_TRACE() << "CDDDbECUDoc::load" << childElement.tagName();
+            QLOG_TRACE() << "CDDDbECUDoc::load" << childElement.tagName();
 #endif
-        if (childElement.tagName() == "fx:PROCESSING-INFORMATION") {
-//            if (!m_processingInformation) {
-//                m_processingInformation = new FXProcessingInformation(this);
-//                m_processingInformation->load(childElement);
-//            }
-        } else if (childElement.tagName() == "fx:ELEMENTS") {
+        if (childElement.tagName() == "ATTRCATS") {
 
-        } else if (childElement.tagName() == "fx:PROJECT") {
+        } else if (childElement.tagName() == "DEFATTS") {
 
-        } else if (childElement.tagName() == "fx:PROTOCOLS") {
+        } else if (childElement.tagName() == "DATATYPES") {
 
-        } else if (childElement.tagName() == "fx:REQUIREMENTS") {
+        } else if (childElement.tagName() == "DOCTMPL") {
+
+        } else if (childElement.tagName() == "RECORDTMPLS") {
+
+        } else if (childElement.tagName() == "DIDS") {
+
+        } else if (childElement.tagName() == "PROTOCOLSERVICES") {
+
+        } else if (childElement.tagName() == "DCLTMPLS") {
+
+        } else if (childElement.tagName() == "RECORDDTPOOL") {
+
+        } else if (childElement.tagName() == "ECU") {
 
         }
 
