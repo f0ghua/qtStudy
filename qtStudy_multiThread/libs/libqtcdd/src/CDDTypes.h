@@ -5,6 +5,7 @@
 
 #include <QString>
 #include <QMap>
+#include <QSharedPointer>
 
 //  ----------------------------------------------------------------------------
 //           PUBLIC TYPES

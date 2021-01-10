@@ -1,4 +1,5 @@
 #include "CDDLog.h"
+#include "CDDDbECUDoc.h"
 #include "CDDDatabase.h"
 
 #include <QDomElement>
@@ -25,19 +26,9 @@ bool CDDDatabase::load(const QDomElement &element)
 #ifndef F_NO_DEBUG
         QLOG_TRACE() << "CDDDatabase::load" << childElement.tagName();
 #endif
-        if (childElement.tagName() == "fx:PROCESSING-INFORMATION") {
-//            if (!m_processingInformation) {
-//                m_processingInformation = new FXProcessingInformation(this);
-//                m_processingInformation->load(childElement);
-//            }
-        } else if (childElement.tagName() == "fx:ELEMENTS") {
-
-        } else if (childElement.tagName() == "fx:PROJECT") {
-
-        } else if (childElement.tagName() == "fx:PROTOCOLS") {
-
-        } else if (childElement.tagName() == "fx:REQUIREMENTS") {
-
+        if (childElement.tagName() == "ECUDOC") {
+            m_ecudoc = QSharedPointer<CDDDbECUDoc>::create();
+            m_ecudoc->load(childElement);
         }
 
         child = child.nextSibling();

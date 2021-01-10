@@ -40,13 +40,16 @@ bool CDDFile::load(const QString &fileName)
 
     if (!inFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
+#ifndef F_NO_DEBUG
+        qDebug() << "file not found or can't open";
+#endif
         delete inFile;
         return false;
     }
 
     m_fileName = fileName;
 #ifndef F_NO_DEBUG
-    qDebug() << "Starting fibex load";
+    qDebug() << "Starting cdd load";
 #endif
 
     QDomDocument doc;

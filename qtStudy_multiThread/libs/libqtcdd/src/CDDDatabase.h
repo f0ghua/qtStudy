@@ -6,6 +6,8 @@
 namespace vector {
 namespace cdd {
 
+class CDDDbECUDoc;
+
 class VECTOR_CDD_API CDDDatabase
 {
 public:
@@ -15,8 +17,8 @@ public:
     /** load from XML DOM element */
     bool load(const QDomElement &element);
 
-    /** element ELEMENTS */
-
+    /** element ECUDOC */
+    QSharedPointer<CDDDbECUDoc> m_ecudoc;
 
 };
 

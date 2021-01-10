@@ -49,7 +49,6 @@ LIB_NAME = $$qtLibraryTarget(libqtcdd)
 
 HEADERS += \
     $$PWD/src/CDDDatabase.h \
-    $$PWD/src/CDDDbCANdela.h \
     $$PWD/src/CDDDbECUDoc.h \
     $$PWD/src/CDDExport.h \
     $$PWD/src/CDDFile.h \
@@ -58,6 +57,5 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/src/CDDDatabase.cpp \
-    $$PWD/src/CDDDbCANdela.cpp \
     $$PWD/src/CDDDbECUDoc.cpp \
     $$PWD/src/CDDFile.cpp

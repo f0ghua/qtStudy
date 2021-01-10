@@ -3,6 +3,7 @@
 #include "worker.h"
 #include "CDDFile.h"
 
+#include <QDir>
 #include <QThread>
 #include <QDebug>
 
@@ -15,7 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     CDDFile f;
-    f.load("");
+    auto filePath = QDir::currentPath() + "../../qtStudy_multiThread/doc/GWM_SRR5_Rl.cdd";
+    f.load(filePath);
 
 //    startWorker();
 }
