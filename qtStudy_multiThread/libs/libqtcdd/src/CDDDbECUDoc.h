@@ -6,6 +6,9 @@
 namespace vector {
 namespace cdd {
 
+class CDDDbECU;
+class CDDDbAttrCats;
+
 /**
  * @brief element ECUDOC
  *
@@ -18,10 +21,13 @@ public:
     ~CDDDbECUDoc();
 
     /** load from XML DOM element */
-    bool load(const QDomElement &element);
+    void load(const QDomElement &element);
 
-    /** element ELEMENTS */
+    /** element ATTRCATS */
+    QSharedPointer<CDDDbAttrCats> m_attrcats;
 
+    /** element ECU */
+    QSharedPointer<CDDDbECU> m_ecu;
 
 };
 

@@ -16,10 +16,8 @@ CDDDatabase::~CDDDatabase()
 
 }
 
-bool CDDDatabase::load(const QDomElement &element)
+void CDDDatabase::load(const QDomElement &element)
 {
-    bool ret = true;
-
     QDomNode child = element.firstChild();
     while (!child.isNull()) {
         const QDomElement &childElement = child.toElement();
@@ -33,8 +31,6 @@ bool CDDDatabase::load(const QDomElement &element)
 
         child = child.nextSibling();
     }
-
-    return ret;
 }
 
 } // namespace cdd

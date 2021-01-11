@@ -6,22 +6,24 @@
 namespace vector {
 namespace cdd {
 
+class CDDDbAttrCat;
+
 /**
- * @brief element TUV
+ * @brief element ATTRCATS
  *
  * Root element
  */
-class VECTOR_CDD_API CDDDbTuv
+class VECTOR_CDD_API CDDDbAttrCats
 {
 public:
-    CDDDbTuv();
-    ~CDDDbTuv();
+    CDDDbAttrCats();
+    ~CDDDbAttrCats();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
-    /** element ELEMENTS */
-    QMap<QString, QString> m_values;
+    /** element ATTRCAT */
+    QMap<QString, QSharedPointer<CDDDbAttrCat>> m_attrcats;
 
 };
 

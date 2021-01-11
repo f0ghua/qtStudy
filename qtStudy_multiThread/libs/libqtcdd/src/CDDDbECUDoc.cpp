@@ -1,4 +1,7 @@
+#include "CDDDbAttrCats.h"
+#include "CDDDbECU.h"
 #include "CDDLog.h"
+
 #include "CDDDbECUDoc.h"
 
 #include <QDomElement>
@@ -15,10 +18,8 @@ CDDDbECUDoc::~CDDDbECUDoc()
 
 }
 
-bool CDDDbECUDoc::load(const QDomElement &element)
+void CDDDbECUDoc::load(const QDomElement &element)
 {
-    bool ret = true;
-
     QDomNode child = element.firstChild();
     while (!child.isNull()) {
         const QDomElement &childElement = child.toElement();
@@ -26,7 +27,8 @@ bool CDDDbECUDoc::load(const QDomElement &element)
             QLOG_TRACE() << "CDDDbECUDoc::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ATTRCATS") {
-
+            m_attrcats = QSharedPointer<CDDDbAttrCats>::create();
+            m_attrcats->load(childElement);
         } else if (childElement.tagName() == "DEFATTS") {
 
         } else if (childElement.tagName() == "DATATYPES") {
@@ -44,13 +46,12 @@ bool CDDDbECUDoc::load(const QDomElement &element)
         } else if (childElement.tagName() == "RECORDDTPOOL") {
 
         } else if (childElement.tagName() == "ECU") {
-
+            m_ecu = QSharedPointer<CDDDbECU>::create();
+            m_ecu->load(childElement);
         }
 
         child = child.nextSibling();
     }
-
-    return ret;
 }
 
 } // namespace cdd

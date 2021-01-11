@@ -15,10 +15,8 @@ CDDDbTuv::~CDDDbTuv()
 
 }
 
-bool CDDDbTuv::load(const QDomElement &element)
+void CDDDbTuv::load(const QDomElement &element)
 {
-    bool ret = true;
-
     QDomNode child = element.firstChild();
     while (!child.isNull()) {
         const QDomElement &childElement = child.toElement();
@@ -35,8 +33,6 @@ bool CDDDbTuv::load(const QDomElement &element)
 
         child = child.nextSibling();
     }
-
-    return ret;
 }
 
 } // namespace cdd

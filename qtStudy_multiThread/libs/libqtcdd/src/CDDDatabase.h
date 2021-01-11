@@ -15,7 +15,7 @@ public:
     ~CDDDatabase();
 
     /** load from XML DOM element */
-    bool load(const QDomElement &element);
+    void load(const QDomElement &element);
 
     /** element ECUDOC */
     QSharedPointer<CDDDbECUDoc> m_ecudoc;

@@ -7,21 +7,21 @@ namespace vector {
 namespace cdd {
 
 /**
- * @brief element TUV
+ * @brief element ECUDOC
  *
  * Root element
  */
-class VECTOR_CDD_API CDDDbTuv
+class VECTOR_CDD_API CDDDbECU
 {
 public:
-    CDDDbTuv();
-    ~CDDDbTuv();
+    CDDDbECU();
+    ~CDDDbECU();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
     /** element ELEMENTS */
-    QMap<QString, QString> m_values;
+
 
 };
 

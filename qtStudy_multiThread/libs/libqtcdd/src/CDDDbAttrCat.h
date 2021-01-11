@@ -2,26 +2,27 @@
 
 #include "CDDExport.h"
 #include "CDDTypes.h"
+#include "CDDDbOidElementType.h"
 
 namespace vector {
 namespace cdd {
 
 /**
- * @brief element TUV
+ * @brief element ATTRCAT
  *
  * Root element
  */
-class VECTOR_CDD_API CDDDbTuv
+class VECTOR_CDD_API CDDDbAttrCat : public CDDDbOidElementType
 {
 public:
-    CDDDbTuv();
-    ~CDDDbTuv();
+    CDDDbAttrCat();
+    ~CDDDbAttrCat();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
 
     /** element ELEMENTS */
-    QMap<QString, QString> m_values;
+
 
 };
 

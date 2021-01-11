@@ -49,7 +49,12 @@ LIB_NAME = $$qtLibraryTarget(libqtcdd)
 
 HEADERS += \
     $$PWD/src/CDDDatabase.h \
+    $$PWD/src/CDDDbAttrCat.h \
+    $$PWD/src/CDDDbAttrCats.h \
+    $$PWD/src/CDDDbECU.h \
     $$PWD/src/CDDDbECUDoc.h \
+    $$PWD/src/CDDDbIdElementType.h \
+    $$PWD/src/CDDDbOidElementType.h \
     $$PWD/src/CDDDbTuv.h \
     $$PWD/src/CDDExport.h \
     $$PWD/src/CDDFile.h \
@@ -58,6 +63,11 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/src/CDDDatabase.cpp \
+    $$PWD/src/CDDDbAttrCat.cpp \
+    $$PWD/src/CDDDbAttrCats.cpp \
+    $$PWD/src/CDDDbECU.cpp \
     $$PWD/src/CDDDbECUDoc.cpp \
+    $$PWD/src/CDDDbIdElementType.cpp \
+    $$PWD/src/CDDDbOidElementType.cpp \
     $$PWD/src/CDDDbTuv.cpp \
     $$PWD/src/CDDFile.cpp
