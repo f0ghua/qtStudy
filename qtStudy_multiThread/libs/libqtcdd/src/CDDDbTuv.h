@@ -9,19 +9,27 @@ namespace cdd {
 /**
  * @brief element TUV
  *
- * Root element
+ * translation unit variant
  */
 class VECTOR_CDD_API CDDDbTuv
 {
 public:
+    static QString ATTR_T_LANG;
+    static QString ATTR_V_ENUS;
+
     CDDDbTuv();
     ~CDDDbTuv();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
+    QString getValue() const
+    {
+        return m_value;
+    }
 
     /** element ELEMENTS */
-    QMap<QString, QString> m_values;
+    QString m_lang;
+    QString m_value;
 
 };
 

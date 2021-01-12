@@ -8,6 +8,7 @@ namespace cdd {
 
 class CDDDbECU;
 class CDDDbAttrCats;
+class CDDDbDefAtts;
 
 /**
  * @brief element ECUDOC
@@ -25,6 +26,9 @@ public:
 
     /** element ATTRCATS */
     QSharedPointer<CDDDbAttrCats> m_attrcats;
+
+    /** element DEFATTS */
+    QSharedPointer<CDDDbDefAtts> m_defatts;
 
     /** element ECU */
     QSharedPointer<CDDDbECU> m_ecu;

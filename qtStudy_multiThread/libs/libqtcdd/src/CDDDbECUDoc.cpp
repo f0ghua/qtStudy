@@ -1,4 +1,5 @@
 #include "CDDDbAttrCats.h"
+#include "CDDDbDefAtts.h"
 #include "CDDDbECU.h"
 #include "CDDLog.h"
 
@@ -28,9 +29,14 @@ void CDDDbECUDoc::load(const QDomElement &element)
 #endif
         if (childElement.tagName() == "ATTRCATS") {
             m_attrcats = QSharedPointer<CDDDbAttrCats>::create();
-            m_attrcats->load(childElement);
+            if (m_attrcats) {
+                m_attrcats->load(childElement);
+            }
         } else if (childElement.tagName() == "DEFATTS") {
-
+            m_defatts = QSharedPointer<CDDDbDefAtts>::create();
+            if (m_defatts) {
+                m_defatts->load(childElement);
+            }
         } else if (childElement.tagName() == "DATATYPES") {
 
         } else if (childElement.tagName() == "DOCTMPL") {

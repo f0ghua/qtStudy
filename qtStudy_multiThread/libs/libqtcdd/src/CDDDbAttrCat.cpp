@@ -1,4 +1,8 @@
+#include "CDDDbDesc.h"
+#include "CDDDbName.h"
+#include "CDDDbQual.h"
 #include "CDDLog.h"
+
 #include "CDDDbAttrCat.h"
 
 #include <QDomElement>
@@ -7,7 +11,7 @@ namespace vector {
 namespace cdd {
 
 CDDDbAttrCat::CDDDbAttrCat()
-    : CDDDbOidElementType()
+    : CDDDbNamedElementType()
 {
 }
 
@@ -18,24 +22,7 @@ CDDDbAttrCat::~CDDDbAttrCat()
 
 void CDDDbAttrCat::load(const QDomElement &element)
 {
-    CDDDbOidElementType::load(element);
-
-    QDomNode child = element.firstChild();
-    while (!child.isNull()) {
-        const QDomElement &childElement = child.toElement();
-#ifndef F_NO_DEBUG
-        QLOG_TRACE() << "CDDDbAttrCat::load" << childElement.tagName();
-#endif
-        if (childElement.tagName() == "NAME") {
-
-        } else if (childElement.tagName() == "DESC") {
-
-        } else if (childElement.tagName() == "QUAL") {
-
-        }
-
-        child = child.nextSibling();
-    }
+    CDDDbNamedElementType::load(element);
 }
 
 } // namespace cdd

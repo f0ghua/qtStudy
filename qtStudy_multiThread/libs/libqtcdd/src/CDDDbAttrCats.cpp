@@ -22,12 +22,15 @@ void CDDDbAttrCats::load(const QDomElement &element)
     while (!child.isNull()) {
         const QDomElement &childElement = child.toElement();
 #ifndef F_NO_DEBUG
-            QLOG_TRACE() << "CDDDbAttrCats::load" << childElement.tagName();
+        QLOG_TRACE() << "CDDDbAttrCats::load" << childElement.tagName();
 #endif
         if (childElement.tagName() == "ATTRCAT") {
             auto attrcat = QSharedPointer<CDDDbAttrCat>::create();
             attrcat->load(childElement);
             if (!attrcat->m_id.isEmpty()) {
+#ifndef F_NO_DEBUG
+                QLOG_TRACE() << "CDDDbAttrCats::insert ATTRCAT" << attrcat->name() << attrcat->desc() << attrcat->qual();
+#endif
                 m_attrcats[attrcat->m_id] = attrcat;
             }
         }

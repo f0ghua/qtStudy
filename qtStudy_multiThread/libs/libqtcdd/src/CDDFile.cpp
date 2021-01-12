@@ -1,6 +1,16 @@
 #include "CDDDatabase.h"
 #include "CDDFile.h"
 
+#include "CDDDbECUDoc.h"
+#include "CDDDbDefAtts.h"
+#include "CDDDbECUAtts.h"
+#include "CDDDbEnumDef.h"
+#include "CDDDbAttrCats.h"
+#include "CDDDbAttrCat.h"
+#include "CDDDbUnsDef.h"
+
+
+
 #include <QRegularExpression>
 #include <QFile>
 #include <QFileInfo>
@@ -11,9 +21,42 @@
 
 //#define F_NO_DEBUG
 
+namespace {
+using namespace vector::cdd;
+
+void dump(const CDDDatabase &cddDb)
+{
+    const auto &ecudoc = cddDb.m_ecudoc;
+    const auto &attrcats = ecudoc->m_attrcats->m_attrcats;
+    const auto &ecuatts = ecudoc->m_defatts->m_ecuatts;
+
+    for (const auto &def : ecuatts->m_enumdefs) {
+        QString attrcatRef = def->attrcatref();
+        QString category;
+        if (attrcats.contains(attrcatRef)) {
+            const auto &attrcat = attrcats.value(attrcatRef);
+            category = attrcat->name();
+        }
+        qDebug() << QObject::tr("[category] %1, [enum] %2, [value]%3").arg(category, 16).arg(def->name(), 32).arg(def->value(), 16);
+    }
+
+    for (const auto &def : ecuatts->m_unsdefs) {
+        QString attrcatRef = def->attrcatref();
+        QString category;
+        if (attrcats.contains(attrcatRef)) {
+            const auto &attrcat = attrcats.value(attrcatRef);
+            category = attrcat->name();
+        }
+        qDebug() << QObject::tr("[category] %1, [uns] %2, [value]%3").arg(category, 16).arg(def->name(), 32).arg(def->value(), 16);
+    }
+}
+
+
+}
+
+
 namespace vector {
 namespace cdd {
-
 
 CDDFile::CDDFile()
 {
@@ -82,6 +125,9 @@ bool CDDFile::load(const QString &fileName)
 #ifndef F_NO_DEBUG
     qDebug() << "inFile closed";
 #endif
+
+    dump(*m_db);
+
     return ret;
 }
 

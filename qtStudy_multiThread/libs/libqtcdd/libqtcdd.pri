@@ -50,12 +50,26 @@ LIB_NAME = $$qtLibraryTarget(libqtcdd)
 HEADERS += \
     $$PWD/src/CDDDatabase.h \
     $$PWD/src/CDDDbAttrCat.h \
+    $$PWD/src/CDDDbAttrCatRefType.h \
     $$PWD/src/CDDDbAttrCats.h \
+    $$PWD/src/CDDDbCstrDef.h \
+    $$PWD/src/CDDDbDefAtts.h \
+    $$PWD/src/CDDDbDesc.h \
     $$PWD/src/CDDDbECU.h \
+    $$PWD/src/CDDDbECUAtts.h \
     $$PWD/src/CDDDbECUDoc.h \
+    $$PWD/src/CDDDbEnumDef.h \
+    $$PWD/src/CDDDbEtag.h \
     $$PWD/src/CDDDbIdElementType.h \
+    $$PWD/src/CDDDbName.h \
+    $$PWD/src/CDDDbNamedElementType.h \
     $$PWD/src/CDDDbOidElementType.h \
+    $$PWD/src/CDDDbQual.h \
+    $$PWD/src/CDDDbStrDef.h \
+    $$PWD/src/CDDDbTemplate.h \
     $$PWD/src/CDDDbTuv.h \
+    $$PWD/src/CDDDbTuvedType.h \
+    $$PWD/src/CDDDbUnsDef.h \
     $$PWD/src/CDDExport.h \
     $$PWD/src/CDDFile.h \
     $$PWD/src/CDDLog.h \
@@ -64,10 +78,25 @@ HEADERS += \
 SOURCES += \
     $$PWD/src/CDDDatabase.cpp \
     $$PWD/src/CDDDbAttrCat.cpp \
+    $$PWD/src/CDDDbAttrCatRefType.cpp \
     $$PWD/src/CDDDbAttrCats.cpp \
+    $$PWD/src/CDDDbCstrDef.cpp \
+    $$PWD/src/CDDDbDefAtts.cpp \
+    $$PWD/src/CDDDbDesc.cpp \
     $$PWD/src/CDDDbECU.cpp \
+    $$PWD/src/CDDDbECUAtts.cpp \
     $$PWD/src/CDDDbECUDoc.cpp \
+    $$PWD/src/CDDDbEnumDef.cpp \
+    $$PWD/src/CDDDbEtag.cpp \
     $$PWD/src/CDDDbIdElementType.cpp \
+    $$PWD/src/CDDDbName.cpp \
+    $$PWD/src/CDDDbNamedElementType.cpp \
     $$PWD/src/CDDDbOidElementType.cpp \
+    $$PWD/src/CDDDbQual.cpp \
+    $$PWD/src/CDDDbStrDef.cpp \
+    $$PWD/src/CDDDbTemplate.cpp \
     $$PWD/src/CDDDbTuv.cpp \
-    $$PWD/src/CDDFile.cpp
+    $$PWD/src/CDDDbTuvedType.cpp \
+    $$PWD/src/CDDDbUnsDef.cpp \
+    $$PWD/src/CDDFile.cpp \
+    $$PWD/src/CDDTypes.cpp

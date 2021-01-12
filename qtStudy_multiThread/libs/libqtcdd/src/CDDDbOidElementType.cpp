@@ -13,15 +13,14 @@ CDDDbOidElementType::CDDDbOidElementType()
 
 CDDDbOidElementType::~CDDDbOidElementType()
 {
-
 }
 
 void CDDDbOidElementType::load(const QDomElement &element)
 {
+    CDDDbIdElementType::load(element);
+
     m_oid = element.attribute("oid");
     m_temploid = element.attribute("temploid");
-
-    CDDDbIdElementType::load(element);
 }
 
 } // namespace cdd

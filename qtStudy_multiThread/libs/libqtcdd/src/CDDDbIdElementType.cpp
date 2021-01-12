@@ -17,7 +17,7 @@ CDDDbIdElementType::~CDDDbIdElementType()
 
 void CDDDbIdElementType::load(const QDomElement &element)
 {
-    m_id = element.attribute("ID");
+    m_id = element.attribute("id");
 }
 
 } // namespace cdd

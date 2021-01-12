@@ -3,27 +3,25 @@
 #include "CDDExport.h"
 #include "CDDTypes.h"
 #include "CDDDbNamedElementType.h"
+#include "CDDDbAttrCatRefType.h"
 
 namespace vector {
 namespace cdd {
 
-class CDDDbName;
-class CDDDbDesc;
-class CDDDbQual;
-
 /**
- * @brief element ATTRCAT
+ * @brief element CSTRDEF
  *
  * Root element
  */
-class VECTOR_CDD_API CDDDbAttrCat : public CDDDbNamedElementType
+class VECTOR_CDD_API CDDDbCstrDef : public CDDDbNamedElementType, public CDDDbAttrCatRefType
 {
 public:
-    CDDDbAttrCat();
-    ~CDDDbAttrCat();
+    CDDDbCstrDef();
+    ~CDDDbCstrDef();
 
     /** load from XML DOM element */
     void load(const QDomElement &element);
+
 };
 
 } // namespace cdd
