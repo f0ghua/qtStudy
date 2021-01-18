@@ -1,8 +1,6 @@
 
 #include "CDDDbSTATICCOMPREF.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbSTATICCOMPREF::~CDDDbSTATICCOMPREF()
 
 void CDDDbSTATICCOMPREF::load(const QDomElement &element)
 {
-    m_idref = element.attribute("idref");
-
+    CDDDbSTATICCOMPREFImpl::load(element);
 }
 
 } // namespace cdd

@@ -4,8 +4,6 @@
 
 #include "CDDDbDCLSRVTMPLATTS.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -19,29 +17,7 @@ CDDDbDCLSRVTMPLATTS::~CDDDbDCLSRVTMPLATTS()
 
 void CDDDbDCLSRVTMPLATTS::load(const QDomElement &element)
 {
-
-    QDomNode child = element.firstChild();
-    while (!child.isNull()) {
-        const QDomElement &childElement = child.toElement();
-        QString elementName = childElement.tagName();
-        if (elementName == "CSTRDEF") {
-            m_cstrdef = QSharedPointer<CDDDbCSTRDEF>::create();
-            if (m_cstrdef) {
-                m_cstrdef->load(childElement);
-            }
-        } else if (elementName == "ENUMDEF") {
-            m_enumdef = QSharedPointer<CDDDbENUMDEF>::create();
-            if (m_enumdef) {
-                m_enumdef->load(childElement);
-            }
-        } else if (elementName == "STRDEF") {
-            m_strdef = QSharedPointer<CDDDbSTRDEF>::create();
-            if (m_strdef) {
-                m_strdef->load(childElement);
-            }
-        }
-        child = child.nextSibling();
-    }
+    CDDDbDCLSRVTMPLATTSImpl::load(element);
 }
 
 } // namespace cdd

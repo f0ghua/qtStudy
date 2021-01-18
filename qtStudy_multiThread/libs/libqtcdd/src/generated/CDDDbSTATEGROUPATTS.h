@@ -1,28 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBSTATEGROUPATTS_H
 #define VECTOR_CDD_CDDDBSTATEGROUPATTS_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbSTATEGROUPATTSImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbCSTRDEF;
 
 /**
  * @brief element STATEGROUPATTS
  *
  */
-class VECTOR_CDD_API CDDDbSTATEGROUPATTS
+class VECTOR_CDD_API CDDDbSTATEGROUPATTS : public CDDDbSTATEGROUPATTSImpl
 {
 public:
     CDDDbSTATEGROUPATTS();
     ~CDDDbSTATEGROUPATTS();
 
     void load(const QDomElement &element);
-
-    /** @element CSTRDEF */
-    QSharedPointer<CDDDbCSTRDEF> m_cstrdef;
 
 };
 

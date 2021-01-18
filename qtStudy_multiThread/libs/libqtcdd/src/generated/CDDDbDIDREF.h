@@ -1,27 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBDIDREF_H
 #define VECTOR_CDD_CDDDBDIDREF_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbDIDREFImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element DIDREF
  *
  */
-class VECTOR_CDD_API CDDDbDIDREF
+class VECTOR_CDD_API CDDDbDIDREF : public CDDDbDIDREFImpl
 {
 public:
     CDDDbDIDREF();
     ~CDDDbDIDREF();
 
     void load(const QDomElement &element);
-
-    /** @attribute didRef */
-    QString m_didRef;
 
 };
 

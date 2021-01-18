@@ -1,31 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBTRRECORDITEM_H
 #define VECTOR_CDD_CDDDBTRRECORDITEM_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbTRRECORDITEMImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbTEXT;
 
 /**
  * @brief element TRRECORDITEM
  *
  */
-class VECTOR_CDD_API CDDDbTRRECORDITEM
+class VECTOR_CDD_API CDDDbTRRECORDITEM : public CDDDbTRRECORDITEMImpl
 {
 public:
     CDDDbTRRECORDITEM();
     ~CDDDbTRRECORDITEM();
 
     void load(const QDomElement &element);
-
-    /** @attribute idref */
-    QString m_idref;
-
-    /** @element TEXT */
-    QSharedPointer<CDDDbTEXT> m_text;
 
 };
 

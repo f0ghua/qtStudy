@@ -1,26 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBCOMPANY_H
 #define VECTOR_CDD_CDDDBCOMPANY_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbCOMPANYImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element COMPANY
  *
  */
-class VECTOR_CDD_API CDDDbCOMPANY
+class VECTOR_CDD_API CDDDbCOMPANY : public CDDDbCOMPANYImpl
 {
 public:
     CDDDbCOMPANY();
     ~CDDDbCOMPANY();
 
     void load(const QDomElement &element);
-
-    QString m_text;
 
 };
 

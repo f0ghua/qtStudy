@@ -1,21 +1,16 @@
 #ifndef VECTOR_CDD_CDDDBENUMDEF_H
 #define VECTOR_CDD_CDDDBENUMDEF_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbENUMDEFImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbETAG;
-class CDDDbNAME;
-class CDDDbQUAL;
 
 /**
  * @brief element ENUMDEF
  *
  */
-class VECTOR_CDD_API CDDDbENUMDEF
+class VECTOR_CDD_API CDDDbENUMDEF : public CDDDbENUMDEFImpl
 {
 public:
     CDDDbENUMDEF();
@@ -23,33 +18,15 @@ public:
 
     void load(const QDomElement &element);
 
-    /** @attribute attrcatref */
-    QString m_attrcatref;
+public:
+    const QMap<QString, QString> &elETags() const {return m_elEtagsCtr;}
+    const QString &v() const {return m_v;}
 
-    /** @attribute id */
-    QString m_id;
-
-    /** @attribute oid */
-    QString m_oid;
-
-    /** @attribute sort */
-    QString m_sort;
-
-    /** @attribute temploid */
-    QString m_temploid;
-
-    /** @attribute v */
-    QString m_v;
-
-    /** @element ETAG */
-    QVector<QSharedPointer<CDDDbETAG>> m_etags;
-
-    /** @element NAME */
-    QSharedPointer<CDDDbNAME> m_name;
-
-    /** @element QUAL */
-    QSharedPointer<CDDDbQUAL> m_qual;
-
+    /*!
+     * \brief m_elEtagsCtr
+     * QMap<v, text>
+     */
+    QMap<QString, QString> m_elEtagsCtr;
 };
 
 } // namespace cdd

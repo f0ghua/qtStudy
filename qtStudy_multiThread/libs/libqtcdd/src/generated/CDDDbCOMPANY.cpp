@@ -1,8 +1,6 @@
 
 #include "CDDDbCOMPANY.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbCOMPANY::~CDDDbCOMPANY()
 
 void CDDDbCOMPANY::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbCOMPANYImpl::load(element);
 }
 
 } // namespace cdd

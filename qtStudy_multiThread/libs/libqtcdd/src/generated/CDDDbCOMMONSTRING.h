@@ -1,26 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBCOMMONSTRING_H
 #define VECTOR_CDD_CDDDBCOMMONSTRING_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbCOMMONSTRINGImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element COMMONSTRING
  *
  */
-class VECTOR_CDD_API CDDDbCOMMONSTRING
+class VECTOR_CDD_API CDDDbCOMMONSTRING : public CDDDbCOMMONSTRINGImpl
 {
 public:
     CDDDbCOMMONSTRING();
     ~CDDDbCOMMONSTRING();
 
     void load(const QDomElement &element);
-
-    QString m_text;
 
 };
 

@@ -1,28 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBDIDS_H
 #define VECTOR_CDD_CDDDBDIDS_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbDIDSImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbDID;
 
 /**
  * @brief element DIDS
  *
  */
-class VECTOR_CDD_API CDDDbDIDS
+class VECTOR_CDD_API CDDDbDIDS : public CDDDbDIDSImpl
 {
 public:
     CDDDbDIDS();
     ~CDDDbDIDS();
 
     void load(const QDomElement &element);
-
-    /** @element DID */
-    QMap<QString, QSharedPointer<CDDDbDID>> m_dids;
 
 };
 

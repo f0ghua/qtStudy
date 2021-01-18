@@ -1,28 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBRECORDTMPLS_H
 #define VECTOR_CDD_CDDDBRECORDTMPLS_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbRECORDTMPLSImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbRECORDTMPL;
 
 /**
  * @brief element RECORDTMPLS
  *
  */
-class VECTOR_CDD_API CDDDbRECORDTMPLS
+class VECTOR_CDD_API CDDDbRECORDTMPLS : public CDDDbRECORDTMPLSImpl
 {
 public:
     CDDDbRECORDTMPLS();
     ~CDDDbRECORDTMPLS();
 
     void load(const QDomElement &element);
-
-    /** @element RECORDTMPL */
-    QSharedPointer<CDDDbRECORDTMPL> m_recordtmpl;
 
 };
 

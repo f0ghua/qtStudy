@@ -1,26 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBSHORTNAME_H
 #define VECTOR_CDD_CDDDBSHORTNAME_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbSHORTNAMEImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element SHORTNAME
  *
  */
-class VECTOR_CDD_API CDDDbSHORTNAME
+class VECTOR_CDD_API CDDDbSHORTNAME : public CDDDbSHORTNAMEImpl
 {
 public:
     CDDDbSHORTNAME();
     ~CDDDbSHORTNAME();
 
     void load(const QDomElement &element);
-
-    QString m_text;
 
 };
 

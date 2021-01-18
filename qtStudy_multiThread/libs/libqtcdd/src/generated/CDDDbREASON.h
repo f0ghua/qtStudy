@@ -1,18 +1,16 @@
 #ifndef VECTOR_CDD_CDDDBREASON_H
 #define VECTOR_CDD_CDDDBREASON_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbREASONImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element REASON
  *
  */
-class VECTOR_CDD_API CDDDbREASON
+class VECTOR_CDD_API CDDDbREASON : public CDDDbREASONImpl
 {
 public:
     CDDDbREASON();

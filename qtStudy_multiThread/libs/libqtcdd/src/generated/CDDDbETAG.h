@@ -1,19 +1,16 @@
 #ifndef VECTOR_CDD_CDDDBETAG_H
 #define VECTOR_CDD_CDDDBETAG_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbETAGImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbTUV;
 
 /**
  * @brief element ETAG
  *
  */
-class VECTOR_CDD_API CDDDbETAG
+class VECTOR_CDD_API CDDDbETAG : public CDDDbETAGImpl
 {
 public:
     CDDDbETAG();
@@ -21,12 +18,8 @@ public:
 
     void load(const QDomElement &element);
 
-    /** @attribute v */
-    QString m_v;
-
-    /** @element TUV */
-    QSharedPointer<CDDDbTUV> m_tuv;
-
+public:
+    QString getValue() const;
 };
 
 } // namespace cdd

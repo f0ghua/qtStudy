@@ -1,8 +1,6 @@
 
 #include "CDDDbPROXYCOMPREF.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbPROXYCOMPREF::~CDDDbPROXYCOMPREF()
 
 void CDDDbPROXYCOMPREF::load(const QDomElement &element)
 {
-    m_idref = element.attribute("idref");
-
+    CDDDbPROXYCOMPREFImpl::load(element);
 }
 
 } // namespace cdd

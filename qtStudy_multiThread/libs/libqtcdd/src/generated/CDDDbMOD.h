@@ -1,26 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBMOD_H
 #define VECTOR_CDD_CDDDBMOD_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbMODImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element MOD
  *
  */
-class VECTOR_CDD_API CDDDbMOD
+class VECTOR_CDD_API CDDDbMOD : public CDDDbMODImpl
 {
 public:
     CDDDbMOD();
     ~CDDDbMOD();
 
     void load(const QDomElement &element);
-
-    QString m_text;
 
 };
 

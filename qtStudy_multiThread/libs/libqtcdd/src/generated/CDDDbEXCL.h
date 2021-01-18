@@ -1,33 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBEXCL_H
 #define VECTOR_CDD_CDDDBEXCL_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbEXCLImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element EXCL
  *
  */
-class VECTOR_CDD_API CDDDbEXCL
+class VECTOR_CDD_API CDDDbEXCL : public CDDDbEXCLImpl
 {
 public:
     CDDDbEXCL();
     ~CDDDbEXCL();
 
     void load(const QDomElement &element);
-
-    /** @attribute e */
-    QString m_e;
-
-    /** @attribute inv */
-    QString m_inv;
-
-    /** @attribute s */
-    QString m_s;
 
 };
 

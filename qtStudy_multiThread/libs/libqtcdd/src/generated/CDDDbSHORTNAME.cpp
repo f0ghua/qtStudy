@@ -1,8 +1,6 @@
 
 #include "CDDDbSHORTNAME.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbSHORTNAME::~CDDDbSHORTNAME()
 
 void CDDDbSHORTNAME::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbSHORTNAMEImpl::load(element);
 }
 
 } // namespace cdd

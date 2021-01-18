@@ -1,28 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBVARATTS_H
 #define VECTOR_CDD_CDDDBVARATTS_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbVARATTSImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbENUMDEF;
 
 /**
  * @brief element VARATTS
  *
  */
-class VECTOR_CDD_API CDDDbVARATTS
+class VECTOR_CDD_API CDDDbVARATTS : public CDDDbVARATTSImpl
 {
 public:
     CDDDbVARATTS();
     ~CDDDbVARATTS();
 
     void load(const QDomElement &element);
-
-    /** @element ENUMDEF */
-    QSharedPointer<CDDDbENUMDEF> m_enumdef;
 
 };
 

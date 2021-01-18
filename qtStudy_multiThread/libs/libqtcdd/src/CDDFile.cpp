@@ -1,16 +1,6 @@
 #include "CDDDatabase.h"
 #include "CDDFile.h"
-
-#include "CDDDbECUDoc.h"
-#include "CDDDbDefAtts.h"
-#include "CDDDbECUAtts.h"
-#include "CDDDbEnumDef.h"
-#include "CDDDbAttrCats.h"
-#include "CDDDbAttrCat.h"
-#include "CDDDbUnsDef.h"
-#include "CDDDbNAME.h"
-#include "CDDDbTUV.h"
-
+#include "CDDDbIncludes.h"
 
 #include <QRegularExpression>
 #include <QFile>
@@ -28,32 +18,54 @@ using namespace vector::cdd;
 void dump(const CDDDatabase &cddDb)
 {
     const auto &ecudoc = cddDb.m_ecudoc;
-    const auto &attrcats = ecudoc->m_attrcats->m_attrcats;
-    const auto &ecuatts = ecudoc->m_defatts->m_ecuatts;
+    const auto &attrcats = ecudoc->m_elAttrcats->m_elAttrcats;
+    const auto &ecuatts = ecudoc->m_elDefatts->m_elEcuatts;
 
-    for (const auto &def : ecuatts->m_enumdefs) {
+    for (const auto &def : ecuatts->m_elEnumdefs) {
         QString attrcatRef = def->m_attrcatref;
         QString category;
         if (attrcats.contains(attrcatRef)) {
             const auto &attrcat = attrcats.value(attrcatRef);
-            category = attrcat->m_name->m_tuv->m_text;
+            category = attrcat->m_elName->getValue();
         }
-        qDebug() << QObject::tr("[category] %1, [enum] %2, [value]%3").arg(category, 16).arg(def->m_name->m_tuv->m_text, 32).arg(def->m_v, 16);
+        qDebug() << QObject::tr("[category] %1, [enum] %2, [value]%3").arg(category, 16).arg(def->m_elName->getValue(), 32).arg(def->m_v, 16);
     }
 
-//    for (const auto &def : ecuatts->m_unsdefs) {
-//        QString attrcatRef = def->attrcatref();
-//        QString category;
-//        if (attrcats.contains(attrcatRef)) {
-//            const auto &attrcat = attrcats.value(attrcatRef);
-//            category = attrcat->name();
-//        }
-//        qDebug() << QObject::tr("[category] %1, [uns] %2, [value]%3").arg(category, 16).arg(def->name(), 32).arg(def->value(), 16);
-//    }
+    for (const auto &def : ecuatts->m_elUnsdefs) {
+        QString attrcatRef = def->m_attrcatref;
+        QString category;
+        if (attrcats.contains(attrcatRef)) {
+            const auto &attrcat = attrcats.value(attrcatRef);
+            category = attrcat->m_elName->getValue();
+        }
+        qDebug() << QObject::tr("[category] %1, [uns] %2, [value]%3").arg(category, 16).arg(def->m_elName->getValue(), 32).arg(def->m_v, 16);
+    }
+
+
+    const auto &vars = ecudoc->m_elEcu->m_elVars;
+    QSharedPointer<CDDDbVAR> var;
+    for (auto v : vars) {
+        if (v->m_elQual->m_text == "Base_Variant") {
+            var = v;
+        }
+    }
+    if (var.isNull()) {
+        qDebug() << "Base_Variant is not found";
+    }
+    const auto &diagclasses = var->m_elDiagclasss;
+    for (const auto &dclass : diagclasses) {
+        qDebug() << "DIAGCLASS" << dclass->m_elName->getValue();
+
+        const auto diaginsts = dclass->m_elDiaginsts;
+        for (const auto &dinst : diaginsts) {
+            qDebug() << QString("%1").arg("DIAGINST", 16) << dinst->m_elName->getValue();
+        }
+    }
+
 }
 
 
-}
+} // namespace
 
 
 namespace vector {
@@ -127,7 +139,13 @@ bool CDDFile::load(const QString &fileName)
     qDebug() << "inFile closed";
 #endif
 
-    dump(*m_db);
+    //dump(*m_db);
+    m_db->parse();
+
+    auto rets = m_db->getInterfaceParameters();
+    for (auto i : rets) {
+        qDebug() << i;
+    }
 
     return ret;
 }

@@ -2,8 +2,6 @@
 
 #include "CDDDbETAG.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -17,20 +15,15 @@ CDDDbETAG::~CDDDbETAG()
 
 void CDDDbETAG::load(const QDomElement &element)
 {
-    m_v = element.attribute("v");
+    CDDDbETAGImpl::load(element);
+}
 
-    QDomNode child = element.firstChild();
-    while (!child.isNull()) {
-        const QDomElement &childElement = child.toElement();
-        QString elementName = childElement.tagName();
-        if (elementName == "TUV") {
-            m_tuv = QSharedPointer<CDDDbTUV>::create();
-            if (m_tuv) {
-                m_tuv->load(childElement);
-            }
-        }
-        child = child.nextSibling();
+QString CDDDbETAG::getValue() const
+{
+    if (m_elTuvs.contains(CDDDbTUV::ATTR_V_ENUS)) {
+        return m_elTuvs.value(CDDDbTUV::ATTR_V_ENUS)->m_text;
     }
+    return QString();
 }
 
 } // namespace cdd

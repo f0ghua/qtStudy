@@ -1,8 +1,6 @@
 
 #include "CDDDbSHORTCUTQUAL.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbSHORTCUTQUAL::~CDDDbSHORTCUTQUAL()
 
 void CDDDbSHORTCUTQUAL::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbSHORTCUTQUALImpl::load(element);
 }
 
 } // namespace cdd

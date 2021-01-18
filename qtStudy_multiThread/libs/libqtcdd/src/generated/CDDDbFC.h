@@ -1,26 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBFC_H
 #define VECTOR_CDD_CDDDBFC_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbFCImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element FC
  *
  */
-class VECTOR_CDD_API CDDDbFC
+class VECTOR_CDD_API CDDDbFC : public CDDDbFCImpl
 {
 public:
     CDDDbFC();
     ~CDDDbFC();
 
     void load(const QDomElement &element);
-
-    QString m_text;
 
 };
 

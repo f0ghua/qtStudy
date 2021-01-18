@@ -1,7 +1,6 @@
+#include "CDDDbTEXT.h"
 
 #include "CDDDbEXCL.h"
-
-#include <QDomElement>
 
 namespace vector {
 namespace cdd {
@@ -16,10 +15,7 @@ CDDDbEXCL::~CDDDbEXCL()
 
 void CDDDbEXCL::load(const QDomElement &element)
 {
-    m_e = element.attribute("e");
-    m_inv = element.attribute("inv");
-    m_s = element.attribute("s");
-
+    CDDDbEXCLImpl::load(element);
 }
 
 } // namespace cdd

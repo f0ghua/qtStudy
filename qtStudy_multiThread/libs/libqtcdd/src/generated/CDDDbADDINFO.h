@@ -1,28 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBADDINFO_H
 #define VECTOR_CDD_CDDDBADDINFO_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbADDINFOImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbTUV;
 
 /**
  * @brief element ADDINFO
  *
  */
-class VECTOR_CDD_API CDDDbADDINFO
+class VECTOR_CDD_API CDDDbADDINFO : public CDDDbADDINFOImpl
 {
 public:
     CDDDbADDINFO();
     ~CDDDbADDINFO();
 
     void load(const QDomElement &element);
-
-    /** @element TUV */
-    QSharedPointer<CDDDbTUV> m_tuv;
 
 };
 

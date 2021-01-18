@@ -1,8 +1,6 @@
 
 #include "CDDDbQUAL.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbQUAL::~CDDDbQUAL()
 
 void CDDDbQUAL::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbQUALImpl::load(element);
 }
 
 } // namespace cdd

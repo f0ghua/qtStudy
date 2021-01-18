@@ -1,28 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBCOMMONSNAPSHOTDATAPOOL_H
 #define VECTOR_CDD_CDDDBCOMMONSNAPSHOTDATAPOOL_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbCOMMONSNAPSHOTDATAPOOLImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbDIDCOMMONSNAPSHOTDATA;
 
 /**
  * @brief element COMMONSNAPSHOTDATAPOOL
  *
  */
-class VECTOR_CDD_API CDDDbCOMMONSNAPSHOTDATAPOOL
+class VECTOR_CDD_API CDDDbCOMMONSNAPSHOTDATAPOOL : public CDDDbCOMMONSNAPSHOTDATAPOOLImpl
 {
 public:
     CDDDbCOMMONSNAPSHOTDATAPOOL();
     ~CDDDbCOMMONSNAPSHOTDATAPOOL();
 
     void load(const QDomElement &element);
-
-    /** @element DIDCOMMONSNAPSHOTDATA */
-    QSharedPointer<CDDDbDIDCOMMONSNAPSHOTDATA> m_didcommonsnapshotdata;
 
 };
 

@@ -1,8 +1,6 @@
 
 #include "CDDDbFIRSTNAME.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbFIRSTNAME::~CDDDbFIRSTNAME()
 
 void CDDDbFIRSTNAME::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbFIRSTNAMEImpl::load(element);
 }
 
 } // namespace cdd

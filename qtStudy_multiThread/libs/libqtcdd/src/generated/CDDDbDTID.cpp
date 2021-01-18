@@ -1,8 +1,6 @@
 
 #include "CDDDbDTID.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbDTID::~CDDDbDTID()
 
 void CDDDbDTID::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbDTIDImpl::load(element);
 }
 
 } // namespace cdd

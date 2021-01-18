@@ -1,33 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBQUALGENOPTIONS_H
 #define VECTOR_CDD_CDDDBQUALGENOPTIONS_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbQUALGENOPTIONSImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element QUALGENOPTIONS
  *
  */
-class VECTOR_CDD_API CDDDbQUALGENOPTIONS
+class VECTOR_CDD_API CDDDbQUALGENOPTIONS : public CDDDbQUALGENOPTIONSImpl
 {
 public:
     CDDDbQUALGENOPTIONS();
     ~CDDDbQUALGENOPTIONS();
 
     void load(const QDomElement &element);
-
-    /** @attribute case */
-    QString m_case;
-
-    /** @attribute maxLen */
-    QString m_maxLen;
-
-    /** @attribute minLen */
-    QString m_minLen;
 
 };
 

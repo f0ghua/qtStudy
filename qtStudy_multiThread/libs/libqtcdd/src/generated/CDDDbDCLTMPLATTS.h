@@ -1,36 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBDCLTMPLATTS_H
 #define VECTOR_CDD_CDDDBDCLTMPLATTS_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbDCLTMPLATTSImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbCSTRDEF;
-class CDDDbENUMDEF;
-class CDDDbSTRDEF;
 
 /**
  * @brief element DCLTMPLATTS
  *
  */
-class VECTOR_CDD_API CDDDbDCLTMPLATTS
+class VECTOR_CDD_API CDDDbDCLTMPLATTS : public CDDDbDCLTMPLATTSImpl
 {
 public:
     CDDDbDCLTMPLATTS();
     ~CDDDbDCLTMPLATTS();
 
     void load(const QDomElement &element);
-
-    /** @element CSTRDEF */
-    QSharedPointer<CDDDbCSTRDEF> m_cstrdef;
-
-    /** @element ENUMDEF */
-    QSharedPointer<CDDDbENUMDEF> m_enumdef;
-
-    /** @element STRDEF */
-    QSharedPointer<CDDDbSTRDEF> m_strdef;
 
 };
 

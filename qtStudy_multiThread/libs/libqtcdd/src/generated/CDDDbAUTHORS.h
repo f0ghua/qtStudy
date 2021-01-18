@@ -1,28 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBAUTHORS_H
 #define VECTOR_CDD_CDDDBAUTHORS_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbAUTHORSImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbAUTHOR;
 
 /**
  * @brief element AUTHORS
  *
  */
-class VECTOR_CDD_API CDDDbAUTHORS
+class VECTOR_CDD_API CDDDbAUTHORS : public CDDDbAUTHORSImpl
 {
 public:
     CDDDbAUTHORS();
     ~CDDDbAUTHORS();
 
     void load(const QDomElement &element);
-
-    /** @element AUTHOR */
-    QSharedPointer<CDDDbAUTHOR> m_author;
 
 };
 

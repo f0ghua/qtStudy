@@ -1,8 +1,6 @@
 
 #include "CDDDbJOBCNRREF.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbJOBCNRREF::~CDDDbJOBCNRREF()
 
 void CDDDbJOBCNRREF::load(const QDomElement &element)
 {
-    m_idref = element.attribute("idref");
-
+    CDDDbJOBCNRREFImpl::load(element);
 }
 
 } // namespace cdd

@@ -1,8 +1,6 @@
 
 #include "CDDDbMOD.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbMOD::~CDDDbMOD()
 
 void CDDDbMOD::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbMODImpl::load(element);
 }
 
 } // namespace cdd

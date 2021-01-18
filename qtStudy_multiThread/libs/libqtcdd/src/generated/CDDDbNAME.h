@@ -1,19 +1,16 @@
 #ifndef VECTOR_CDD_CDDDBNAME_H
 #define VECTOR_CDD_CDDDBNAME_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbNAMEImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbTUV;
 
 /**
  * @brief element NAME
  *
  */
-class VECTOR_CDD_API CDDDbNAME
+class VECTOR_CDD_API CDDDbNAME : public CDDDbNAMEImpl
 {
 public:
     CDDDbNAME();
@@ -21,8 +18,8 @@ public:
 
     void load(const QDomElement &element);
 
-    /** @element TUV */
-    QSharedPointer<CDDDbTUV> m_tuv;
+public:
+    QString getValue() const;
 
 };
 

@@ -1,30 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBENUMRECORDITEM_H
 #define VECTOR_CDD_CDDDBENUMRECORDITEM_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbENUMRECORDITEMImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element ENUMRECORDITEM
  *
  */
-class VECTOR_CDD_API CDDDbENUMRECORDITEM
+class VECTOR_CDD_API CDDDbENUMRECORDITEM : public CDDDbENUMRECORDITEMImpl
 {
 public:
     CDDDbENUMRECORDITEM();
     ~CDDDbENUMRECORDITEM();
 
     void load(const QDomElement &element);
-
-    /** @attribute idref */
-    QString m_idref;
-
-    /** @attribute v */
-    QString m_v;
 
 };
 

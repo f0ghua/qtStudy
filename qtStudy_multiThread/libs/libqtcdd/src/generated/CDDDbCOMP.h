@@ -1,30 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBCOMP_H
 #define VECTOR_CDD_CDDDBCOMP_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbCOMPImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element COMP
  *
  */
-class VECTOR_CDD_API CDDDbCOMP
+class VECTOR_CDD_API CDDDbCOMP : public CDDDbCOMPImpl
 {
 public:
     CDDDbCOMP();
     ~CDDDbCOMP();
 
     void load(const QDomElement &element);
-
-    /** @attribute f */
-    QString m_f;
-
-    /** @attribute o */
-    QString m_o;
 
 };
 

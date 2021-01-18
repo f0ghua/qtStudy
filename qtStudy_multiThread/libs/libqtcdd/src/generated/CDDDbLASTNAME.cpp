@@ -1,8 +1,6 @@
 
 #include "CDDDbLASTNAME.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbLASTNAME::~CDDDbLASTNAME()
 
 void CDDDbLASTNAME::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbLASTNAMEImpl::load(element);
 }
 
 } // namespace cdd

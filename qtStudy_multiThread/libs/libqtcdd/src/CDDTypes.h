@@ -27,9 +27,32 @@ typedef QString                 T_UNICODESTRING;
 typedef QVector<qint8>          T_BITFIELD;
 typedef QVector<quint8>         T_BYTEFIELD;
 
+enum class CDDAttrType {
+    eENUM,
+    eUNSIGNED
+};
+
 enum class CDDUnsignedDataFormat {
     eDEC,
     eHEX
+};
+
+enum class CDDServiceClass {
+    eSESSIONS,
+    eFUNCTION,
+    eSECURITYACCESS,
+    eCOMMUNICATION,
+    eTESTERPRESENT,
+    eLINKCONTROL,
+    eECU_IDENTIFICATION,
+    eVARIANT_CODING,
+    eSTORED_DATA,
+    eIOCONTROL,
+    eROUTINE_CONTROL,
+    eMEMORY,
+    eFAULTMEMORY,
+    eFLASH_JOBS,
+    eGENERIC_JOBS,
 };
 
 QDebug inline operator<<(QDebug d, const CDDUnsignedDataFormat &o)

@@ -1,27 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBSTATICCOMPREF_H
 #define VECTOR_CDD_CDDDBSTATICCOMPREF_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbSTATICCOMPREFImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element STATICCOMPREF
  *
  */
-class VECTOR_CDD_API CDDDbSTATICCOMPREF
+class VECTOR_CDD_API CDDDbSTATICCOMPREF : public CDDDbSTATICCOMPREFImpl
 {
 public:
     CDDDbSTATICCOMPREF();
     ~CDDDbSTATICCOMPREF();
 
     void load(const QDomElement &element);
-
-    /** @attribute idref */
-    QString m_idref;
 
 };
 

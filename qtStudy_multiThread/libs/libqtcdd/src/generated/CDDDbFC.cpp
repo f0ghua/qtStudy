@@ -1,8 +1,6 @@
 
 #include "CDDDbFC.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbFC::~CDDDbFC()
 
 void CDDDbFC::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbFCImpl::load(element);
 }
 
 } // namespace cdd

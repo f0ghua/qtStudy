@@ -1,8 +1,6 @@
 
 #include "CDDDbREASON.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,7 +14,7 @@ CDDDbREASON::~CDDDbREASON()
 
 void CDDDbREASON::load(const QDomElement &element)
 {
-
+    CDDDbREASONImpl::load(element);
 }
 
 } // namespace cdd

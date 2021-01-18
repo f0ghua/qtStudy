@@ -1,8 +1,6 @@
 
 #include "CDDDbPROTOCOLSTANDARD.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbPROTOCOLSTANDARD::~CDDDbPROTOCOLSTANDARD()
 
 void CDDDbPROTOCOLSTANDARD::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbPROTOCOLSTANDARDImpl::load(element);
 }
 
 } // namespace cdd

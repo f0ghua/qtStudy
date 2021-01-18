@@ -1,28 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBDIAGCLASSATTS_H
 #define VECTOR_CDD_CDDDBDIAGCLASSATTS_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbDIAGCLASSATTSImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbENUMDEF;
 
 /**
  * @brief element DIAGCLASSATTS
  *
  */
-class VECTOR_CDD_API CDDDbDIAGCLASSATTS
+class VECTOR_CDD_API CDDDbDIAGCLASSATTS : public CDDDbDIAGCLASSATTSImpl
 {
 public:
     CDDDbDIAGCLASSATTS();
     ~CDDDbDIAGCLASSATTS();
 
     void load(const QDomElement &element);
-
-    /** @element ENUMDEF */
-    QMap<QString, QSharedPointer<CDDDbENUMDEF>> m_enumdefs;
 
 };
 

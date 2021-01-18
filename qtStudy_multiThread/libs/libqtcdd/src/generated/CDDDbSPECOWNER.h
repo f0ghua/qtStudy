@@ -1,26 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBSPECOWNER_H
 #define VECTOR_CDD_CDDDBSPECOWNER_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbSPECOWNERImpl.h"
 
 namespace vector {
 namespace cdd {
-
 
 /**
  * @brief element SPECOWNER
  *
  */
-class VECTOR_CDD_API CDDDbSPECOWNER
+class VECTOR_CDD_API CDDDbSPECOWNER : public CDDDbSPECOWNERImpl
 {
 public:
     CDDDbSPECOWNER();
     ~CDDDbSPECOWNER();
 
     void load(const QDomElement &element);
-
-    QString m_text;
 
 };
 

@@ -1,28 +1,22 @@
 #ifndef VECTOR_CDD_CDDDBRECORDDTPOOL_H
 #define VECTOR_CDD_CDDDBRECORDDTPOOL_H
 
-#include "CDDExport.h"
-#include "CDDTypes.h"
+#include "CDDDbRECORDDTPOOLImpl.h"
 
 namespace vector {
 namespace cdd {
-
-class CDDDbRECORDDT;
 
 /**
  * @brief element RECORDDTPOOL
  *
  */
-class VECTOR_CDD_API CDDDbRECORDDTPOOL
+class VECTOR_CDD_API CDDDbRECORDDTPOOL : public CDDDbRECORDDTPOOLImpl
 {
 public:
     CDDDbRECORDDTPOOL();
     ~CDDDbRECORDDTPOOL();
 
     void load(const QDomElement &element);
-
-    /** @element RECORDDT */
-    QSharedPointer<CDDDbRECORDDT> m_recorddt;
 
 };
 

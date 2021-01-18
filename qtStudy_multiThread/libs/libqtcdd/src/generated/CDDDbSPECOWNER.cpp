@@ -1,8 +1,6 @@
 
 #include "CDDDbSPECOWNER.h"
 
-#include <QDomElement>
-
 namespace vector {
 namespace cdd {
 
@@ -16,8 +14,7 @@ CDDDbSPECOWNER::~CDDDbSPECOWNER()
 
 void CDDDbSPECOWNER::load(const QDomElement &element)
 {
-
-    m_text = element.text();
+    CDDDbSPECOWNERImpl::load(element);
 }
 
 } // namespace cdd
