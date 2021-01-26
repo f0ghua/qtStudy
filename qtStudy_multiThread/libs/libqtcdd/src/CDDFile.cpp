@@ -142,10 +142,29 @@ bool CDDFile::load(const QString &fileName)
     //dump(*m_db);
     m_db->parse();
 
-    auto rets = m_db->getInterfaceParameters();
-    for (auto i : rets) {
-        qDebug() << i;
+//    {
+//        auto rets = m_db->getSupportedInterfaces();
+//        for (auto i : rets) {
+//            qDebug() << i;
+//        }
+//    }
+
+//    {
+//        auto rets = m_db->getInterfaceParameters("CAN");
+//        for (auto i : rets) {
+//            qDebug() << i;
+//        }
+//        qDebug() << rets.count();
+//    }
+
+    {
+        auto rets = m_db->getDiagnosticClasses("Base_Variant");
+//        for (auto i : rets) {
+//            qDebug() << i;
+//        }
+
     }
+
 
     return ret;
 }

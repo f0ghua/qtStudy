@@ -18,6 +18,8 @@ public:
 
     void load(const QDomElement &element);
 
+    QVector<QSharedPointer<CDDDbDCLTMPL>> m_elDcltmplVector;
+
 };
 
 } // namespace cdd

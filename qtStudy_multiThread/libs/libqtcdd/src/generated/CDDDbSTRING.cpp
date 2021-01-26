@@ -6,6 +6,7 @@ namespace vector {
 namespace cdd {
 
 CDDDbSTRING::CDDDbSTRING()
+    : CDDDbNAME()
 {
 }
 
@@ -15,7 +16,7 @@ CDDDbSTRING::~CDDDbSTRING()
 
 void CDDDbSTRING::load(const QDomElement &element)
 {
-    CDDDbSTRINGImpl::load(element);
+    CDDDbNAME::load(element);
 }
 
 } // namespace cdd

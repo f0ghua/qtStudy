@@ -6,6 +6,7 @@ namespace vector {
 namespace cdd {
 
 CDDDbSHORTCUTNAME::CDDDbSHORTCUTNAME()
+    : CDDDbNAME()
 {
 }
 
@@ -15,7 +16,7 @@ CDDDbSHORTCUTNAME::~CDDDbSHORTCUTNAME()
 
 void CDDDbSHORTCUTNAME::load(const QDomElement &element)
 {
-    CDDDbSHORTCUTNAMEImpl::load(element);
+    CDDDbNAME::load(element);
 }
 
 } // namespace cdd

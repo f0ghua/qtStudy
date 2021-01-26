@@ -1,7 +1,7 @@
 #ifndef VECTOR_CDD_CDDDBSHORTCUTNAME_H
 #define VECTOR_CDD_CDDDBSHORTCUTNAME_H
 
-#include "CDDDbSHORTCUTNAMEImpl.h"
+#include "CDDDbNAME.h"
 
 namespace vector {
 namespace cdd {
@@ -10,7 +10,7 @@ namespace cdd {
  * @brief element SHORTCUTNAME
  *
  */
-class VECTOR_CDD_API CDDDbSHORTCUTNAME : public CDDDbSHORTCUTNAMEImpl
+class VECTOR_CDD_API CDDDbSHORTCUTNAME : public CDDDbNAME
 {
 public:
     CDDDbSHORTCUTNAME();

@@ -1,7 +1,7 @@
 #ifndef VECTOR_CDD_CDDDBSTRING_H
 #define VECTOR_CDD_CDDDBSTRING_H
 
-#include "CDDDbSTRINGImpl.h"
+#include "CDDDbNAME.h"
 
 namespace vector {
 namespace cdd {
@@ -10,7 +10,7 @@ namespace cdd {
  * @brief element STRING
  *
  */
-class VECTOR_CDD_API CDDDbSTRING : public CDDDbSTRINGImpl
+class VECTOR_CDD_API CDDDbSTRING : public CDDDbNAME
 {
 public:
     CDDDbSTRING();

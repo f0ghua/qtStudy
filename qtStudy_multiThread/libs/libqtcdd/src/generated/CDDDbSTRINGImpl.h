@@ -3,6 +3,7 @@
 
 #include "CDDExport.h"
 #include "CDDTypes.h"
+#include "CDDDbNAMEImpl.h"
 
 namespace vector {
 namespace cdd {
@@ -13,18 +14,13 @@ class CDDDbTUV;
  * @brief element STRING
  *
  */
-class VECTOR_CDD_API CDDDbSTRINGImpl
+class VECTOR_CDD_API CDDDbSTRINGImpl : public CDDDbNAMEImpl
 {
 public:
     CDDDbSTRINGImpl();
     ~CDDDbSTRINGImpl();
 
     void load(const QDomElement &element);
-
-    QString m_text;
-
-    /** @element TUV */
-    QVector<QSharedPointer<CDDDbTUV>> m_elTuvs;
 
 };
 

@@ -29,7 +29,9 @@ typedef QVector<quint8>         T_BYTEFIELD;
 
 enum class CDDAttrType {
     eENUM,
-    eUNSIGNED
+    eUNSIGNED,
+    eCSTR,
+    eSTR
 };
 
 enum class CDDUnsignedDataFormat {

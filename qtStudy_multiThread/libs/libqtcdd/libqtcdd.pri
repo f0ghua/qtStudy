@@ -56,8 +56,10 @@ LIB_NAME = $$qtLibraryTarget(libqtcdd)
         $$PWD/src/generated/ICDDDbNAME.h
 }
 
-SOURCES += $$files($$PWD/src/generated/*.cpp)
-HEADERS += $$files($$PWD/src/generated/*.h)
+SOURCES += $$files($$PWD/src/generated/*.cpp) \
+    $$PWD/src/cdddiagclasswrapper.cpp
+HEADERS += $$files($$PWD/src/generated/*.h) \
+    $$PWD/src/cdddiagclasswrapper.h
 
 
 
