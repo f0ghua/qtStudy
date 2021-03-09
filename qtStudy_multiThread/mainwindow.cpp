@@ -4,6 +4,17 @@
 
 #include <QThread>
 #include <QDebug>
+#include <QDragEnterEvent>
+#include <QMimeData>
+#include <QFile>
+#include <QFileInfo>
+#include <QDir>
+
+namespace {
+const char XFILE_TAG_MAGICWORD[] = "@XfiLE";
+const char XFILE_TAG_ENDCHR = '@';
+const char XFILE_TAG_SPLITCHR = '#';
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 //    startWorker();
+
+    ui->menuBar->hide();
+    setWindowFlags(Qt::WindowStaysOnTopHint );
+    this->setAcceptDrops(true);
 }
 
 MainWindow::~MainWindow()
@@ -44,4 +59,59 @@ void MainWindow::stopWorker()
         }
         qDebug() << "Worker thread finished.";
     }
+}
+
+bool MainWindow::extractAttachedFile(const QString &filePath)
+{
+    QFile inputFile(filePath);
+    if (!inputFile.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+    QByteArray baInput = inputFile.readAll();
+    inputFile.close();
+
+    QString outputFileName = "output.unknownType";
+    int tagStart = baInput.indexOf(XFILE_TAG_MAGICWORD);
+    if (tagStart == -1) {
+        return false;
+    }
+    int tagEnd = baInput.indexOf(XFILE_TAG_ENDCHR, tagStart+1);
+    QByteArray baTag = baInput.mid(tagStart, tagEnd - tagStart); // exclude the end '@'
+    QString tagStr = QString::fromStdString(baTag.toStdString());
+    QStringList sl = tagStr.split(XFILE_TAG_SPLITCHR);
+    if (sl.size() > 1) {
+        outputFileName = sl.at(1);
+    }
+
+    int outputFileStart = tagEnd + 1;
+    QByteArray baOutput = baInput.mid(outputFileStart);
+
+    QFileInfo fi(filePath);
+    QString outputFilePath = fi.absoluteDir().absoluteFilePath(outputFileName);
+    qDebug() << tr("output file = %1").arg(outputFilePath);
+    QFile outputFile(outputFilePath);
+    if (!outputFile.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
+        return false;
+    }
+    outputFile.write(baOutput.data(), baOutput.size());
+    outputFile.close();
+
+    return true;
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    if(event->mimeData()->hasFormat("text/uri-list"))
+        event->acceptProposedAction();
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    QList<QUrl> urls = event->mimeData()->urls();
+    if(urls.isEmpty())return ;
+    QString fileName = urls.first().toLocalFile();
+    if(fileName.isEmpty())return ;
+    qDebug() << tr("drop file = %1").arg(fileName);
+
+    extractAttachedFile(fileName);
 }

@@ -18,9 +18,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
 private:
     void startWorker();
     void stopWorker();
+    bool extractAttachedFile(const QString &filePath);
 
     Ui::MainWindow *ui;
     Worker *m_worker = NULL;
