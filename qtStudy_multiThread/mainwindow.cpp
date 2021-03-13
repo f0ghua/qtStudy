@@ -11,8 +11,10 @@
 #include <QDir>
 
 namespace {
-const char XFILE_TAG_MAGICWORD[] = "@XfiLE";
-const char XFILE_TAG_ENDCHR = '@';
+// A header consists with following parts:
+//  tag_magic+{tag_spliter+info}{0~n}+tag_end
+const char XFILE_TAG_MAGICWORD[] = "@!@!";
+const char XFILE_TAG_ENDCHR = '%';
 const char XFILE_TAG_SPLITCHR = '#';
 }
 
@@ -70,13 +72,13 @@ bool MainWindow::extractAttachedFile(const QString &filePath)
     QByteArray baInput = inputFile.readAll();
     inputFile.close();
 
-    QString outputFileName = "output.unknownType";
+    QString outputFileName = "default.tgz";
     int tagStart = baInput.indexOf(XFILE_TAG_MAGICWORD);
     if (tagStart == -1) {
         return false;
     }
     int tagEnd = baInput.indexOf(XFILE_TAG_ENDCHR, tagStart+1);
-    QByteArray baTag = baInput.mid(tagStart, tagEnd - tagStart); // exclude the end '@'
+    QByteArray baTag = baInput.mid(tagStart, tagEnd - tagStart); // exclude the end tag char
     QString tagStr = QString::fromStdString(baTag.toStdString());
     QStringList sl = tagStr.split(XFILE_TAG_SPLITCHR);
     if (sl.size() > 1) {
