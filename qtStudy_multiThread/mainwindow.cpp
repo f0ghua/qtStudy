@@ -73,7 +73,7 @@ bool MainWindow::extractAttachedFile(const QString &filePath)
     inputFile.close();
 
     QString outputFileName = "default.tgz";
-    int tagStart = baInput.indexOf(XFILE_TAG_MAGICWORD);
+    int tagStart = baInput.lastIndexOf(XFILE_TAG_MAGICWORD);
     if (tagStart == -1) {
         return false;
     }
