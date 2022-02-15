@@ -13,7 +13,7 @@
 namespace {
 // A header consists with following parts:
 //  tag_magic+{tag_spliter+info}{0~n}+tag_end
-const char XFILE_TAG_MAGICWORD[] = "@!@!";
+const char XFILE_TAG_MAGICWORD[] = "@!@!@!@!";
 const char XFILE_TAG_ENDCHR = '%';
 const char XFILE_TAG_SPLITCHR = '#';
 }
